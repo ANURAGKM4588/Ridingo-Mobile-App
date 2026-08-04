@@ -5,6 +5,7 @@ import { MOCK_VEHICLES, PROMOTIONS, FEATURED_DRIVER } from '../data/mockData';
 import { QuickBookingWidget } from '../components/QuickBookingWidget';
 import { VehicleSelectorCard } from '../components/VehicleSelectorCard';
 import { PromotionsCarousel } from '../components/PromotionsCarousel';
+import { BrandReviews } from '../components/BrandReviews';
 import { WhyChooseUs } from '../components/WhyChooseUs';
 
 interface HomeViewProps {
@@ -107,6 +108,9 @@ export const HomeView: React.FC<HomeViewProps> = ({
           alert(`Applied promo code ${promo.code} to your next booking!`);
         }}
       />
+
+      {/* Brand Customer Reviews */}
+      <BrandReviews />
 
       {/* Why Choose RIDINGO */}
       <WhyChooseUs />
