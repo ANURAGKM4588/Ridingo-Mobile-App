@@ -74,9 +74,9 @@ export function App() {
   const unreadCount = notifications.filter((n) => !n.read).length;
 
   return (
-    <div className="min-h-screen w-full bg-[#FAFAFA] text-[#0F172A] flex justify-center selection:bg-[#84CC16] overflow-x-hidden">
-      {/* Clean Full-Screen Web App Container */}
-      <div className="w-full max-w-md min-h-screen bg-[#FAFAFA] flex flex-col relative shadow-xl border-x border-slate-200/60">
+    <div className="h-screen w-full bg-[#FAFAFA] text-[#0F172A] flex justify-center selection:bg-[#84CC16] overflow-hidden">
+      {/* Clean Full-Screen Web App Container with Fixed Top Header */}
+      <div className="w-full max-w-md h-screen max-h-screen bg-[#FAFAFA] flex flex-col relative shadow-xl border-x border-slate-200/60 overflow-hidden">
         {/* Global Header Bar - Rendered on Home Page */}
         {activeTab === 'home' && !isReviewOpen && !isInvoiceOpen && !isConfirmationOpen && (
           <HeaderBar
