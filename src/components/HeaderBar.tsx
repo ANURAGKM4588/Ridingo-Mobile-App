@@ -1,5 +1,6 @@
 import React from 'react';
 import { Bell } from 'lucide-react';
+import ridingoLogo from '../assets/ridingo-logo.png';
 
 interface HeaderBarProps {
   userName?: string;
@@ -22,7 +23,7 @@ export const HeaderBar: React.FC<HeaderBarProps> = ({
         {/* RIDINGO Brand Logo */}
         <div className="flex items-center">
           <img
-            src="/logo/ridingo-logo.png"
+            src={ridingoLogo}
             alt="RIDINGO"
             className="h-10 max-h-11 w-auto object-contain transition-transform hover:scale-105"
           />
