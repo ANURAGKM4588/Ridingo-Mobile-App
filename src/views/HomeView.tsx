@@ -57,7 +57,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
         onStartBooking={onStartBooking}
         vehicles={MOCK_VEHICLES}
         selectedVehicle={selectedVehicle}
-        onOpenVehicleModal={() => {}}
+        onOpenVehicleModal={() => { }}
       />
 
       {/* My Vehicle Horizontal Selector */}

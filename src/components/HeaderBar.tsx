@@ -1,7 +1,8 @@
 import React from 'react';
-import { MapPin, Bell, ShieldCheck } from 'lucide-react';
+import { MapPin, Bell, ShieldCheck, ChevronDown } from 'lucide-react';
 
 interface HeaderBarProps {
+  userName?: string;
   currentCity?: string;
   unreadNotificationsCount: number;
   onOpenNotifications: () => void;
@@ -11,6 +12,7 @@ interface HeaderBarProps {
 }
 
 export const HeaderBar: React.FC<HeaderBarProps> = ({
+  userName = 'Alexander Vance',
   currentCity = 'Beverly Hills, CA',
   unreadNotificationsCount,
   onOpenNotifications,
@@ -21,24 +23,14 @@ export const HeaderBar: React.FC<HeaderBarProps> = ({
   return (
     <header className="sticky top-0 z-30 w-full px-4 pt-3 pb-2.5 bg-[#FAFAFA] border-b border-slate-200/50 transition-all">
       <div className="flex items-center justify-between gap-2">
-        {/* Brand & Location */}
-        <div className="flex items-center gap-2.5 min-w-0">
-          <div className="w-9 h-9 rounded-xl bg-[#121212] flex items-center justify-center shadow-md border border-zinc-800 flex-shrink-0">
-            <span className="text-[#84CC16] font-black text-lg tracking-tighter">R</span>
+        {/* RIDINGO Brand Logo */}
+        <div className="flex items-center gap-2">
+          <div className="w-8 h-8 rounded-xl bg-[#121212] text-[#84CC16] flex items-center justify-center font-black text-base shadow-md border border-zinc-800 flex-shrink-0">
+            R
           </div>
-          <div className="min-w-0">
-            <div className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-slate-500 whitespace-nowrap">
-              <span>RIDINGO</span>
-              <span className="w-1 h-1 rounded-full bg-[#84CC16]"></span>
-              <span className="text-[#4D7C0F] flex items-center gap-0.5 font-extrabold">
-                <ShieldCheck className="w-3 h-3 inline text-[#84CC16]" /> Verified Drivers
-              </span>
-            </div>
-            <button className="flex items-center gap-1 text-xs font-extrabold text-[#0F172A] hover:text-[#84CC16] transition-colors truncate">
-              <MapPin className="w-3 h-3 text-[#84CC16] flex-shrink-0" />
-              <span className="truncate">{currentCity}</span>
-            </button>
-          </div>
+          <span className="font-black text-sm tracking-widest text-[#0F172A] uppercase">
+            RIDINGO
+          </span>
         </div>
 
         {/* Action icons */}

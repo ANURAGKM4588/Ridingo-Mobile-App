@@ -99,6 +99,7 @@ export function App() {
         {/* Global Header Bar - Rendered on Home Page */}
         {activeTab === 'home' && !isReviewOpen && !isInvoiceOpen && !isConfirmationOpen && (
           <HeaderBar
+            userName="Alexander Vance"
             unreadNotificationsCount={unreadCount}
             onOpenNotifications={() => setIsNotificationsOpen(true)}
             isMobileFrame={isMobileFrame}
@@ -223,46 +224,47 @@ export function App() {
 
             {/* Right Slide Panel Container */}
             <div className="relative w-[340px] max-w-full h-full bg-[#FAFAFA] shadow-2xl flex flex-col z-10 animate-slide-left border-l border-slate-200/80">
-              {/* Drawer Top Header */}
-              <div className="px-4 py-3 bg-white border-b border-slate-200 flex items-center justify-between shadow-sm">
-                <div className="flex items-center gap-2.5">
-                  <div className="w-8 h-8 rounded-xl bg-[#121212] text-[#84CC16] flex items-center justify-center shadow-md">
-                    <Bell className="w-4 h-4" />
-                  </div>
-                  <div>
-                    <h3 className="font-extrabold text-sm text-slate-900 leading-tight">Notifications</h3>
-                    <span className="text-[10px] text-slate-400 font-bold">
-                      {notifications.filter(n => !n.read).length} Unread Updates
+              {/* Minimal Single-Line Drawer Top Header with Downward Safe Padding */}
+              <div className="px-4 pt-7 pb-3 bg-white border-b border-slate-200 flex items-center justify-between shadow-sm shrink-0">
+                <div className="flex items-center gap-2">
+                  <h3 className="font-extrabold text-sm text-slate-900 tracking-tight">Notifications</h3>
+                  {notifications.filter(n => !n.read).length > 0 && (
+                    <span className="px-2 py-0.5 rounded-full bg-[#84CC16] text-[#121212] text-[10px] font-black">
+                      {notifications.filter(n => !n.read).length}
                     </span>
-                  </div>
+                  )}
                 </div>
 
-                <div className="flex items-center gap-2">
-                  <button
-                    type="button"
-                    onClick={() => setNotifications(notifications.map((n) => ({ ...n, read: true })))}
-                    className="text-[10px] font-bold text-[#4D7C0F] hover:underline"
-                  >
-                    Mark Read
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setIsNotificationsOpen(false)}
-                    className="w-7 h-7 rounded-full bg-slate-100 flex items-center justify-center text-slate-700 hover:bg-slate-200 transition-colors cursor-pointer"
-                  >
-                    <X className="w-4 h-4" />
-                  </button>
-                </div>
+                <button
+                  type="button"
+                  onClick={() => setNotifications(notifications.map((n) => ({ ...n, read: true })))}
+                  className="text-[11px] font-extrabold text-[#4D7C0F] hover:underline whitespace-nowrap cursor-pointer"
+                >
+                  Mark all read
+                </button>
               </div>
 
               {/* Scrollable Notification List */}
-              <div className="flex-1 overflow-y-auto p-3.5 space-y-3 scrollbar-none">
+              <div className="flex-1 overflow-y-auto p-3.5 space-y-3 scrollbar-none relative">
                 <NotificationsView
                   notifications={notifications}
+                  hideHeader={true}
                   onMarkAllRead={() => {
                     setNotifications(notifications.map((n) => ({ ...n, read: true })));
                   }}
                 />
+              </div>
+
+              {/* Thumb-Friendly Bottom Round Transparent Close Icon Button */}
+              <div className="p-3 bg-transparent flex justify-center pb-5">
+                <button
+                  type="button"
+                  onClick={() => setIsNotificationsOpen(false)}
+                  className="w-11 h-11 rounded-full bg-slate-900/10 hover:bg-slate-900/20 backdrop-blur-md border border-slate-300/80 text-slate-800 flex items-center justify-center transition-all active:scale-90 cursor-pointer shadow-lg"
+                  aria-label="Close Notifications"
+                >
+                  <X className="w-5 h-5 text-slate-900 stroke-[2.5]" />
+                </button>
               </div>
             </div>
           </div>
