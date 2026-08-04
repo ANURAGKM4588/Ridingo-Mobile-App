@@ -26,18 +26,18 @@ export const HomeView: React.FC<HomeViewProps> = ({
 
   return (
     <div className="w-full space-y-5 animate-fade-in pb-24">
-      {/* Greeting & Search Header */}
-      <div className="space-y-3 pt-1">
+      {/* Fixed Sticky Greeting & Search Bar */}
+      <div className="sticky top-0 z-20 bg-[#FAFAFA] pt-2 pb-3 space-y-2.5 border-b border-slate-200/60 -mx-3.5 px-3.5 shadow-xs">
         <div>
           <span className="text-[10px] font-extrabold uppercase tracking-widest text-[#4D7C0F] block">
             On-Demand Chauffeur Service
           </span>
-          <h1 className="text-xl sm:text-2xl font-black text-[#0F172A] tracking-tight truncate mt-0.5">
-            Good Morning, John 👋
+          <h1 className="text-lg sm:text-xl font-black text-[#0F172A] tracking-tight truncate mt-0.5">
+            Book a Verified Driver 🚘
           </h1>
         </div>
 
-        {/* Clean Search Input */}
+        {/* Fixed Search Input */}
         <div className="relative w-full">
           <div className="absolute inset-y-0 left-3.5 flex items-center pointer-events-none text-slate-400">
             <Search className="w-4 h-4 text-[#84CC16]" />
@@ -47,7 +47,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="What service do you need today?"
-            className="w-full pl-10 pr-4 py-3 rounded-2xl bg-white border border-slate-200 text-slate-900 font-bold placeholder:text-slate-400 placeholder:font-normal shadow-sm focus:outline-none focus:ring-2 focus:ring-[#84CC16] transition-all text-xs"
+            className="w-full pl-10 pr-4 py-2.5 rounded-2xl bg-white border border-slate-200 text-slate-900 font-bold placeholder:text-slate-400 placeholder:font-normal shadow-sm focus:outline-none focus:ring-2 focus:ring-[#84CC16] transition-all text-xs"
           />
         </div>
       </div>
