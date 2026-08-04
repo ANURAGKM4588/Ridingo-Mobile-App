@@ -74,9 +74,9 @@ export function App() {
   const unreadCount = notifications.filter((n) => !n.read).length;
 
   return (
-    <div className="h-screen w-full bg-[#FAFAFA] text-[#0F172A] flex justify-center selection:bg-[#84CC16] overflow-hidden">
-      {/* Clean Full-Screen Web App Container with Fixed Top Header */}
-      <div className="w-full max-w-md h-screen max-h-screen bg-[#FAFAFA] flex flex-col relative shadow-xl border-x border-slate-200/60 overflow-hidden">
+    <div className="min-h-screen h-screen w-full bg-slate-900 md:bg-slate-950 flex items-center justify-center selection:bg-[#84CC16] overflow-hidden p-0 md:p-3">
+      {/* Sleek Mobile App Container for All Mobile Devices, iPhone Notch, iPads & Desktop */}
+      <div className="w-full max-w-md h-full md:h-[94vh] max-h-screen md:rounded-[44px] bg-[#FAFAFA] flex flex-col relative shadow-2xl border-x md:border border-slate-200/80 overflow-hidden">
         {/* Global Header Bar - Rendered on Home Page */}
         {activeTab === 'home' && !isReviewOpen && !isInvoiceOpen && !isConfirmationOpen && (
           <HeaderBar
@@ -88,7 +88,11 @@ export function App() {
         )}
 
         {/* Main Content Area based on Active Tab or Views */}
-        <main className={`flex-1 overflow-y-auto px-4 pt-3.5 scrollbar-none relative ${
+        <main className={`flex-1 overflow-y-auto px-4 scrollbar-none relative ${
+          activeTab === 'home' && !isReviewOpen && !isInvoiceOpen && !isConfirmationOpen
+            ? 'pt-3.5'
+            : 'pt-[calc(env(safe-area-inset-top,0px)+0.75rem)]'
+        } ${
           isReviewOpen || isInvoiceOpen || isConfirmationOpen ? 'pb-6' : 'pb-24'
         }`}>
           {isReviewOpen && bookingDraft ? (
