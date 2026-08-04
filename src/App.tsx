@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ChevronLeft } from 'lucide-react';
+import { ChevronLeft, Bell, X } from 'lucide-react';
 import type { TabType, ServiceItem, VehicleOption, Booking, DriverProfile } from './types';
 import { MOCK_SERVICES, MOCK_VEHICLES, MOCK_BOOKINGS, MOCK_NOTIFICATIONS } from './data/mockData';
 
@@ -96,8 +96,8 @@ export function App() {
           </div>
         )}
 
-        {/* Global Header Bar - Rendered only on Home Page */}
-        {activeTab === 'home' && !isReviewOpen && !isInvoiceOpen && !isConfirmationOpen && !isNotificationsOpen && (
+        {/* Global Header Bar - Rendered on Home Page */}
+        {activeTab === 'home' && !isReviewOpen && !isInvoiceOpen && !isConfirmationOpen && (
           <HeaderBar
             unreadNotificationsCount={unreadCount}
             onOpenNotifications={() => setIsNotificationsOpen(true)}
@@ -109,32 +109,7 @@ export function App() {
 
         {/* Main Content Area based on Active Tab or Views */}
         <main className="flex-1 overflow-y-auto px-3.5 pt-3 pb-24 scrollbar-none relative">
-          {/* Notifications View Overlay */}
-          {isNotificationsOpen ? (
-            <div className="w-full bg-[#FAFAFA] min-h-full pb-20 animate-fade-in space-y-4">
-              {/* Solid Sticky Header */}
-              <div className="sticky -top-3 z-30 bg-white -mx-3.5 -mt-3 pt-3 pb-3 px-4 border-b border-slate-200 flex items-center justify-between shadow-sm">
-                <button
-                  onClick={() => setIsNotificationsOpen(false)}
-                  className="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-700 hover:bg-slate-200 transition-colors cursor-pointer"
-                >
-                  <ChevronLeft className="w-5 h-5" />
-                </button>
-                <div className="text-center">
-                  <h2 className="text-sm font-black text-slate-900 uppercase tracking-wider">Notifications</h2>
-                  <p className="text-[10px] text-slate-500 font-bold">Driver & Booking Updates</p>
-                </div>
-                <div className="w-8" />
-              </div>
-
-              <NotificationsView
-                notifications={notifications}
-                onMarkAllRead={() => {
-                  setNotifications(notifications.map((n) => ({ ...n, read: true })));
-                }}
-              />
-            </div>
-          ) : isReviewOpen && bookingDraft ? (
+          {isReviewOpen && bookingDraft ? (
             <BookingReviewScreen
               draft={bookingDraft}
               onBack={() => setIsReviewOpen(false)}
@@ -236,6 +211,62 @@ export function App() {
           isOpen={isDriverModalOpen}
           onClose={() => setIsDriverModalOpen(false)}
         />
+
+        {/* Right-Slide Notification Drawer Panel */}
+        {isNotificationsOpen && (
+          <div className="absolute inset-0 z-50 flex justify-end bg-black/60 backdrop-blur-xs animate-fade-in">
+            {/* Dark Backdrop overlay click to dismiss */}
+            <div
+              className="absolute inset-0"
+              onClick={() => setIsNotificationsOpen(false)}
+            />
+
+            {/* Right Slide Panel Container */}
+            <div className="relative w-[340px] max-w-full h-full bg-[#FAFAFA] shadow-2xl flex flex-col z-10 animate-slide-left border-l border-slate-200/80">
+              {/* Drawer Top Header */}
+              <div className="px-4 py-3 bg-white border-b border-slate-200 flex items-center justify-between shadow-sm">
+                <div className="flex items-center gap-2.5">
+                  <div className="w-8 h-8 rounded-xl bg-[#121212] text-[#84CC16] flex items-center justify-center shadow-md">
+                    <Bell className="w-4 h-4" />
+                  </div>
+                  <div>
+                    <h3 className="font-extrabold text-sm text-slate-900 leading-tight">Notifications</h3>
+                    <span className="text-[10px] text-slate-400 font-bold">
+                      {notifications.filter(n => !n.read).length} Unread Updates
+                    </span>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-2">
+                  <button
+                    type="button"
+                    onClick={() => setNotifications(notifications.map((n) => ({ ...n, read: true })))}
+                    className="text-[10px] font-bold text-[#4D7C0F] hover:underline"
+                  >
+                    Mark Read
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setIsNotificationsOpen(false)}
+                    className="w-7 h-7 rounded-full bg-slate-100 flex items-center justify-center text-slate-700 hover:bg-slate-200 transition-colors cursor-pointer"
+                  >
+                    <X className="w-4 h-4" />
+                  </button>
+                </div>
+              </div>
+
+              {/* Scrollable Notification List */}
+              <div className="flex-1 overflow-y-auto p-3.5 space-y-3 scrollbar-none">
+                <NotificationsView
+                  notifications={notifications}
+                  onMarkAllRead={() => {
+                    setNotifications(notifications.map((n) => ({ ...n, read: true })));
+                  }}
+                />
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
