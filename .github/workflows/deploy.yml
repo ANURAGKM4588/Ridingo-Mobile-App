@@ -27,7 +27,6 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-[# Setup Node version]
           node-version: 20
 
       - name: Install dependencies
