@@ -1,5 +1,5 @@
 import React from 'react';
-import { MapPin, Bell, ShieldCheck, ChevronDown } from 'lucide-react';
+import { Bell } from 'lucide-react';
 
 interface HeaderBarProps {
   userName?: string;
@@ -20,13 +20,12 @@ export const HeaderBar: React.FC<HeaderBarProps> = ({
     <header className="shrink-0 sticky top-0 z-50 w-full px-4 pt-3 pb-2.5 bg-[#FAFAFA] border-b border-slate-200/80 shadow-xs transition-all">
       <div className="flex items-center justify-between gap-2">
         {/* RIDINGO Brand Logo */}
-        <div className="flex items-center gap-2">
-          <div className="w-8 h-8 rounded-xl bg-[#121212] text-[#84CC16] flex items-center justify-center font-black text-base shadow-md border border-zinc-800 flex-shrink-0">
-            R
-          </div>
-          <span className="font-black text-sm tracking-widest text-[#0F172A] uppercase">
-            RIDINGO
-          </span>
+        <div className="flex items-center">
+          <img
+            src="/Logo/Untitled-1-01.png"
+            alt="RIDINGO"
+            className="h-10 max-h-11 w-auto object-contain transition-transform hover:scale-105"
+          />
         </div>
 
         {/* Action icons */}
@@ -37,7 +36,7 @@ export const HeaderBar: React.FC<HeaderBarProps> = ({
             className="relative p-2 rounded-xl bg-slate-100 text-slate-700 hover:bg-slate-200 transition-all cursor-pointer"
             aria-label="Notifications"
           >
-            <Bell className="w-4 h-4" />
+            <Bell className="w-4 h-4 text-slate-800 fill-slate-800/25 stroke-[2]" />
             {unreadNotificationsCount > 0 && (
               <span className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-[#84CC16] text-[#121212] text-[9px] font-black flex items-center justify-center border border-white shadow-sm">
                 {unreadNotificationsCount}

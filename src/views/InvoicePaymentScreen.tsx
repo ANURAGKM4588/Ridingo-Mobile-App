@@ -155,6 +155,10 @@ export const InvoicePaymentScreen: React.FC<InvoicePaymentScreenProps> = ({
       },
       paymentMethod: `Razorpay - ${selectedPayment.toUpperCase()} (30% Advance)`,
       createdDate: new Date().toISOString().split('T')[0],
+      serviceType: bookingDraft?.serviceType || 'Hourly',
+      flightNumber: bookingDraft?.flightNumber,
+      airlineName: bookingDraft?.airlineName,
+      tripCause: bookingDraft?.tripCause,
       driverPreferences: {
         language: 'English',
         uniformRequired: true,

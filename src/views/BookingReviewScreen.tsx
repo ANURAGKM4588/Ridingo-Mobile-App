@@ -13,7 +13,8 @@ import {
   Building2, 
   Check,
   ChevronRight,
-  Info
+  Info,
+  Sparkles
 } from 'lucide-react';
 import { VehicleOption, Booking } from '../types';
 import { MOCK_VEHICLES, FEATURED_DRIVER } from '../data/mockData';
@@ -29,6 +30,7 @@ interface BookingReviewScreenProps {
     flightNumber?: string;
     airlineName?: string;
     serviceType?: string;
+    tripCause?: string;
   };
   onBack: () => void;
   onConfirm: (booking: Booking) => void;
@@ -45,6 +47,7 @@ export const BookingReviewScreen: React.FC<BookingReviewScreenProps> = ({
   const [destination, setDestination] = useState(draft.destination || 'LAX Airport Terminal 4');
   const [flightNumber, setFlightNumber] = useState(draft.flightNumber || 'AI-202');
   const [airlineName, setAirlineName] = useState(draft.airlineName || 'Air India');
+  const [tripCause, setTripCause] = useState(draft.tripCause || 'Wedding function');
   const [date, setDate] = useState(draft.date || new Date().toISOString().split('T')[0]);
   const [time, setTime] = useState(draft.time || '14:30');
   const [durationHours, setDurationHours] = useState(draft.durationHours || 4);
@@ -88,6 +91,10 @@ export const BookingReviewScreen: React.FC<BookingReviewScreenProps> = ({
       },
       paymentMethod: 'UPI / Credit Card',
       createdDate: new Date().toISOString().split('T')[0],
+      serviceType: serviceType as any,
+      flightNumber: serviceType === 'Airport' ? flightNumber : undefined,
+      airlineName: serviceType === 'Airport' ? airlineName : undefined,
+      tripCause: serviceType === 'Other' ? tripCause : undefined,
       driverPreferences: {
         language: 'English',
         uniformRequired: true,
@@ -210,6 +217,27 @@ export const BookingReviewScreen: React.FC<BookingReviewScreenProps> = ({
                   )}
                 </div>
               </div>
+
+              {serviceType === 'Other' && (
+                <div className="pt-2 border-t border-slate-100 flex items-center gap-3 relative z-10">
+                  <div className="w-8 h-8 rounded-xl bg-purple-100 flex items-center justify-center text-purple-700 flex-shrink-0">
+                    <Sparkles className="w-4 h-4" />
+                  </div>
+                  <div className="flex-1">
+                    <span className="text-[10px] font-extrabold text-purple-600 uppercase block">Selected Service Purpose</span>
+                    {isEditing ? (
+                      <input
+                        type="text"
+                        value={tripCause}
+                        onChange={(e) => setTripCause(e.target.value)}
+                        className="w-full text-xs font-bold text-slate-900 border-b border-slate-300 focus:outline-none focus:border-purple-500 py-0.5"
+                      />
+                    ) : (
+                      <span className="text-xs font-black text-purple-950 block">{tripCause || 'Special Occasion'}</span>
+                    )}
+                  </div>
+                </div>
+              )}
             </div>
           )}
         </div>

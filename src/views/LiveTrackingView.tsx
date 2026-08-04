@@ -102,7 +102,7 @@ export const LiveTrackingView: React.FC<LiveTrackingViewProps> = ({
             <div>
               <span className="text-[10px] font-extrabold uppercase tracking-widest text-[#4D7C0F]">Estimated Arrival</span>
               <h3 className="text-xl font-black text-slate-900 flex items-center gap-1.5 mt-0.5">
-                <Clock className="w-4.5 h-4.5 text-[#84CC16]" /> {etaMins} Mins
+                <Clock className="w-4.5 h-4.5 text-[#84CC16] fill-[#84CC16]/25 stroke-[2]" /> {etaMins} Mins
               </h3>
             </div>
 
@@ -152,7 +152,7 @@ export const LiveTrackingView: React.FC<LiveTrackingViewProps> = ({
                 className="w-9 h-9 rounded-xl bg-[#121212] hover:bg-black text-[#84CC16] flex items-center justify-center shadow-md transition-all active:scale-95 cursor-pointer"
                 title="Call Driver"
               >
-                <Phone className="w-4 h-4" />
+                <Phone className="w-4 h-4 text-[#84CC16] fill-[#84CC16]/25 stroke-[2]" />
               </a>
               <button
                 type="button"
@@ -160,7 +160,7 @@ export const LiveTrackingView: React.FC<LiveTrackingViewProps> = ({
                 className="w-9 h-9 rounded-xl bg-slate-100 text-slate-800 hover:bg-slate-200 flex items-center justify-center border border-slate-200 shadow-xs transition-all active:scale-95 cursor-pointer"
                 title="Chat Driver"
               >
-                <MessageSquare className="w-4 h-4 text-slate-700" />
+                <MessageSquare className="w-4 h-4 text-slate-700 fill-slate-700/20 stroke-[2]" />
               </button>
             </div>
           </div>
@@ -168,7 +168,7 @@ export const LiveTrackingView: React.FC<LiveTrackingViewProps> = ({
           {/* Minimal Collapsible Trip Details Toggle */}
           <div className="pt-2 border-t border-slate-100 flex items-center justify-between text-[11px] font-extrabold text-slate-700">
             <span className="flex items-center gap-1 text-[#4D7C0F]">
-              <CheckCircle2 className="w-3.5 h-3.5 text-[#84CC16]" /> Suit Uniform Driver
+              <CheckCircle2 className="w-3.5 h-3.5 text-[#84CC16] fill-[#84CC16]/25 stroke-[2]" /> Suit Uniform Driver
             </span>
 
             <button

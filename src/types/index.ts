@@ -73,6 +73,10 @@ export interface Booking {
   };
   paymentMethod: string;
   createdDate: string;
+  serviceType?: 'Hourly' | 'Airport' | 'Other' | 'Outstation' | 'Daily';
+  flightNumber?: string;
+  airlineName?: string;
+  tripCause?: string;
 }
 
 export interface Promotion {

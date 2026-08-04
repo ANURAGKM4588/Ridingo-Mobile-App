@@ -35,17 +35,14 @@ export const FloatingNav: React.FC<FloatingNavProps> = ({ activeTab, onTabChange
               }`}
               aria-label={tab.label}
             >
-              <Icon className={`w-5 h-5 transition-transform duration-300 ${isActive ? 'scale-110 text-[#84CC16]' : ''}`} />
+              <Icon className={`w-5 h-5 transition-all duration-300 ${
+                isActive ? 'scale-110 text-[#84CC16] fill-[#84CC16]/30 stroke-[2.2]' : 'text-slate-500 fill-slate-400/20 stroke-[2]'
+              }`} />
               
               {isActive && (
                 <span className="text-xs font-extrabold tracking-tight whitespace-nowrap">
                   {tab.label}
                 </span>
-              )}
-
-              {/* Active neon dot indicator */}
-              {isActive && (
-                <span className="absolute -top-1 right-1/2 translate-x-1/2 w-1.5 h-1.5 rounded-full bg-[#84CC16] shadow-[0_0_8px_#84CC16]" />
               )}
             </button>
           );

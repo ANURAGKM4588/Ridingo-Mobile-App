@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
-import { Search, Star } from 'lucide-react';
-import { ServiceItem, VehicleOption } from '../types';
-import { MOCK_VEHICLES, PROMOTIONS, FEATURED_DRIVER } from '../data/mockData';
+import { Search, Star, MapPin, RotateCcw, ChevronRight } from 'lucide-react';
+import { Booking, ServiceItem, VehicleOption } from '../types';
+import { MOCK_BOOKINGS, MOCK_VEHICLES, PROMOTIONS, FEATURED_DRIVER } from '../data/mockData';
 import { QuickBookingWidget } from '../components/QuickBookingWidget';
-import { VehicleSelectorCard } from '../components/VehicleSelectorCard';
 import { PromotionsCarousel } from '../components/PromotionsCarousel';
 import { BrandReviews } from '../components/BrandReviews';
 import { WhyChooseUs } from '../components/WhyChooseUs';
@@ -14,6 +13,10 @@ interface HomeViewProps {
   selectedVehicle: VehicleOption;
   onStartBooking: (params: any) => void;
   onOpenDriverProfile: (driver: any) => void;
+  recentBookings?: Booking[];
+  recentBooking?: Booking;
+  onViewAllBookings?: () => void;
+  onRepeatBooking?: (booking: Booking) => void;
 }
 
 export const HomeView: React.FC<HomeViewProps> = ({
@@ -21,13 +24,18 @@ export const HomeView: React.FC<HomeViewProps> = ({
   selectedVehicle,
   onStartBooking,
   onOpenDriverProfile,
+  recentBookings,
+  recentBooking,
+  onViewAllBookings,
+  onRepeatBooking,
 }) => {
   const [searchQuery, setSearchQuery] = useState('');
+  const recentBookingList = (recentBookings && recentBookings.length > 0) ? recentBookings : MOCK_BOOKINGS;
 
   return (
-    <div className="w-full space-y-5 animate-fade-in pb-24">
+    <div className="w-full space-y-4 animate-fade-in pb-24">
       {/* Fixed Sticky Greeting & Search Bar with Zero Gap */}
-      <div className="sticky -top-3 z-40 bg-[#FAFAFA] -mt-3 pt-3 pb-3 space-y-2.5 border-b border-slate-200/80 -mx-3.5 px-4 shadow-sm">
+      <div className="sticky -top-3.5 z-40 bg-[#FAFAFA] -mt-3.5 pt-3 pb-3 space-y-2.5 border-b border-slate-200/80 -mx-4 px-4 shadow-2xs">
         <div>
           <span className="text-[10px] font-extrabold uppercase tracking-widest text-[#4D7C0F] block">
             On-Demand Chauffeur Service
@@ -60,12 +68,78 @@ export const HomeView: React.FC<HomeViewProps> = ({
         onOpenVehicleModal={() => { }}
       />
 
-      {/* My Vehicle Horizontal Selector */}
-      <VehicleSelectorCard
-        vehicles={MOCK_VEHICLES}
-        selectedVehicleId={selectedVehicle.id}
-        onSelectVehicle={onSelectVehicle}
-      />
+      {/* Horizontal Scrollable Recent Bookings Section */}
+      {recentBookingList.length > 0 && (
+        <div className="space-y-3">
+          <div className="flex items-center justify-between px-0">
+            <div className="flex items-center gap-1.5">
+              <span className="w-2 h-2 rounded-full bg-[#84CC16] animate-pulse flex-shrink-0" />
+              <h3 className="font-extrabold text-sm text-slate-900">Recent Bookings</h3>
+              <span className="px-2 py-0.5 rounded-full bg-slate-200 text-slate-700 text-[10px] font-black">
+                {recentBookingList.length}
+              </span>
+            </div>
+
+            {onViewAllBookings && (
+              <button
+                onClick={onViewAllBookings}
+                className="text-[11px] font-bold text-[#4D7C0F] hover:underline flex items-center gap-0.5 cursor-pointer"
+              >
+                <span>View All</span>
+                <ChevronRight className="w-3.5 h-3.5" />
+              </button>
+            )}
+          </div>
+
+          {/* Horizontal Scroll Track */}
+          <div className="flex items-center gap-3 overflow-x-auto no-scrollbar pb-1 pt-0.5 snap-x snap-mandatory -mx-4 px-4 scroll-pl-4">
+            {recentBookingList.map((booking) => (
+              <div
+                key={booking.id}
+                className="w-[285px] sm:w-[320px] flex-shrink-0 snap-start bg-white rounded-3xl p-4 border border-slate-200/90 shadow-md space-y-2.5 relative overflow-hidden transition-transform hover:-translate-y-0.5"
+              >
+                <div className="flex items-center justify-between border-b border-slate-100 pb-2">
+                  <span className="font-mono text-[10px] font-extrabold text-slate-400">
+                    #{booking.bookingNumber}
+                  </span>
+                  <span className="px-2 py-0.5 rounded-full bg-slate-100 text-slate-800 text-[10px] font-black uppercase">
+                    {booking.date}
+                  </span>
+                </div>
+
+                <h4 className="font-black text-xs text-slate-900 truncate">
+                  {booking.serviceTitle}
+                </h4>
+
+                <div className="space-y-1 text-xs text-slate-600 bg-slate-50 p-2.5 rounded-2xl border border-slate-200/60">
+                  <div className="flex items-start gap-1.5 min-w-0">
+                    <MapPin className="w-3.5 h-3.5 text-[#84CC16] fill-[#84CC16]/25 stroke-[2] flex-shrink-0 mt-0.5" />
+                    <span className="font-medium text-slate-800 truncate text-[11px]">{booking.pickupLocation}</span>
+                  </div>
+                  <div className="flex items-start gap-1.5 min-w-0">
+                    <MapPin className="w-3.5 h-3.5 text-slate-900 fill-slate-900/20 stroke-[2] flex-shrink-0 mt-0.5" />
+                    <span className="font-medium text-slate-800 truncate text-[11px]">{booking.destinationLocation}</span>
+                  </div>
+                </div>
+
+                <div className="pt-1 flex items-center justify-between text-xs">
+                  <span className="font-black text-slate-900">${booking.priceTotal.toFixed(2)}</span>
+
+                  {onRepeatBooking && (
+                    <button
+                      onClick={() => onRepeatBooking(booking)}
+                      className="px-3 py-1.5 rounded-xl bg-[#121212] hover:bg-black text-[#84CC16] font-extrabold text-[11px] flex items-center gap-1 shadow-sm transition-colors cursor-pointer"
+                    >
+                      <RotateCcw className="w-3 h-3 stroke-[2.2]" />
+                      <span>Repeat</span>
+                    </button>
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
 
 
 
