@@ -29,15 +29,10 @@ jobs:
       - name: Sync Capacitor iOS
         run: npx cap sync ios
 
-      - name: Resolve SPM Dependencies
+      - name: Build iOS Xcode App
         run: |
           cd ios/App
-          xcodebuild -resolvePackageDependencies -workspace App.xcworkspace -scheme App || true
-
-      - name: Build iOS App
-        run: |
-          cd ios/App
-          xcodebuild -workspace App.xcworkspace -scheme App -sdk iphonesimulator -configuration Debug -destination 'generic/platform=iOS Simulator' CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY="" -derivedDataPath build build
+          xcodebuild -project App.xcodeproj -scheme App -sdk iphonesimulator -configuration Debug CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY="" -derivedDataPath build build
 
       - name: Upload iOS App Artifact
         uses: actions/upload-artifact@v4
