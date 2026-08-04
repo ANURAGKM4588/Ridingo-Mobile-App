@@ -17,8 +17,8 @@ export const FloatingNav: React.FC<FloatingNavProps> = ({ activeTab, onTabChange
   ];
 
   return (
-    <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-40 w-[90%] max-w-[360px] pointer-events-auto">
-      <nav className="glass-floating rounded-full p-1.5 flex items-center justify-around shadow-2xl border border-white/90 backdrop-blur-2xl bg-white/90">
+    <div className="fixed bottom-4 left-1/2 -translate-x-1/2 z-40 w-full max-w-md px-3 pointer-events-auto">
+      <nav className="glass-floating rounded-full p-1.5 flex items-center justify-between shadow-2xl border border-white/90 backdrop-blur-2xl bg-white/95 ring-1 ring-slate-900/5">
         {tabs.map((tab) => {
           const Icon = tab.icon;
           const isActive = activeTab === tab.id;
@@ -26,12 +26,14 @@ export const FloatingNav: React.FC<FloatingNavProps> = ({ activeTab, onTabChange
           return (
             <button
               key={tab.id}
+              type="button"
               onClick={() => onTabChange(tab.id)}
-              className={`relative flex items-center justify-center gap-1.5 py-2 px-3 rounded-full transition-all duration-300 ${
+              className={`relative flex items-center justify-center gap-1.5 py-2 px-3.5 rounded-full transition-all duration-300 cursor-pointer ${
                 isActive
-                  ? 'bg-[#121212] text-white shadow-lg shadow-black/20 font-extrabold'
-                  : 'text-slate-500 hover:text-slate-900 font-bold'
+                  ? 'bg-[#121212] text-white shadow-lg shadow-black/20 font-extrabold flex-1'
+                  : 'text-slate-500 hover:text-slate-900 font-bold hover:bg-slate-100/60'
               }`}
+              aria-label={tab.label}
             >
               <Icon className={`w-4 h-4 transition-transform duration-300 ${isActive ? 'scale-110 text-[#84CC16]' : ''}`} />
               
