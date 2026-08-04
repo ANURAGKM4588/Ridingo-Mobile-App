@@ -27,7 +27,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
   return (
     <div className="w-full space-y-5 animate-fade-in pb-24">
       {/* Fixed Sticky Greeting & Search Bar with Zero Gap */}
-      <div className="sticky -top-3 z-20 bg-[#FAFAFA] -mt-3 pt-3 pb-3 space-y-2.5 border-b border-slate-200/80 -mx-3.5 px-4 shadow-sm">
+      <div className="sticky -top-3 z-40 bg-[#FAFAFA] -mt-3 pt-3 pb-3 space-y-2.5 border-b border-slate-200/80 -mx-3.5 px-4 shadow-sm">
         <div>
           <span className="text-[10px] font-extrabold uppercase tracking-widest text-[#4D7C0F] block">
             On-Demand Chauffeur Service
