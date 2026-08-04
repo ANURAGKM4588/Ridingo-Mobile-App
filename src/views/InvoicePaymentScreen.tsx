@@ -20,7 +20,9 @@ import {
   UserCheck,
   Send,
   Building2,
-  Smartphone
+  Smartphone,
+  XCircle,
+  ExternalLink
 } from 'lucide-react';
 import { Booking } from '../types';
 
@@ -28,14 +30,16 @@ interface InvoicePaymentScreenProps {
   bookingDraft: any;
   onBack: () => void;
   onConfirmPayment: (finalBooking: Booking) => void;
+  onCloseToBookings?: (pendingBooking: Booking) => void;
 }
 
 export const InvoicePaymentScreen: React.FC<InvoicePaymentScreenProps> = ({
   bookingDraft,
   onBack,
   onConfirmPayment,
+  onCloseToBookings,
 }) => {
-  // Payment method selection inside main screen
+  // Payment method selection
   const [selectedPayment, setSelectedPayment] = useState<'apple_pay' | 'gpay' | 'card' | 'wallet' | 'upi' | 'cash'>('apple_pay');
 
   // Promo code & tipping state
@@ -52,6 +56,7 @@ export const InvoicePaymentScreen: React.FC<InvoicePaymentScreenProps> = ({
   // Driver Request Dispatching State
   const [isDriverDispatching, setIsDriverDispatching] = useState<boolean>(false);
   const [dispatchStep, setDispatchStep] = useState<number>(1);
+  const [createdBooking, setCreatedBooking] = useState<Booking | null>(null);
 
   // Price calculations
   const duration = bookingDraft?.durationHours || 4;
@@ -78,13 +83,13 @@ export const InvoicePaymentScreen: React.FC<InvoicePaymentScreenProps> = ({
     }
   };
 
-  // 1. Open Razorpay Gateway Interface when clicking Pay Now
+  // 1. Open Razorpay Gateway Interface
   const handleOpenRazorpay = () => {
     setRazorpayStep('select');
     setIsRazorpayOpen(true);
   };
 
-  // 2. Process Razorpay Payment & trigger Driver App dispatch
+  // 2. Execute Razorpay Payment
   const handleExecuteRazorpayPayment = () => {
     setRazorpayStep('processing');
 
@@ -100,25 +105,6 @@ export const InvoicePaymentScreen: React.FC<InvoicePaymentScreenProps> = ({
 
   // 3. Driver Dispatch Sequence to Driver App
   const startDriverDispatchSequence = () => {
-    setIsDriverDispatching(true);
-    setDispatchStep(1); // 📡 Sending request to Driver App
-
-    setTimeout(() => {
-      setDispatchStep(2); // 🚘 Driver Marcus Vance reviewing request on Driver App
-
-      setTimeout(() => {
-        setDispatchStep(3); // ✅ Driver Accepted!
-
-        setTimeout(() => {
-          setIsDriverDispatching(false);
-          finishBookingAndNavigate();
-        }, 1200);
-      }, 1500);
-    }, 1500);
-  };
-
-  // 4. Finalize Booking & open Confirmation View
-  const finishBookingAndNavigate = () => {
     const newBooking: Booking = {
       id: `bk-${Math.floor(100 + Math.random() * 900)}`,
       bookingNumber: `RDG-2026-${Math.floor(1000 + Math.random() * 9000)}`,
@@ -159,7 +145,7 @@ export const InvoicePaymentScreen: React.FC<InvoicePaymentScreenProps> = ({
         carHandledTypes: ['Sedan', 'SUV', 'EV'],
         reviewsCount: 342
       },
-      status: 'upcoming',
+      status: 'pending_approval',
       priceTotal: grandTotal,
       priceBreakdown: {
         baseFare: baseFare,
@@ -178,7 +164,48 @@ export const InvoicePaymentScreen: React.FC<InvoicePaymentScreenProps> = ({
       }
     };
 
-    onConfirmPayment(newBooking);
+    setCreatedBooking(newBooking);
+    setIsDriverDispatching(true);
+    setDispatchStep(1);
+
+    setTimeout(() => {
+      setDispatchStep(2); // 🚘 Marcus Vance reviewing request on Driver App
+    }, 2000);
+  };
+
+  // 4. Cancel Request Action
+  const handleCancelTripRequest = () => {
+    if (confirm("Are you sure you want to cancel this trip request? Your 30% advance deposit will be immediately refunded.")) {
+      setIsDriverDispatching(false);
+      alert(`Trip request #${createdBooking?.bookingNumber || ''} cancelled. $${advanceAmount.toFixed(2)} advance deposit refunded.`);
+      onBack();
+    }
+  };
+
+  // 5. Close Request Window & view status in Bookings page
+  const handleCloseToBookings = () => {
+    setIsDriverDispatching(false);
+    if (createdBooking) {
+      if (onCloseToBookings) {
+        onCloseToBookings(createdBooking);
+      } else {
+        onConfirmPayment(createdBooking);
+      }
+    }
+  };
+
+  // 6. Simulate Driver Accepting Request
+  const handleAcceptByDriver = () => {
+    setDispatchStep(3); // Driver accepted!
+    setTimeout(() => {
+      setIsDriverDispatching(false);
+      if (createdBooking) {
+        onConfirmPayment({
+          ...createdBooking,
+          status: 'upcoming'
+        });
+      }
+    }, 1000);
   };
 
   return (
@@ -492,7 +519,7 @@ export const InvoicePaymentScreen: React.FC<InvoicePaymentScreenProps> = ({
               </div>
               <div className="text-right text-[10px] text-slate-400 font-medium">
                 <span>Total Fare: ${grandTotal.toFixed(2)}</span>
-                <span className="block text-slate-300 font-bold">Balance $${remainingBalance.toFixed(2)} after trip</span>
+                <span className="block text-slate-300 font-bold">Balance ${remainingBalance.toFixed(2)} post-trip</span>
               </div>
             </div>
 
@@ -588,11 +615,21 @@ export const InvoicePaymentScreen: React.FC<InvoicePaymentScreenProps> = ({
       )}
 
       {/* ======================================================== */}
-      {/* REAL-TIME DRIVER MATCHING & ACCEPTANCE DISPATCH MODAL */}
+      {/* REAL-TIME DRIVER MATCHING & APPROVAL WAITING DISPATCH MODAL */}
       {/* ======================================================== */}
       {isDriverDispatching && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-md p-4 animate-fade-in">
-          <div className="bg-white w-full max-w-sm rounded-[32px] p-6 text-center space-y-4 shadow-2xl border border-slate-200">
+          <div className="bg-white w-full max-w-sm rounded-[32px] p-6 text-center space-y-4 shadow-2xl border border-slate-200 relative">
+            {/* Top Close Icon Button */}
+            <button
+              type="button"
+              onClick={handleCloseToBookings}
+              className="absolute top-4 right-4 w-8 h-8 rounded-full bg-slate-100 text-slate-600 hover:bg-slate-200 flex items-center justify-center transition-colors"
+              title="Close and View in Bookings"
+            >
+              <X className="w-4 h-4" />
+            </button>
+
             {/* Animated Radar Pulse */}
             <div className="relative w-24 h-24 mx-auto flex items-center justify-center">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#84CC16] opacity-75"></span>
@@ -602,29 +639,66 @@ export const InvoicePaymentScreen: React.FC<InvoicePaymentScreenProps> = ({
             </div>
 
             <div>
-              <span className="px-3 py-1 rounded-full bg-[#84CC16]/20 text-[#4D7C0F] text-[10px] font-black uppercase tracking-wider inline-block">
-                Connecting to Driver App
+              <span className="px-3 py-1 rounded-full bg-amber-500/20 text-amber-700 text-[10px] font-black uppercase tracking-wider inline-block">
+                ⏳ Pending Driver Approval
               </span>
-              <h3 className="text-lg font-black text-slate-900 mt-2">
-                {dispatchStep === 1 && 'Sending Request to Nearby Chauffeurs...'}
+              <h3 className="text-base font-black text-slate-900 mt-2">
+                {dispatchStep === 1 && 'Sending Request to Nearby Drivers...'}
                 {dispatchStep === 2 && 'Marcus Vance Reviewing Request on Driver App...'}
                 {dispatchStep === 3 && 'Chauffeur Marcus Vance ACCEPTED! 🎉'}
               </h3>
+              <p className="text-xs text-slate-500 font-medium mt-1">
+                Drivers take a moment to review trip details. You can track approval status in Bookings.
+              </p>
             </div>
 
             {/* Step Progress Indicators */}
             <div className="space-y-2 text-xs text-left bg-slate-50 p-3.5 rounded-2xl border border-slate-200">
-              <div className={`flex items-center gap-2 font-bold ${dispatchStep >= 1 ? 'text-emerald-700' : 'text-slate-400'}`}>
+              <div className="flex items-center gap-2 font-bold text-emerald-700">
                 <CheckCircle2 className="w-4 h-4 text-[#84CC16]" />
                 <span>1. 30% Advance Deposit Paid</span>
               </div>
-              <div className={`flex items-center gap-2 font-bold ${dispatchStep >= 2 ? 'text-emerald-700' : 'text-slate-400'}`}>
+              <div className={`flex items-center gap-2 font-bold ${dispatchStep >= 2 ? 'text-blue-700' : 'text-slate-400'}`}>
                 <Send className="w-4 h-4 text-blue-600" />
-                <span>2. Request Dispatched to Driver App</span>
+                <span>2. Request Sent to Driver App</span>
               </div>
               <div className={`flex items-center gap-2 font-bold ${dispatchStep >= 3 ? 'text-emerald-700' : 'text-slate-400'}`}>
                 <UserCheck className="w-4 h-4 text-[#84CC16]" />
-                <span>3. Chauffeur Accepted Booking</span>
+                <span>3. Driver Approval Status</span>
+              </div>
+            </div>
+
+            {/* Action Buttons: Cancel Trip vs Close to Bookings */}
+            <div className="space-y-2 pt-1">
+              {dispatchStep < 3 && (
+                <button
+                  type="button"
+                  onClick={handleAcceptByDriver}
+                  className="w-full py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-xs flex items-center justify-center gap-1.5 shadow-md transition-all"
+                >
+                  <CheckCircle2 className="w-4 h-4" />
+                  <span>Simulate Driver Acceptance</span>
+                </button>
+              )}
+
+              <div className="grid grid-cols-2 gap-2">
+                <button
+                  type="button"
+                  onClick={handleCancelTripRequest}
+                  className="py-2.5 rounded-xl bg-rose-50 border border-rose-200 text-rose-600 hover:bg-rose-100 font-bold text-xs flex items-center justify-center gap-1 transition-colors"
+                >
+                  <XCircle className="w-3.5 h-3.5" />
+                  <span>Cancel Trip</span>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={handleCloseToBookings}
+                  className="py-2.5 rounded-xl bg-[#121212] hover:bg-black text-[#84CC16] font-bold text-xs flex items-center justify-center gap-1 transition-colors shadow-sm"
+                >
+                  <ExternalLink className="w-3.5 h-3.5" />
+                  <span>View Bookings</span>
+                </button>
               </div>
             </div>
           </div>

@@ -63,7 +63,7 @@ export interface Booking {
   vehicle: VehicleOption;
   driver?: DriverProfile;
   driverPreferences: DriverPreferences;
-  status: 'upcoming' | 'in-progress' | 'completed' | 'cancelled';
+  status: 'pending_approval' | 'upcoming' | 'in-progress' | 'completed' | 'cancelled';
   priceTotal: number;
   priceBreakdown: {
     baseFare: number;

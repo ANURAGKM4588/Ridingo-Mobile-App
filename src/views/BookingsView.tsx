@@ -87,6 +87,11 @@ export const BookingsView: React.FC<BookingsViewProps> = ({
                   <CheckCircle2 className="w-3.5 h-3.5" /> Completed
                 </span>
               )}
+              {b.status === 'pending_approval' && (
+                <span className="px-3 py-1 rounded-full bg-amber-500/20 text-amber-800 text-xs font-black flex items-center gap-1 animate-pulse">
+                  <Clock className="w-3.5 h-3.5" /> Pending Driver Approval
+                </span>
+              )}
               {(b.status === 'upcoming' || b.status === 'in-progress') && (
                 <span className="px-3 py-1 rounded-full bg-[#84CC16] text-[#121212] text-xs font-black flex items-center gap-1 animate-pulse">
                   <Clock className="w-3.5 h-3.5" /> Active / Upcoming
@@ -140,7 +145,7 @@ export const BookingsView: React.FC<BookingsViewProps> = ({
               <div className="flex items-center gap-2">
                 <button
                   onClick={() => alert(`Downloading official TAX PDF invoice for #${b.bookingNumber}`)}
-                  className="px-3.5 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs flex items-center gap-1 transition-colors"
+                  className="px-3 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs flex items-center gap-1 transition-colors"
                 >
                   <FileText className="w-3.5 h-3.5" />
                   <span>Invoice</span>
@@ -148,10 +153,10 @@ export const BookingsView: React.FC<BookingsViewProps> = ({
 
                 <button
                   onClick={() => onRepeatBooking(b)}
-                  className="px-4 py-2 rounded-xl bg-[#121212] hover:bg-black text-[#84CC16] font-bold text-xs flex items-center gap-1 shadow-md transition-colors"
+                  className="px-3.5 py-2 rounded-xl bg-[#121212] hover:bg-black text-[#84CC16] font-bold text-xs flex items-center gap-1 shadow-md transition-colors"
                 >
                   <RotateCcw className="w-3.5 h-3.5" />
-                  <span>Repeat Booking</span>
+                  <span>Repeat</span>
                 </button>
               </div>
             </div>

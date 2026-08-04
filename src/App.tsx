@@ -127,6 +127,12 @@ export function App() {
                 setIsInvoiceOpen(false);
                 handleBookingConfirmed(finalBooking);
               }}
+              onCloseToBookings={(pendingBooking) => {
+                setIsInvoiceOpen(false);
+                setBookings([pendingBooking, ...bookings]);
+                setActiveBooking(pendingBooking);
+                setActiveTab('bookings');
+              }}
             />
           ) : isConfirmationOpen && confirmedBooking ? (
             <BookingConfirmationView
