@@ -46,7 +46,7 @@ export const BookingsView: React.FC<BookingsViewProps> = ({
       <div className="flex p-1.5 rounded-2xl bg-slate-200/70 space-x-1">
         {[
           { id: 'all', label: 'All Trips' },
-          { id: 'upcoming', label: 'Upcoming / Live' },
+          { id: 'upcoming', label: 'Upcoming' },
           { id: 'completed', label: 'Completed' },
           { id: 'cancelled', label: 'Cancelled' },
         ].map((tab) => (
