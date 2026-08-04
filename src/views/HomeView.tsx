@@ -109,11 +109,11 @@ export const HomeView: React.FC<HomeViewProps> = ({
         }}
       />
 
-      {/* Brand Customer Reviews */}
-      <BrandReviews />
-
       {/* Why Choose RIDINGO */}
       <WhyChooseUs />
+
+      {/* Brand Customer Reviews */}
+      <BrandReviews />
     </div>
   );
 };
