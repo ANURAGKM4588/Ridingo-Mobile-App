@@ -1,6 +1,14 @@
 import React, { useState } from 'react';
-import { MapPin, Navigation, Calendar, Clock, ArrowRight, Car, Shield, Plane, Building2, Plus, Minus } from 'lucide-react';
+import { MapPin, Navigation, Calendar, Clock, ArrowRight, Car, Shield, Plane, Building2, Plus, Minus, Sparkles, ChevronDown } from 'lucide-react';
 import { VehicleOption } from '../types';
+
+const TRIP_PURPOSES = [
+  { id: 'wedding', label: 'Wedding function', emoji: '💒' },
+  { id: 'family', label: 'Family tour', emoji: '👨‍👩‍👧‍👦' },
+  { id: 'office_drop', label: 'Office Drop / Pick', emoji: '🏢' },
+  { id: 'office_trip', label: 'Office trip / Corporate', emoji: '💼' },
+  { id: 'hospital', label: 'Hospital Visit', emoji: '🏥' },
+];
 
 interface QuickBookingWidgetProps {
   onStartBooking: (params: {
@@ -13,6 +21,7 @@ interface QuickBookingWidgetProps {
     flightNumber?: string;
     airlineName?: string;
     serviceType?: string;
+    tripCause?: string;
   }) => void;
   vehicles: VehicleOption[];
   selectedVehicle: VehicleOption;
@@ -29,6 +38,7 @@ export const QuickBookingWidget: React.FC<QuickBookingWidgetProps> = ({
   const [destination, setDestination] = useState('LAX Airport Terminal 4');
   const [flightNumber, setFlightNumber] = useState('');
   const [airlineName, setAirlineName] = useState('');
+  const [tripCause, setTripCause] = useState<string>('Wedding function');
   const [date, setDate] = useState(new Date().toISOString().split('T')[0]);
   const [time, setTime] = useState('14:30');
   const [durationHours, setDurationHours] = useState(4);
@@ -56,6 +66,7 @@ export const QuickBookingWidget: React.FC<QuickBookingWidgetProps> = ({
       flightNumber,
       airlineName,
       serviceType: selectedServiceTab,
+      tripCause: selectedServiceTab === 'Other' ? tripCause : undefined,
     });
   };
 
@@ -172,6 +183,34 @@ export const QuickBookingWidget: React.FC<QuickBookingWidgetProps> = ({
                 />
               </div>
             </div>
+
+            {/* Cause of the Trip Dropdown (Renders when 'Other' tab is selected) */}
+            {selectedServiceTab === 'Other' && (
+              <div className="relative flex items-center bg-white rounded-2xl px-3 py-2 border border-slate-200 shadow-sm focus-within:border-[#84CC16] transition-all">
+                <div className="w-7 h-7 rounded-xl bg-[#121212] flex items-center justify-center text-[#84CC16] shadow-sm z-20 mr-2.5 flex-shrink-0">
+                  <Sparkles className="w-3.5 h-3.5 text-[#84CC16]" />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <label className="block text-[9px] font-black uppercase tracking-wider text-[#4D7C0F]">
+                    Cause of the Trip
+                  </label>
+                  <div className="relative">
+                    <select
+                      value={tripCause}
+                      onChange={(e) => setTripCause(e.target.value)}
+                      className="w-full text-xs font-extrabold text-slate-900 bg-transparent appearance-none focus:outline-none pr-5 cursor-pointer truncate"
+                    >
+                      {TRIP_PURPOSES.map((p) => (
+                        <option key={p.id} value={p.label}>
+                          {p.emoji} {p.label}
+                        </option>
+                      ))}
+                    </select>
+                    <ChevronDown className="w-3.5 h-3.5 text-slate-400 absolute right-0 top-1/2 -translate-y-1/2 pointer-events-none" />
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
         )}
 
