@@ -29,19 +29,20 @@ jobs:
       - name: Sync Capacitor iOS
         run: npx cap sync ios
 
-      - name: Build iOS Xcode App
+      - name: Build iOS Real Device App
         run: |
           cd ios/App
-          xcodebuild -project App.xcodeproj -scheme App -destination 'generic/platform=iOS Simulator' -configuration Debug -skipPackagePluginValidation CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY="" -derivedDataPath build build
+          xcodebuild -project App.xcodeproj -scheme App -sdk iphoneos -configuration Release CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY="" -derivedDataPath build build
 
-      - name: Package iOS IPA for Diawi
+      - name: Package Real iPhone IPA for Diawi
         run: |
-          cd ios/App/build/Build/Products/Debug-iphonesimulator
+          cd ios/App/build/Build/Products/Release-iphoneos
           mkdir -p Payload
           cp -r App.app Payload/
+          zip -r RIDINGO-iOS-Device.ipa Payload
 
       - name: Upload Diawi Ready IPA Artifact
         uses: actions/upload-artifact@v4
         with:
           name: RIDINGO-iOS-Diawi-Package
-          path: ios/App/build/Build/Products/Debug-iphonesimulator/Payload
+          path: ios/App/build/Build/Products/Release-iphoneos/RIDINGO-iOS-Device.ipa
