@@ -45,9 +45,6 @@ export function App() {
   const [driverModalProfile, setDriverModalProfile] = useState<DriverProfile | null>(null);
   const [isDriverModalOpen, setIsDriverModalOpen] = useState<boolean>(false);
 
-  // Device Frame View State (Mobile Frame vs Expanded View)
-  const [isMobileFrame, setIsMobileFrame] = useState<boolean>(true);
-
   // Handlers
   const handleSelectService = (service: ServiceItem) => {
     setSelectedServiceForFlow(service);
@@ -77,33 +74,15 @@ export function App() {
   const unreadCount = notifications.filter((n) => !n.read).length;
 
   return (
-    <div className="min-h-screen w-full bg-[#0F172A] text-[#0F172A] flex items-center justify-center p-2 sm:p-6 selection:bg-[#84CC16] overflow-x-hidden">
-      {/* Mobile Device Frame Container - Strict 390px x 812px iPhone 16 Pro dimensions */}
-      <div
-        className={`transition-all duration-300 relative flex flex-col ${
-          isMobileFrame
-            ? 'w-[390px] min-w-[390px] max-w-[390px] h-[812px] shrink-0 rounded-[48px] border-[10px] border-zinc-950 shadow-[0_25px_60px_-15px_rgba(0,0,0,0.9)] bg-[#FAFAFA] overflow-hidden my-auto ring-1 ring-white/20'
-            : 'w-full max-w-2xl h-[840px] max-h-[96vh] rounded-[36px] bg-[#FAFAFA] shadow-2xl overflow-hidden'
-        }`}
-      >
-        {/* Dynamic Island / Notch when in Mobile Frame Mode */}
-        {isMobileFrame && (
-          <div className="w-full flex justify-center pt-2.5 pb-1 bg-[#FAFAFA] z-40 select-none shrink-0">
-            <div className="w-24 h-4.5 rounded-full bg-black flex items-center justify-between px-2.5 text-white text-[9px] shadow-sm">
-              <span className="w-1.5 h-1.5 rounded-full bg-[#84CC16]"></span>
-              <span className="font-mono text-[8px] text-slate-400">RIDINGO iOS</span>
-            </div>
-          </div>
-        )}
-
+    <div className="min-h-screen w-full bg-[#FAFAFA] text-[#0F172A] flex justify-center selection:bg-[#84CC16] overflow-x-hidden">
+      {/* Clean Full-Screen Web App Container */}
+      <div className="w-full max-w-md min-h-screen bg-[#FAFAFA] flex flex-col relative shadow-xl border-x border-slate-200/60">
         {/* Global Header Bar - Rendered on Home Page */}
         {activeTab === 'home' && !isReviewOpen && !isInvoiceOpen && !isConfirmationOpen && (
           <HeaderBar
             userName="Alexander Vance"
             unreadNotificationsCount={unreadCount}
             onOpenNotifications={() => setIsNotificationsOpen(true)}
-            isMobileFrame={isMobileFrame}
-            onToggleMobileFrame={() => setIsMobileFrame(!isMobileFrame)}
             onOpenProfile={() => setActiveTab('profile')}
           />
         )}

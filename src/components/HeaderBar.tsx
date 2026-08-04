@@ -6,8 +6,6 @@ interface HeaderBarProps {
   currentCity?: string;
   unreadNotificationsCount: number;
   onOpenNotifications: () => void;
-  isMobileFrame: boolean;
-  onToggleMobileFrame: () => void;
   onOpenProfile: () => void;
 }
 
@@ -16,8 +14,6 @@ export const HeaderBar: React.FC<HeaderBarProps> = ({
   currentCity = 'Beverly Hills, CA',
   unreadNotificationsCount,
   onOpenNotifications,
-  isMobileFrame,
-  onToggleMobileFrame,
   onOpenProfile
 }) => {
   return (
