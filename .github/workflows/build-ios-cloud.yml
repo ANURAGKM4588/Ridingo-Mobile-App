@@ -9,7 +9,7 @@ on:
 jobs:
   build-ios:
     name: Build iOS App on Cloud Mac
-    runs-on: macos-latest
+    runs-on: macos-14
 
     steps:
       - name: Checkout Code
@@ -29,10 +29,15 @@ jobs:
       - name: Sync Capacitor iOS
         run: npx cap sync ios
 
-      - name: Build iOS App (Simulator Debug)
+      - name: Resolve SPM Dependencies
         run: |
           cd ios/App
-          xcodebuild -workspace App.xcworkspace -scheme App -sdk iphonesimulator -configuration Debug CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY="" -derivedDataPath build build
+          xcodebuild -resolvePackageDependencies -workspace App.xcworkspace -scheme App || true
+
+      - name: Build iOS App
+        run: |
+          cd ios/App
+          xcodebuild -workspace App.xcworkspace -scheme App -sdk iphonesimulator -configuration Debug -destination 'generic/platform=iOS Simulator' CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY="" -derivedDataPath build build
 
       - name: Upload iOS App Artifact
         uses: actions/upload-artifact@v4
