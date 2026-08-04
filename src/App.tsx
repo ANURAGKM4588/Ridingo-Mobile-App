@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { ChevronLeft } from 'lucide-react';
 import type { TabType, ServiceItem, VehicleOption, Booking, DriverProfile } from './types';
 import { MOCK_SERVICES, MOCK_VEHICLES, MOCK_BOOKINGS, MOCK_NOTIFICATIONS } from './data/mockData';
 
@@ -18,6 +19,7 @@ import { BookingFlowModal } from './views/BookingFlowModal';
 import { BookingConfirmationView } from './views/BookingConfirmationView';
 import { BookingReviewScreen } from './views/BookingReviewScreen';
 import { InvoicePaymentScreen } from './views/InvoicePaymentScreen';
+import { NotificationsView } from './views/NotificationsView';
 import { DriverProfileModal } from './views/DriverProfileModal';
 
 export function App() {
@@ -25,13 +27,14 @@ export function App() {
   const [selectedVehicle, setSelectedVehicle] = useState<VehicleOption>(MOCK_VEHICLES[0]);
   const [bookings, setBookings] = useState<Booking[]>(MOCK_BOOKINGS);
   const [activeBooking, setActiveBooking] = useState<Booking | null>(MOCK_BOOKINGS[0]); // active trip for live tracking
-  const [notifications] = useState(MOCK_NOTIFICATIONS);
+  const [notifications, setNotifications] = useState(MOCK_NOTIFICATIONS);
 
   // View / Modal Flags
   const [isBookingFlowOpen, setIsBookingFlowOpen] = useState<boolean>(false);
   const [selectedServiceForFlow, setSelectedServiceForFlow] = useState<ServiceItem | null>(null);
   const [isConfirmationOpen, setIsConfirmationOpen] = useState<boolean>(false);
   const [confirmedBooking, setConfirmedBooking] = useState<Booking | null>(null);
+  const [isNotificationsOpen, setIsNotificationsOpen] = useState<boolean>(false);
   
   // Booking Review & Invoice Screen State
   const [isReviewOpen, setIsReviewOpen] = useState<boolean>(false);
@@ -94,10 +97,10 @@ export function App() {
         )}
 
         {/* Global Header Bar - Rendered only on Home Page */}
-        {activeTab === 'home' && !isReviewOpen && !isInvoiceOpen && !isConfirmationOpen && (
+        {activeTab === 'home' && !isReviewOpen && !isInvoiceOpen && !isConfirmationOpen && !isNotificationsOpen && (
           <HeaderBar
             unreadNotificationsCount={unreadCount}
-            onOpenNotifications={() => setActiveTab('activity')}
+            onOpenNotifications={() => setIsNotificationsOpen(true)}
             isMobileFrame={isMobileFrame}
             onToggleMobileFrame={() => setIsMobileFrame(!isMobileFrame)}
             onOpenProfile={() => setActiveTab('profile')}
@@ -106,8 +109,32 @@ export function App() {
 
         {/* Main Content Area based on Active Tab or Views */}
         <main className="flex-1 overflow-y-auto px-3.5 pt-3 pb-24 scrollbar-none relative">
-          {/* Booking Review Page -> Tax Invoice & Payment -> Confirmation View */}
-          {isReviewOpen && bookingDraft ? (
+          {/* Notifications View Overlay */}
+          {isNotificationsOpen ? (
+            <div className="w-full bg-[#FAFAFA] min-h-full pb-20 animate-fade-in space-y-4">
+              {/* Solid Sticky Header */}
+              <div className="sticky -top-3 z-30 bg-white -mx-3.5 -mt-3 pt-3 pb-3 px-4 border-b border-slate-200 flex items-center justify-between shadow-sm">
+                <button
+                  onClick={() => setIsNotificationsOpen(false)}
+                  className="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-700 hover:bg-slate-200 transition-colors cursor-pointer"
+                >
+                  <ChevronLeft className="w-5 h-5" />
+                </button>
+                <div className="text-center">
+                  <h2 className="text-sm font-black text-slate-900 uppercase tracking-wider">Notifications</h2>
+                  <p className="text-[10px] text-slate-500 font-bold">Driver & Booking Updates</p>
+                </div>
+                <div className="w-8" />
+              </div>
+
+              <NotificationsView
+                notifications={notifications}
+                onMarkAllRead={() => {
+                  setNotifications(notifications.map((n) => ({ ...n, read: true })));
+                }}
+              />
+            </div>
+          ) : isReviewOpen && bookingDraft ? (
             <BookingReviewScreen
               draft={bookingDraft}
               onBack={() => setIsReviewOpen(false)}
