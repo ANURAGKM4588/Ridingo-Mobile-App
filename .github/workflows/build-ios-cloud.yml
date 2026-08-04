@@ -29,13 +29,13 @@ jobs:
       - name: Sync Capacitor iOS
         run: npx cap sync ios
 
-      - name: Build Xcode iOS Archive
+      - name: Build iOS Xcode App
         run: |
           cd ios/App
-          xcodebuild -workspace App.xcworkspace -scheme App -configuration Release -derivedDataPath build -archivePath build/App.xcarchive archive CODE_SIGNING_ALLOWED=NO
+          xcodebuild -workspace App.xcworkspace -scheme App -sdk iphoneos -configuration Release CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY="" -derivedDataPath build build
 
-      - name: Upload iOS Xcode Archive Artifact
+      - name: Upload iOS Native Build Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: RIDINGO-iOS-AppStore-Archive
-          path: ios/App/build/App.xcarchive
+          name: RIDINGO-iOS-Native-App
+          path: ios/App/build/Build/Products/Release-iphoneos/App.app
