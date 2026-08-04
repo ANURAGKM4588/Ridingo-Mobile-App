@@ -22,7 +22,7 @@ export const HeaderBar: React.FC<HeaderBarProps> = ({
         {/* RIDINGO Brand Logo */}
         <div className="flex items-center">
           <img
-            src="/Logo/Untitled-1-01.png"
+            src="/logo/ridingo-logo.png"
             alt="RIDINGO"
             className="h-10 max-h-11 w-auto object-contain transition-transform hover:scale-105"
           />
