@@ -32,8 +32,8 @@ export const HomeView: React.FC<HomeViewProps> = ({
           <span className="text-[10px] font-extrabold uppercase tracking-widest text-[#4D7C0F] block">
             On-Demand Chauffeur Service
           </span>
-          <h1 className="text-lg sm:text-xl font-black text-[#0F172A] tracking-tight truncate mt-0.5">
-            Book a Verified Driver 🚘
+          <h1 className="text-xl sm:text-2xl font-black text-[#0F172A] tracking-tight truncate mt-0.5">
+            Good Morning, John 👋
           </h1>
         </div>
 
