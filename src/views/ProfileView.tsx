@@ -64,7 +64,7 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
           <div className="relative flex-shrink-0">
             <img
               src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80"
-              alt="Johnathan Sterling"
+              alt={userName}
               className="w-18 h-18 sm:w-20 sm:h-20 rounded-2xl object-cover border-2 border-white shadow-md bg-slate-100"
             />
           </div>
