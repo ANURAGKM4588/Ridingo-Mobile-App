@@ -24,7 +24,10 @@ allprojects {
     }
     configurations.all {
         resolutionStrategy {
-            force 'org.bouncycastle:bcprov-jdk18on:1.78'
+            dependencySubstitution {
+                substitute module('org.bouncycastle:bcprov-jdk18on') using module('org.bouncycastle:bcprov-jdk15to18:1.78')
+            }
+            force 'org.bouncycastle:bcprov-jdk15to18:1.78'
         }
     }
 }
