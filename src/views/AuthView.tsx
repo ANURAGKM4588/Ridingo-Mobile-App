@@ -88,17 +88,9 @@ export const AuthView: React.FC<AuthViewProps> = ({
 
   return (
     <div className="absolute inset-0 z-50 bg-white flex flex-col justify-between overflow-y-auto animate-fade-in">
-      {/* Header Bar */}
-      <div className="w-full px-5 pt-[max(env(safe-area-inset-top),1.25rem)] pb-3 flex items-center justify-between border-b border-slate-100">
-        <div className="flex items-center gap-2">
-          <img src={ridingoLogo} alt="RIDINGO" className="h-7 w-auto object-contain" />
-        </div>
-        <button
-          onClick={onClose}
-          className="p-2 rounded-full bg-slate-100 text-slate-700 hover:bg-slate-200 active:scale-95 transition-all cursor-pointer"
-        >
-          <X className="w-5 h-5 stroke-[2.5]" />
-        </button>
+      {/* Header Bar — Clean centered logo, no X button */}
+      <div className="w-full px-5 pt-[max(env(safe-area-inset-top),1.25rem)] pb-3 flex items-center justify-center border-b border-slate-100">
+        <img src={ridingoLogo} alt="RIDINGO" className="h-7 w-auto object-contain mx-auto" />
       </div>
 
       {/* Main Body Content */}

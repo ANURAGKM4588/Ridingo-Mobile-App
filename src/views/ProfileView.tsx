@@ -36,6 +36,7 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
   currentRegion = 'in',
 }) => {
   const t = TRANSLATIONS[currentLanguage] || TRANSLATIONS['en-us'];
+  const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
   const [savedLocations] = useState([
     { id: 1, label: 'Home', address: '742 Evergreen Terrace, Beverly Hills, CA', icon: '🏠' },
     { id: 2, label: 'Work Office', address: '100 Wilshire Blvd, Santa Monica, CA', icon: '🏢' },
@@ -192,17 +193,53 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
 
         <button
           type="button"
-          onClick={() => onOpenAuth ? onOpenAuth('login') : alert("Logged out safely.")}
+          onClick={() => setShowLogoutConfirm(true)}
           className="w-full p-3 rounded-xl hover:bg-rose-50 flex items-center justify-between text-rose-600 transition-colors mt-1 cursor-pointer"
         >
           <div className="flex items-center gap-3">
             <div className="w-8 h-8 rounded-lg bg-rose-100 text-rose-600 flex items-center justify-center">
               <LogOut className="w-4 h-4" />
             </div>
-            <span className="font-black">Sign In / Switch Account</span>
+            <span className="font-black">{t.logout}</span>
           </div>
         </button>
       </div>
+
+      {/* Logout Confirmation Popup Modal */}
+      {showLogoutConfirm && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-fade-in">
+          <div className="bg-white rounded-3xl p-5 max-w-xs w-full shadow-2xl border border-slate-100 text-center space-y-4 animate-scale-up">
+            <div className="w-12 h-12 rounded-2xl bg-rose-100 text-rose-600 flex items-center justify-center mx-auto">
+              <LogOut className="w-6 h-6 stroke-[2.5]" />
+            </div>
+            <div>
+              <h3 className="text-lg font-black text-slate-900">Log Out of RIDINGO?</h3>
+              <p className="text-xs text-slate-500 font-medium mt-1">
+                Are you sure you want to log out? You will need to sign back in to access your bookings and wallet.
+              </p>
+            </div>
+            <div className="grid grid-cols-2 gap-2 pt-1">
+              <button
+                type="button"
+                onClick={() => setShowLogoutConfirm(false)}
+                className="py-2.5 px-4 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 font-extrabold text-xs cursor-pointer"
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  setShowLogoutConfirm(false);
+                  if (onOpenAuth) onOpenAuth('login');
+                }}
+                className="py-2.5 px-4 rounded-xl bg-rose-600 hover:bg-rose-700 text-white font-extrabold text-xs shadow-md cursor-pointer"
+              >
+                Log Out
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
