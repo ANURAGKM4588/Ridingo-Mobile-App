@@ -1,5 +1,5 @@
-import React from 'react';
-import { Star, MapPin, RotateCcw, ChevronRight } from 'lucide-react';
+import React, { useState } from 'react';
+import { Search, Star, MapPin, RotateCcw, ChevronRight } from 'lucide-react';
 import { Booking, ServiceItem, VehicleOption } from '../types';
 import { MOCK_BOOKINGS, MOCK_VEHICLES, PROMOTIONS, FEATURED_DRIVER } from '../data/mockData';
 import { QuickBookingWidget } from '../components/QuickBookingWidget';
@@ -21,7 +21,6 @@ interface HomeViewProps {
   onRepeatBooking?: (booking: Booking) => void;
   currentLanguage?: LanguageCode;
   currentRegion?: RegionCode;
-  searchQuery?: string;
 }
 
 export const HomeView: React.FC<HomeViewProps> = ({
@@ -35,152 +34,178 @@ export const HomeView: React.FC<HomeViewProps> = ({
   onRepeatBooking,
   currentLanguage = 'en-us',
   currentRegion = 'in',
-  searchQuery = '',
 }) => {
   const t = TRANSLATIONS[currentLanguage] || TRANSLATIONS['en-us'];
+  const [searchQuery, setSearchQuery] = useState('');
   const recentBookingList = (recentBookings && recentBookings.length > 0) ? recentBookings : MOCK_BOOKINGS;
 
   return (
-    <div className="w-full space-y-4 animate-fade-in pb-4">
-      {/* Greeting — scrolls with page content, no sticky */}
-      <div className="-mx-4 px-4 pt-3 pb-4 bg-[#FAFAFA]">
-        <span className="text-[10px] font-extrabold uppercase tracking-widest text-[#4D7C0F] block">
-          {t.onDemandSubtitle}
-        </span>
-        <h1 className="text-xl sm:text-2xl font-black text-[#0F172A] tracking-tight truncate mt-0.5">
-          {t.greeting}
-        </h1>
+    <div className="w-full animate-fade-in pb-4">
+
+      {/* ── GREETING + SEARCH BLOCK ──────────────────────────────────
+          These two are siblings inside a single bg-white wrapper.
+          Zero space-y gap between them → zero bleed window.
+          Greeting scrolls away. Search bar then sticks at top-0
+          (flush against the HeaderBar, same bg-white, no gap).
+      ─────────────────────────────────────────────────────────────── */}
+      <div className="bg-white -mx-4 px-0">
+        {/* Greeting — scrolls with page */}
+        <div className="px-4 pt-3 pb-3">
+          <span className="text-[10px] font-extrabold uppercase tracking-widest text-[#4D7C0F] block">
+            {t.onDemandSubtitle}
+          </span>
+          <h1 className="text-xl sm:text-2xl font-black text-[#0F172A] tracking-tight truncate mt-0.5">
+            {t.greeting}
+          </h1>
+        </div>
+
+        {/* Search Bar — sticky top-0, sticks flush under header with no gap */}
+        <div className="sticky top-0 z-40 bg-white px-4 py-2.5 border-b border-slate-200 shadow-sm">
+          <div className="relative w-full">
+            <div className="absolute inset-y-0 left-3.5 flex items-center pointer-events-none">
+              <Search className="w-4 h-4 text-[#84CC16]" />
+            </div>
+            <input
+              type="text"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder={t.searchPlaceholder}
+              className="w-full pl-10 pr-4 py-2.5 rounded-2xl bg-slate-100 border border-slate-200 text-slate-900 font-bold placeholder:text-slate-400 placeholder:font-normal shadow-sm focus:outline-none focus:ring-2 focus:ring-[#84CC16] transition-all text-xs"
+            />
+          </div>
+        </div>
       </div>
 
-      {/* Quick Booking Floating Widget */}
-      <QuickBookingWidget
-        onStartBooking={onStartBooking}
-        vehicles={MOCK_VEHICLES}
-        selectedVehicle={selectedVehicle}
-        onOpenVehicleModal={() => { }}
-        currentLanguage={currentLanguage}
-      />
+      {/* ── SCROLLABLE CONTENT ─── space-y-4 applied only here */}
+      <div className="space-y-4 pt-4">
+        {/* Quick Booking Floating Widget */}
+        <QuickBookingWidget
+          onStartBooking={onStartBooking}
+          vehicles={MOCK_VEHICLES}
+          selectedVehicle={selectedVehicle}
+          onOpenVehicleModal={() => { }}
+          currentLanguage={currentLanguage}
+        />
 
-      {/* Horizontal Scrollable Recent Bookings Section */}
-      {recentBookingList.length > 0 && (
-        <div className="space-y-3">
-          <div className="flex items-center justify-between px-0">
-            <div className="flex items-center gap-1.5">
-              <span className="w-2 h-2 rounded-full bg-[#84CC16] animate-pulse flex-shrink-0" />
-              <h3 className="font-extrabold text-sm text-slate-900">Recent Bookings</h3>
-              <span className="px-2 py-0.5 rounded-full bg-slate-200 text-slate-700 text-[10px] font-black">
-                {recentBookingList.length}
-              </span>
+        {/* Horizontal Scrollable Recent Bookings Section */}
+        {recentBookingList.length > 0 && (
+          <div className="space-y-3">
+            <div className="flex items-center justify-between px-0">
+              <div className="flex items-center gap-1.5">
+                <span className="w-2 h-2 rounded-full bg-[#84CC16] animate-pulse flex-shrink-0" />
+                <h3 className="font-extrabold text-sm text-slate-900">Recent Bookings</h3>
+                <span className="px-2 py-0.5 rounded-full bg-slate-200 text-slate-700 text-[10px] font-black">
+                  {recentBookingList.length}
+                </span>
+              </div>
+
+              {onViewAllBookings && (
+                <button
+                  onClick={onViewAllBookings}
+                  className="text-[11px] font-bold text-[#4D7C0F] hover:underline flex items-center gap-0.5 cursor-pointer"
+                >
+                  <span>View All</span>
+                  <ChevronRight className="w-3.5 h-3.5" />
+                </button>
+              )}
             </div>
 
-            {onViewAllBookings && (
+            {/* Horizontal Scroll Track */}
+            <div className="flex items-center gap-3 overflow-x-auto no-scrollbar pb-1 pt-0.5 snap-x snap-mandatory -mx-4 px-4 scroll-pl-4">
+              {recentBookingList.map((booking) => (
+                <div
+                  key={booking.id}
+                  className="w-[285px] sm:w-[320px] flex-shrink-0 snap-start bg-white rounded-3xl p-4 border border-slate-200/90 shadow-md space-y-2.5 relative overflow-hidden transition-transform hover:-translate-y-0.5"
+                >
+                  <div className="flex items-center justify-between border-b border-slate-100 pb-2">
+                    <span className="font-mono text-[10px] font-extrabold text-slate-400">
+                      #{booking.bookingNumber}
+                    </span>
+                    <span className="px-2 py-0.5 rounded-full bg-slate-100 text-slate-800 text-[10px] font-black uppercase">
+                      {booking.date}
+                    </span>
+                  </div>
+
+                  <h4 className="font-black text-xs text-slate-900 truncate">
+                    {booking.serviceTitle}
+                  </h4>
+
+                  <div className="space-y-1 text-xs text-slate-600 bg-slate-50 p-2.5 rounded-2xl border border-slate-200/60">
+                    <div className="flex items-start gap-1.5 min-w-0">
+                      <MapPin className="w-3.5 h-3.5 text-[#84CC16] fill-[#84CC16]/25 stroke-[2] flex-shrink-0 mt-0.5" />
+                      <span className="font-medium text-slate-800 truncate text-[11px]">{booking.pickupLocation}</span>
+                    </div>
+                    <div className="flex items-start gap-1.5 min-w-0">
+                      <MapPin className="w-3.5 h-3.5 text-slate-900 fill-slate-900/20 stroke-[2] flex-shrink-0 mt-0.5" />
+                      <span className="font-medium text-slate-800 truncate text-[11px]">{booking.destinationLocation}</span>
+                    </div>
+                  </div>
+
+                  <div className="pt-1 flex items-center justify-between text-xs">
+                    <span className="font-black text-slate-900">${booking.priceTotal.toFixed(2)}</span>
+
+                    {onRepeatBooking && (
+                      <button
+                        onClick={() => onRepeatBooking(booking)}
+                        className="px-3 py-1.5 rounded-xl bg-[#121212] hover:bg-black text-[#84CC16] font-extrabold text-[11px] flex items-center gap-1 shadow-sm transition-colors cursor-pointer"
+                      >
+                        <RotateCcw className="w-3 h-3 stroke-[2.2]" />
+                        <span>Repeat</span>
+                      </button>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Spotlight Master Chauffeur */}
+        <div className="glass-card rounded-3xl p-4 border border-slate-200 bg-gradient-to-r from-slate-900 via-zinc-900 to-[#121212] text-white shadow-xl relative overflow-hidden group">
+          <div className="flex items-center justify-between mb-2.5">
+            <span className="px-2.5 py-0.5 rounded-full bg-[#84CC16] text-[#121212] text-[10px] font-black uppercase tracking-wider">
+              Spotlight Chauffeur
+            </span>
+            <div className="flex items-center gap-1 text-amber-400 text-xs font-bold">
+              <Star className="w-3.5 h-3.5 fill-current" /> {FEATURED_DRIVER.rating} (384)
+            </div>
+          </div>
+
+          <div className="flex items-center gap-3">
+            <img
+              src={FEATURED_DRIVER.photo}
+              alt={FEATURED_DRIVER.name}
+              className="w-14 h-14 rounded-2xl object-cover border border-[#84CC16] shadow-md group-hover:scale-105 transition-transform flex-shrink-0"
+            />
+            <div className="flex-1 min-w-0">
+              <h4 className="font-extrabold text-sm text-white truncate">{FEATURED_DRIVER.name}</h4>
+              <p className="text-[11px] text-slate-300 font-medium truncate mt-0.5">
+                {FEATURED_DRIVER.yearsExperience} Yrs Exp • Uniformed • Certified
+              </p>
               <button
-                onClick={onViewAllBookings}
-                className="text-[11px] font-bold text-[#4D7C0F] hover:underline flex items-center gap-0.5 cursor-pointer"
+                onClick={() => onOpenDriverProfile(FEATURED_DRIVER)}
+                className="mt-1.5 text-[11px] text-[#84CC16] font-bold hover:underline flex items-center gap-1"
               >
-                <span>View All</span>
-                <ChevronRight className="w-3.5 h-3.5" />
+                View Chauffeur Profile →
               </button>
-            )}
-          </div>
-
-          {/* Horizontal Scroll Track */}
-          <div className="flex items-center gap-3 overflow-x-auto no-scrollbar pb-1 pt-0.5 snap-x snap-mandatory -mx-4 px-4 scroll-pl-4">
-            {recentBookingList.map((booking) => (
-              <div
-                key={booking.id}
-                className="w-[285px] sm:w-[320px] flex-shrink-0 snap-start bg-white rounded-3xl p-4 border border-slate-200/90 shadow-md space-y-2.5 relative overflow-hidden transition-transform hover:-translate-y-0.5"
-              >
-                <div className="flex items-center justify-between border-b border-slate-100 pb-2">
-                  <span className="font-mono text-[10px] font-extrabold text-slate-400">
-                    #{booking.bookingNumber}
-                  </span>
-                  <span className="px-2 py-0.5 rounded-full bg-slate-100 text-slate-800 text-[10px] font-black uppercase">
-                    {booking.date}
-                  </span>
-                </div>
-
-                <h4 className="font-black text-xs text-slate-900 truncate">
-                  {booking.serviceTitle}
-                </h4>
-
-                <div className="space-y-1 text-xs text-slate-600 bg-slate-50 p-2.5 rounded-2xl border border-slate-200/60">
-                  <div className="flex items-start gap-1.5 min-w-0">
-                    <MapPin className="w-3.5 h-3.5 text-[#84CC16] fill-[#84CC16]/25 stroke-[2] flex-shrink-0 mt-0.5" />
-                    <span className="font-medium text-slate-800 truncate text-[11px]">{booking.pickupLocation}</span>
-                  </div>
-                  <div className="flex items-start gap-1.5 min-w-0">
-                    <MapPin className="w-3.5 h-3.5 text-slate-900 fill-slate-900/20 stroke-[2] flex-shrink-0 mt-0.5" />
-                    <span className="font-medium text-slate-800 truncate text-[11px]">{booking.destinationLocation}</span>
-                  </div>
-                </div>
-
-                <div className="pt-1 flex items-center justify-between text-xs">
-                  <span className="font-black text-slate-900">${booking.priceTotal.toFixed(2)}</span>
-
-                  {onRepeatBooking && (
-                    <button
-                      onClick={() => onRepeatBooking(booking)}
-                      className="px-3 py-1.5 rounded-xl bg-[#121212] hover:bg-black text-[#84CC16] font-extrabold text-[11px] flex items-center gap-1 shadow-sm transition-colors cursor-pointer"
-                    >
-                      <RotateCcw className="w-3 h-3 stroke-[2.2]" />
-                      <span>Repeat</span>
-                    </button>
-                  )}
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
-
-
-
-      {/* Spotlight Master Chauffeur */}
-      <div className="glass-card rounded-3xl p-4 border border-slate-200 bg-gradient-to-r from-slate-900 via-zinc-900 to-[#121212] text-white shadow-xl relative overflow-hidden group">
-        <div className="flex items-center justify-between mb-2.5">
-          <span className="px-2.5 py-0.5 rounded-full bg-[#84CC16] text-[#121212] text-[10px] font-black uppercase tracking-wider">
-            Spotlight Chauffeur
-          </span>
-          <div className="flex items-center gap-1 text-amber-400 text-xs font-bold">
-            <Star className="w-3.5 h-3.5 fill-current" /> {FEATURED_DRIVER.rating} (384)
+            </div>
           </div>
         </div>
 
-        <div className="flex items-center gap-3">
-          <img
-            src={FEATURED_DRIVER.photo}
-            alt={FEATURED_DRIVER.name}
-            className="w-14 h-14 rounded-2xl object-cover border border-[#84CC16] shadow-md group-hover:scale-105 transition-transform flex-shrink-0"
-          />
-          <div className="flex-1 min-w-0">
-            <h4 className="font-extrabold text-sm text-white truncate">{FEATURED_DRIVER.name}</h4>
-            <p className="text-[11px] text-slate-300 font-medium truncate mt-0.5">
-              {FEATURED_DRIVER.yearsExperience} Yrs Exp • Uniformed • Certified
-            </p>
-            <button
-              onClick={() => onOpenDriverProfile(FEATURED_DRIVER)}
-              className="mt-1.5 text-[11px] text-[#84CC16] font-bold hover:underline flex items-center gap-1"
-            >
-              View Chauffeur Profile →
-            </button>
-          </div>
-        </div>
+        {/* Promotions Carousel */}
+        <PromotionsCarousel
+          promotions={PROMOTIONS}
+          onClaimPromotion={(promo) => {
+            alert(`Applied promo code ${promo.code} to your next booking!`);
+          }}
+        />
+
+        {/* Why Choose RIDINGO */}
+        <WhyChooseUs />
+
+        {/* Brand Customer Reviews */}
+        <BrandReviews />
       </div>
-
-      {/* Promotions Carousel */}
-      <PromotionsCarousel
-        promotions={PROMOTIONS}
-        onClaimPromotion={(promo) => {
-          alert(`Applied promo code ${promo.code} to your next booking!`);
-        }}
-      />
-
-      {/* Why Choose RIDINGO */}
-      <WhyChooseUs />
-
-      {/* Brand Customer Reviews */}
-      <BrandReviews />
     </div>
   );
 };

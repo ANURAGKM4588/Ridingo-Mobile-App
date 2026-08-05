@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ChevronLeft, Bell, X, Search } from 'lucide-react';
+import { ChevronLeft, Bell, X } from 'lucide-react';
 import type { TabType, ServiceItem, VehicleOption, Booking, DriverProfile } from './types';
 import { MOCK_SERVICES, MOCK_VEHICLES, MOCK_BOOKINGS, MOCK_NOTIFICATIONS } from './data/mockData';
 
@@ -35,7 +35,6 @@ export function App() {
   const [bookings, setBookings] = useState<Booking[]>(MOCK_BOOKINGS);
   const [activeBooking, setActiveBooking] = useState<Booking | null>(MOCK_BOOKINGS[0]);
   const [notifications, setNotifications] = useState(MOCK_NOTIFICATIONS);
-  const [searchQuery, setSearchQuery] = useState('');
 
   // View / Modal Flags
   const [isBookingFlowOpen, setIsBookingFlowOpen] = useState<boolean>(false);
@@ -88,37 +87,14 @@ export function App() {
     <div className="min-h-screen h-screen w-full bg-slate-900 md:bg-slate-950 flex items-center justify-center selection:bg-[#84CC16] overflow-hidden p-0 md:p-3">
       {/* Sleek Mobile App Container for All Mobile Devices, iPhone Notch, iPads & Desktop */}
       <div className="w-full max-w-md h-full md:h-[94vh] max-h-screen md:rounded-[44px] bg-[#FAFAFA] flex flex-col relative shadow-2xl border-x md:border border-slate-200/80 overflow-hidden">
-        {/* ═══ UNIFIED STICKY TOP BAR ═══
-             HeaderBar + Search Bar live in one solid white parent.
-             Zero gap, zero transparency, one stacking context. */}
-        {!isReviewOpen && !isInvoiceOpen && !isConfirmationOpen && !isPaymentSettingsOpen && !isSupportChatOpen && !isLanguageSettingsOpen && (
-          <div className="flex-shrink-0 sticky top-0 z-50 bg-white">
-            {/* RIDINGO Header — no border-b here, unified block has it at bottom */}
-            <HeaderBar
-              userName="Alexander Vance"
-              unreadNotificationsCount={unreadCount}
-              onOpenNotifications={() => setIsNotificationsOpen(true)}
-              onOpenProfile={() => setActiveTab('profile')}
-            />
-
-            {/* Search Bar — only on home tab, directly below header with NO gap */}
-            {activeTab === 'home' && (
-              <div className="px-4 pb-3 bg-white border-b border-slate-200 shadow-sm">
-                <div className="relative w-full">
-                  <div className="absolute inset-y-0 left-3.5 flex items-center pointer-events-none">
-                    <Search className="w-4 h-4 text-[#84CC16]" />
-                  </div>
-                  <input
-                    type="text"
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    placeholder="What service do you need today?"
-                    className="w-full pl-10 pr-4 py-2.5 rounded-2xl bg-slate-100 border border-slate-200 text-slate-900 font-bold placeholder:text-slate-400 placeholder:font-normal focus:outline-none focus:ring-2 focus:ring-[#84CC16] transition-all text-xs"
-                  />
-                </div>
-              </div>
-            )}
-          </div>
+        {/* Global Header Bar */}
+        {activeTab === 'home' && !isReviewOpen && !isInvoiceOpen && !isConfirmationOpen && !isPaymentSettingsOpen && !isSupportChatOpen && !isLanguageSettingsOpen && (
+          <HeaderBar
+            userName="Alexander Vance"
+            unreadNotificationsCount={unreadCount}
+            onOpenNotifications={() => setIsNotificationsOpen(true)}
+            onOpenProfile={() => setActiveTab('profile')}
+          />
         )}
 
         {/* Main Content Area based on Active Tab or Views */}
