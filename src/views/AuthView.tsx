@@ -89,18 +89,23 @@ export const AuthView: React.FC<AuthViewProps> = ({
   };
 
   return (
-    <div className="absolute inset-0 z-50 bg-white flex flex-col justify-between overflow-y-auto animate-fade-in">
-      {/* Header Bar — Clean centered logo, no X button */}
-      <div className="w-full px-5 pt-[max(env(safe-area-inset-top),1.25rem)] pb-3 flex items-center justify-center border-b border-slate-100">
-        <img src={ridingoLogo} alt="RIDINGO" className="h-7 w-auto object-contain mx-auto" />
-      </div>
+    <div className="absolute inset-0 z-50 bg-white flex flex-col justify-between overflow-y-auto animate-fade-in pt-[max(env(safe-area-inset-top),1.5rem)]">
 
       {/* Main Body Content */}
-      <div className="flex-1 px-5 py-6 max-w-md mx-auto w-full flex flex-col justify-center space-y-6">
+      <div className="flex-1 px-6 py-4 max-w-md mx-auto w-full flex flex-col justify-center space-y-5">
         
+        {/* Modern Hero Brand Logo Placement */}
+        <div className="text-center">
+          <img 
+            src={ridingoLogo} 
+            alt="RIDINGO" 
+            className="h-11 sm:h-13 w-auto object-contain mx-auto drop-shadow-xs" 
+          />
+        </div>
+
         {/* Title & Subtitle */}
         {!isOtpStep ? (
-          <div className="text-center space-y-1.5">
+          <div className="text-center space-y-1">
             <h1 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
               {authMode === 'login' ? 'Welcome Back 👋' : 'Create Account 🚗'}
             </h1>
