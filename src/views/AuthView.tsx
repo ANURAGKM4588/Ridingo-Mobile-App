@@ -16,6 +16,7 @@ import {
 } from 'lucide-react';
 import ridingoLogo from '../assets/ridingo-logo.png';
 import { LanguageCode, TRANSLATIONS } from '../data/translations';
+import { supabase } from '../lib/supabase';
 
 interface AuthViewProps {
   onClose: () => void;
@@ -57,35 +58,163 @@ export const AuthView: React.FC<AuthViewProps> = ({
 
   // OTP Step State
   const [isOtpStep, setIsOtpStep] = useState(false);
-  const [otpValues, setOtpValues] = useState(['', '', '', '']);
+  const [generatedOtp, setGeneratedOtp] = useState('839201');
+  const [otpValues, setOtpValues] = useState(['', '', '', '', '', '']);
   const [otpResendTimer, setOtpResendTimer] = useState(30);
+  const [otpError, setOtpError] = useState<string | null>(null);
+
+  // Google Apps Script Free Email Dispatch Endpoint (team.ridingo@gmail.com)
+  const GAS_EMAIL_ENDPOINT = 'https://script.google.com/macros/s/AKfycbzobPlOZlvLex9hIi2esQtRhQ28hnIf0S_7Uw5N5ih8213IVt668BncStNIRcbahc4hWA/exec';
+
+  const sendRealGmailOtp = (targetEmail: string, otpCode: string, userFirstName?: string) => {
+    fetch(GAS_EMAIL_ENDPOINT, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        email: targetEmail.trim(),
+        otp: otpCode,
+        firstName: userFirstName || 'RIDINGO Customer',
+      }),
+    }).catch(err => console.log('Gmail OTP Dispatch note:', err));
+  };
 
   const handleOtpChange = (index: number, value: string) => {
-    if (value.length > 1) value = value[value.length - 1];
+    if (otpError) setOtpError(null);
+    // Handle multi-character paste or single digit
+    const digitsOnly = value.replace(/\D/g, '');
+    if (digitsOnly.length > 1) {
+      const newOtp = ['', '', '', '', '', ''];
+      for (let i = 0; i < Math.min(digitsOnly.length, 6); i++) {
+        newOtp[i] = digitsOnly[i];
+      }
+      setOtpValues(newOtp);
+      const focusIndex = Math.min(digitsOnly.length - 1, 5);
+      document.getElementById(`otp-input-${focusIndex}`)?.focus();
+      return;
+    }
+
     const newOtp = [...otpValues];
-    newOtp[index] = value;
+    newOtp[index] = digitsOnly;
     setOtpValues(newOtp);
 
     // Auto-focus next input
-    if (value && index < 3) {
+    if (digitsOnly && index < 5) {
       const nextInput = document.getElementById(`otp-input-${index + 1}`);
       nextInput?.focus();
     }
   };
 
-  const handleSendCode = (e: React.FormEvent) => {
+  const handleOtpPaste = (e: React.ClipboardEvent) => {
     e.preventDefault();
+    if (otpError) setOtpError(null);
+    const pastedText = e.clipboardData.getData('text').replace(/\D/g, '').slice(0, 6);
+    if (!pastedText) return;
+
+    const newOtp = ['', '', '', '', '', ''];
+    for (let i = 0; i < pastedText.length; i++) {
+      newOtp[i] = pastedText[i];
+    }
+    setOtpValues(newOtp);
+
+    const focusIndex = Math.min(pastedText.length - 1, 5);
+    document.getElementById(`otp-input-${focusIndex}`)?.focus();
+  };
+
+  const handleSendCode = async (e: React.FormEvent) => {
+    e.preventDefault();
+    // Generate a fresh random 6-digit code
+    const newCode = Math.floor(100000 + Math.random() * 900000).toString();
+    setGeneratedOtp(newCode);
+    setOtpValues(['', '', '', '', '', '']);
+    setOtpError(null);
+
+    if (email) {
+      // 1. Dispatch REAL Gmail OTP from team.ridingo@gmail.com via Google Apps Script (100% Free)
+      sendRealGmailOtp(email, newCode, firstName);
+
+      // 2. Sync account record with Supabase
+      try {
+        if (authMode === 'signup') {
+          await supabase.auth.signUp({
+            email: email.trim(),
+            password: password || 'RidingoPass123!',
+          });
+        }
+      } catch (err) {
+        console.log('Supabase account sync note:', err);
+      }
+    }
+
     setIsOtpStep(true);
   };
 
-  const handleVerifyOtp = (e: React.FormEvent) => {
+  const handleResendCode = async () => {
+    const newCode = Math.floor(100000 + Math.random() * 900000).toString();
+    setGeneratedOtp(newCode);
+    setOtpValues(['', '', '', '', '', '']);
+    setOtpError(null);
+    setOtpResendTimer(30);
+
+    if (email) {
+      // Dispatch new random 6-digit Gmail OTP
+      sendRealGmailOtp(email, newCode, firstName);
+    }
+  };
+
+  const handleVerifyOtp = async (e: React.FormEvent) => {
     e.preventDefault();
-    const constructedName = [firstName, lastName].filter(Boolean).join(' ') || (authMode === 'login' ? 'Alexander Vance' : 'New User');
-    onSuccess({
-      name: constructedName,
-      email: email || 'alexander.vance@executive.com',
-      phone: `${selectedCountry.code} ${phoneNumber || '555-0192'}`,
-    });
+    const enteredCode = otpValues.join('');
+    
+    if (enteredCode.length < 6) {
+      setOtpError('Please enter all 6 digits of your verification code.');
+      return;
+    }
+
+    // 1. Attempt Supabase Auth server verification
+    if (email && enteredCode.length === 6) {
+      try {
+        const { data, error } = await supabase.auth.verifyOtp({
+          email: email.trim(),
+          token: enteredCode,
+          type: 'email',
+        });
+
+        if (!error && data?.user) {
+          setOtpError(null);
+          const constructedName = [firstName, lastName].filter(Boolean).join(' ') || (authMode === 'login' ? 'Alexander Vance' : 'New User');
+          onSuccess({
+            name: constructedName,
+            email: email,
+            phone: `${selectedCountry.code} ${phoneNumber || '555-0192'}`,
+          });
+          return;
+        }
+      } catch (err) {
+        console.log('Supabase verifyOtp note:', err);
+      }
+    }
+
+    // 2. Fallback to dynamic random 6-digit OTP code matching
+    if (enteredCode === generatedOtp) {
+      setOtpError(null);
+      const constructedName = [firstName, lastName].filter(Boolean).join(' ') || (authMode === 'login' ? 'Alexander Vance' : 'New User');
+      onSuccess({
+        name: constructedName,
+        email: email || 'alexander.vance@executive.com',
+        phone: `${selectedCountry.code} ${phoneNumber || '555-0192'}`,
+      });
+    } else {
+      // Wrong OTP: Show red warning, clear inputs & auto-focus first box
+      setOtpError(`Invalid 6-digit OTP code entered. Please check your Gmail inbox (${email}) and try again.`);
+      setOtpValues(['', '', '', '', '', '']);
+      setTimeout(() => {
+        const firstInput = document.getElementById('otp-input-0');
+        firstInput?.focus();
+      }, 100);
+    }
   };
 
   return (
@@ -121,12 +250,12 @@ export const AuthView: React.FC<AuthViewProps> = ({
               <ShieldCheck className="w-6 h-6 stroke-[2.5]" />
             </div>
             <h1 className="text-2xl font-black text-slate-900 tracking-tight">
-              Verify Code
+              Verify Email OTP
             </h1>
             <p className="text-xs text-slate-500 font-medium">
-              Enter the 4-digit code sent to{' '}
+              Enter the verification code sent to registered email address{' '}
               <span className="font-bold text-slate-800">
-                {method === 'phone' ? `${selectedCountry.code} ${phoneNumber || '555-0192'}` : email || 'user@example.com'}
+                {email || 'user@example.com'}
               </span>
             </p>
           </div>
@@ -164,34 +293,6 @@ export const AuthView: React.FC<AuthViewProps> = ({
         {!isOtpStep ? (
           <form onSubmit={handleSendCode} className="space-y-4">
             
-            {/* Method Toggle: Phone vs Email */}
-            <div className="flex items-center justify-between px-1 text-xs">
-              <span className="font-bold text-slate-400 uppercase tracking-wider text-[10px]">
-                {authMode === 'login' ? 'Sign In Method' : 'Register Via'}
-              </span>
-              <div className="flex items-center gap-3">
-                <button
-                  type="button"
-                  onClick={() => setMethod('phone')}
-                  className={`font-bold flex items-center gap-1 cursor-pointer transition-colors ${
-                    method === 'phone' ? 'text-[#4D7C0F]' : 'text-slate-400 hover:text-slate-600'
-                  }`}
-                >
-                  <Phone className="w-3.5 h-3.5" /> Phone
-                </button>
-                <span className="text-slate-300">|</span>
-                <button
-                  type="button"
-                  onClick={() => setMethod('email')}
-                  className={`font-bold flex items-center gap-1 cursor-pointer transition-colors ${
-                    method === 'email' ? 'text-[#4D7C0F]' : 'text-slate-400 hover:text-slate-600'
-                  }`}
-                >
-                  <Mail className="w-3.5 h-3.5" /> Email
-                </button>
-              </div>
-            </div>
-
             {/* Sign Up Fields: First Name (Required) & Last Name (Optional) */}
             {authMode === 'signup' && (
               <div className="grid grid-cols-2 gap-2.5">
@@ -229,104 +330,101 @@ export const AuthView: React.FC<AuthViewProps> = ({
               </div>
             )}
 
-            {/* Input Field: Phone or Email */}
-            {method === 'phone' ? (
-              <div className="space-y-1">
-                <label className="text-[11px] font-extrabold uppercase tracking-wider text-slate-600">
-                  Mobile Number
-                </label>
-                <div className="flex gap-2">
-                  {/* Country Selector */}
-                  <div className="relative">
-                    <select
-                      value={selectedCountry.code}
-                      onChange={(e) => {
-                        const found = COUNTRY_CODES.find(c => c.code === e.target.value);
-                        if (found) setSelectedCountry(found);
-                      }}
-                      className="appearance-none h-full pl-3 pr-7 py-3 rounded-2xl bg-slate-50 border border-slate-200 text-slate-900 font-bold text-xs focus:outline-none focus:ring-2 focus:ring-[#84CC16] cursor-pointer"
-                    >
-                      {COUNTRY_CODES.map((c) => (
-                        <option key={c.code} value={c.code}>
-                          {c.flag} {c.code}
-                        </option>
-                      ))}
-                    </select>
-                    <ChevronDown className="w-3.5 h-3.5 text-slate-500 absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none" />
-                  </div>
-
-                  {/* Phone Input */}
-                  <div className="relative flex-1">
-                    <div className="absolute inset-y-0 left-3.5 flex items-center pointer-events-none text-slate-400">
-                      <Smartphone className="w-4 h-4" />
-                    </div>
-                    <input
-                      type="tel"
-                      required
-                      value={phoneNumber}
-                      onChange={(e) => setPhoneNumber(e.target.value)}
-                      placeholder="555 019 2834"
-                      className="w-full pl-10 pr-4 py-3 rounded-2xl bg-slate-50 border border-slate-200 text-slate-900 font-bold placeholder:text-slate-400 placeholder:font-normal text-xs focus:outline-none focus:ring-2 focus:ring-[#84CC16] transition-all"
-                    />
-                  </div>
-                </div>
-              </div>
-            ) : (
-              <div className="space-y-1">
-                <label className="text-[11px] font-extrabold uppercase tracking-wider text-slate-600">
-                  Email Address
-                </label>
+            {/* Compulsory Mobile Number */}
+            <div className="space-y-1">
+              <label className="text-[11px] font-extrabold uppercase tracking-wider text-slate-600">
+                Mobile Number <span className="text-rose-500">*</span>
+              </label>
+              <div className="flex gap-2">
+                {/* Country Selector */}
                 <div className="relative">
+                  <select
+                    value={selectedCountry.code}
+                    onChange={(e) => {
+                      const found = COUNTRY_CODES.find(c => c.code === e.target.value);
+                      if (found) setSelectedCountry(found);
+                    }}
+                    className="appearance-none h-full pl-3 pr-7 py-3 rounded-2xl bg-slate-50 border border-slate-200 text-slate-900 font-bold text-xs focus:outline-none focus:ring-2 focus:ring-[#84CC16] cursor-pointer"
+                  >
+                    {COUNTRY_CODES.map((c) => (
+                      <option key={c.code} value={c.code}>
+                        {c.flag} {c.code}
+                      </option>
+                    ))}
+                  </select>
+                  <ChevronDown className="w-3.5 h-3.5 text-slate-500 absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+                </div>
+
+                {/* Phone Input */}
+                <div className="relative flex-1">
                   <div className="absolute inset-y-0 left-3.5 flex items-center pointer-events-none text-slate-400">
-                    <Mail className="w-4 h-4" />
+                    <Smartphone className="w-4 h-4" />
                   </div>
                   <input
-                    type="email"
+                    type="tel"
                     required
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    placeholder="alexander@executive.com"
+                    value={phoneNumber}
+                    onChange={(e) => setPhoneNumber(e.target.value)}
+                    placeholder="555 019 2834"
                     className="w-full pl-10 pr-4 py-3 rounded-2xl bg-slate-50 border border-slate-200 text-slate-900 font-bold placeholder:text-slate-400 placeholder:font-normal text-xs focus:outline-none focus:ring-2 focus:ring-[#84CC16] transition-all"
                   />
                 </div>
               </div>
-            )}
+            </div>
 
-            {/* Password Field (for Email method or Signup) */}
-            {(method === 'email' || authMode === 'signup') && (
-              <div className="space-y-1">
-                <div className="flex items-center justify-between">
-                  <label className="text-[11px] font-extrabold uppercase tracking-wider text-slate-600">
-                    Password
-                  </label>
-                  {authMode === 'login' && (
-                    <button type="button" className="text-[11px] font-bold text-[#4D7C0F] hover:underline">
-                      Forgot Password?
-                    </button>
-                  )}
+            {/* Compulsory Email Address */}
+            <div className="space-y-1">
+              <label className="text-[11px] font-extrabold uppercase tracking-wider text-slate-600">
+                Email Address <span className="text-rose-500">*</span>
+              </label>
+              <div className="relative">
+                <div className="absolute inset-y-0 left-3.5 flex items-center pointer-events-none text-slate-400">
+                  <Mail className="w-4 h-4" />
                 </div>
-                <div className="relative">
-                  <div className="absolute inset-y-0 left-3.5 flex items-center pointer-events-none text-slate-400">
-                    <Lock className="w-4 h-4" />
-                  </div>
-                  <input
-                    type={showPassword ? 'text' : 'password'}
-                    required
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    placeholder="••••••••••••"
-                    className="w-full pl-10 pr-10 py-3 rounded-2xl bg-slate-50 border border-slate-200 text-slate-900 font-bold placeholder:text-slate-400 text-xs focus:outline-none focus:ring-2 focus:ring-[#84CC16] transition-all"
-                  />
-                  <button
-                    type="button"
-                    onClick={() => setShowPassword(!showPassword)}
-                    className="absolute inset-y-0 right-3.5 flex items-center text-slate-400 hover:text-slate-600"
-                  >
-                    {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-                  </button>
-                </div>
+                <input
+                  type="email"
+                  required
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="alexander@executive.com"
+                  className="w-full pl-10 pr-4 py-3 rounded-2xl bg-slate-50 border border-slate-200 text-slate-900 font-bold placeholder:text-slate-400 placeholder:font-normal text-xs focus:outline-none focus:ring-2 focus:ring-[#84CC16] transition-all"
+                />
               </div>
-            )}
+            </div>
+
+            {/* Compulsory Password Field */}
+            <div className="space-y-1">
+              <div className="flex items-center justify-between">
+                <label className="text-[11px] font-extrabold uppercase tracking-wider text-slate-600">
+                  Password <span className="text-rose-500">*</span>
+                </label>
+                {authMode === 'login' && (
+                  <button type="button" className="text-[11px] font-bold text-[#4D7C0F] hover:underline">
+                    Forgot Password?
+                  </button>
+                )}
+              </div>
+              <div className="relative">
+                <div className="absolute inset-y-0 left-3.5 flex items-center pointer-events-none text-slate-400">
+                  <Lock className="w-4 h-4" />
+                </div>
+                <input
+                  type={showPassword ? 'text' : 'password'}
+                  required
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="••••••••••••"
+                  className="w-full pl-10 pr-10 py-3 rounded-2xl bg-slate-50 border border-slate-200 text-slate-900 font-bold placeholder:text-slate-400 text-xs focus:outline-none focus:ring-2 focus:ring-[#84CC16] transition-all"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute inset-y-0 right-3.5 flex items-center text-slate-400 hover:text-slate-600"
+                >
+                  {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                </button>
+              </div>
+            </div>
 
             {/* Referral Code (Optional for Sign Up) */}
             {authMode === 'signup' && (
@@ -368,26 +466,49 @@ export const AuthView: React.FC<AuthViewProps> = ({
                 disabled={authMode === 'signup' && !agreeTerms}
                 className="w-full py-3.5 px-6 rounded-2xl bg-[#121212] hover:bg-black text-[#84CC16] font-black text-sm flex items-center justify-center gap-2 shadow-lg active:scale-[0.98] transition-all disabled:opacity-50 cursor-pointer"
               >
-                <span>{authMode === 'login' ? 'Continue with OTP' : 'Create Account & Verify'}</span>
+                <span>{authMode === 'login' ? 'Send OTP to Email' : 'Create Account & Send Email OTP'}</span>
                 <ArrowRight className="w-4 h-4 stroke-[2.5]" />
               </button>
             </div>
           </form>
         ) : (
           /* OTP Verification Form */
-          <form onSubmit={handleVerifyOtp} className="space-y-6">
-            {/* 4 Digit OTP Inputs */}
-            <div className="flex items-center justify-center gap-3 py-2">
+          <form onSubmit={handleVerifyOtp} className="space-y-5">
+            {/* Clean Gmail Inbox Instructions Banner (No code shown on screen) */}
+            <div className="p-3.5 rounded-2xl bg-slate-50 border border-slate-200/80 text-slate-700 text-xs font-medium text-center space-y-1 shadow-2xs">
+              <div className="flex items-center justify-center gap-1.5 font-bold text-[#4D7C0F]">
+                <Mail className="w-4 h-4 text-[#84CC16]" />
+                <span>Check Your Email Inbox</span>
+              </div>
+              <p className="text-[11px] text-slate-500 leading-normal">
+                We've sent a 6-digit OTP code to <span className="font-extrabold text-slate-900">{email || 'your email'}</span>. Please check your inbox and enter the code below.
+              </p>
+            </div>
+
+            {/* Error Warning Badge if Wrong OTP */}
+            {otpError && (
+              <div className="p-3 rounded-2xl bg-rose-50 border border-rose-200 text-rose-700 text-xs font-bold text-center animate-fade-in shadow-xs">
+                ⚠️ {otpError}
+              </div>
+            )}
+
+            {/* 6 Digit OTP Inputs */}
+            <div className="flex items-center justify-center gap-2 py-1">
               {otpValues.map((val, idx) => (
                 <input
                   key={idx}
                   id={`otp-input-${idx}`}
                   type="text"
                   inputMode="numeric"
-                  maxLength={1}
+                  maxLength={6}
                   value={val}
+                  onPaste={handleOtpPaste}
                   onChange={(e) => handleOtpChange(idx, e.target.value)}
-                  className="w-14 h-14 text-center text-xl font-black text-slate-900 bg-slate-50 border-2 border-slate-200 rounded-2xl focus:border-[#84CC16] focus:bg-white focus:outline-none transition-all shadow-sm"
+                  className={`w-11 h-13 sm:w-12 sm:h-14 text-center text-lg sm:text-xl font-black rounded-2xl transition-all shadow-sm focus:outline-none ${
+                    otpError
+                      ? 'border-2 border-rose-500 bg-rose-50/60 text-rose-600 focus:border-rose-600 focus:ring-2 focus:ring-rose-200'
+                      : 'border-2 border-slate-200 bg-slate-50 text-slate-900 focus:border-[#84CC16] focus:bg-white'
+                  }`}
                 />
               ))}
             </div>
@@ -397,14 +518,14 @@ export const AuthView: React.FC<AuthViewProps> = ({
               <button
                 type="button"
                 onClick={() => setIsOtpStep(false)}
-                className="text-slate-700 font-bold hover:underline"
+                className="text-slate-700 font-bold hover:underline cursor-pointer"
               >
-                ← Change Number
+                ← Change Email
               </button>
               <button
                 type="button"
-                onClick={() => setOtpResendTimer(30)}
-                className="text-[#4D7C0F] font-bold hover:underline"
+                onClick={handleResendCode}
+                className="text-[#4D7C0F] font-bold hover:underline cursor-pointer"
               >
                 Resend Code {otpResendTimer > 0 ? `(${otpResendTimer}s)` : ''}
               </button>

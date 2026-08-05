@@ -61,8 +61,8 @@ export function App() {
   const [driverModalProfile, setDriverModalProfile] = useState<DriverProfile | null>(null);
   const [isDriverModalOpen, setIsDriverModalOpen] = useState<boolean>(false);
 
-  // Auth View Modal State
-  const [isAuthOpen, setIsAuthOpen] = useState<boolean>(false);
+  // Auth View Modal State - Open by default so Login screen appears first
+  const [isAuthOpen, setIsAuthOpen] = useState<boolean>(true);
   const [authInitialMode, setAuthInitialMode] = useState<'login' | 'signup'>('login');
 
   // Handlers
@@ -327,6 +327,7 @@ export function App() {
                 phone: userData.phone || '+1 (555) 019-2834',
               });
               setIsAuthOpen(false);
+              setActiveTab('home');
             }}
             currentLanguage={currentLanguage}
           />
