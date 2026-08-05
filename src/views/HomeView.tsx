@@ -43,7 +43,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
   const recentBookingList = (recentBookings && recentBookings.length > 0) ? recentBookings : MOCK_BOOKINGS;
 
   return (
-    <div className="w-full animate-fade-in pb-4">
+    <div className="w-full animate-fade-in animate-scale-up transition-all duration-500 pb-4">
 
       {/* Greeting — 2-line clean typography matching reference design */}
       <div className="-mx-4 px-5 pt-2 pb-3 bg-white">
