@@ -35,6 +35,19 @@ jobs:
       - name: Sync Capacitor Android
         run: npx cap sync android
 
+      - name: Patch Subproject Gradle AGP Versions
+        run: |
+          node -e "
+          const fs = require('fs');
+          ['android/capacitor-cordova-android-plugins/build.gradle', 'node_modules/@capacitor/android/capacitor/build.gradle'].forEach(p => {
+            if (fs.existsSync(p)) {
+              let c = fs.readFileSync(p, 'utf8');
+              c = c.replace(/classpath 'com\.android\.tools\.build:gradle:8\.13\.0'/g, \"classpath 'com.android.tools.build:gradle:8.2.1'\");
+              fs.writeFileSync(p, c);
+            }
+          });
+          "
+
       - name: Build Android APK
         run: |
           cd android
