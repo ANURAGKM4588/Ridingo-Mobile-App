@@ -1,5 +1,6 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import confetti from 'canvas-confetti';
+import html2canvas from 'html2canvas';
 import { 
   CheckCircle2, 
   MapPin, 
@@ -10,7 +11,14 @@ import {
   Navigation,
   ChevronLeft,
   Car,
-  CreditCard
+  CreditCard,
+  Download,
+  MessageCircle,
+  X,
+  Sparkles,
+  QrCode,
+  Copy,
+  Check
 } from 'lucide-react';
 import { Booking } from '../types';
 import { RegionCode, formatPrice } from '../data/currencies';
@@ -28,6 +36,11 @@ export const BookingConfirmationView: React.FC<BookingConfirmationViewProps> = (
   onClose,
   currentRegion = 'in',
 }) => {
+  const [isShareModalOpen, setIsShareModalOpen] = useState(false);
+  const [isCapturing, setIsCapturing] = useState(false);
+  const [isCopied, setIsCopied] = useState(false);
+  const ticketRef = useRef<HTMLDivElement>(null);
+
   useEffect(() => {
     try {
       confetti({
@@ -47,6 +60,69 @@ export const BookingConfirmationView: React.FC<BookingConfirmationViewProps> = (
   const grandTotal = booking.priceTotal || 64.50;
   const advancePaid = Math.round(grandTotal * 0.30 * 100) / 100;
   const remainingBalance = Math.round((grandTotal - advancePaid) * 100) / 100;
+
+  // 1. Screenshot Download Handler using html2canvas
+  const handleDownloadScreenshot = async () => {
+    if (!ticketRef.current) return;
+    setIsCapturing(true);
+    try {
+      const canvas = await html2canvas(ticketRef.current, {
+        scale: 3,
+        useCORS: true,
+        backgroundColor: '#121212',
+        logging: false,
+      });
+      const image = canvas.toDataURL('image/png');
+      const link = document.createElement('a');
+      link.href = image;
+      link.download = `RIDINGO-Pass-${booking.bookingNumber || 'RDG-2026'}.png`;
+      link.click();
+    } catch (err) {
+      console.error("Screenshot capture failed:", err);
+      alert("Downloading screenshot... If popup is blocked, please take a manual screenshot of the pass!");
+    } finally {
+      setIsCapturing(false);
+    }
+  };
+
+  // 2. Direct WhatsApp Share Handler
+  const handleShareWhatsApp = () => {
+    const text = encodeURIComponent(
+      `🚗 *RIDINGO Chauffeur Booking Pass*\n\n` +
+      `📌 *Booking Ref:* #${booking.bookingNumber}\n` +
+      `✅ *Status:* Confirmed & Chauffeur Dispatched\n` +
+      `🚘 *Vehicle:* ${booking.vehicle?.name || 'Executive Sedan'}\n` +
+      `👨‍✈️ *Chauffeur:* ${booking.driver?.name || 'Michael Vance'} (★ ${booking.driver?.rating || '4.95'})\n` +
+      `📍 *Pickup:* ${booking.pickupLocation}\n` +
+      `🏁 *Destination:* ${booking.destinationLocation}\n` +
+      `📅 *Schedule:* ${booking.date}, ${booking.time}\n` +
+      `💳 *30% Advance Deposit Paid:* ${formatPrice(advancePaid, currentRegion, 2)}\n` +
+      `🪙 *70% Balance Due Post-Trip:* ${formatPrice(remainingBalance, currentRegion, 2)}\n\n` +
+      `📲 *Track Chauffeur:* https://ridingo.app/track/${booking.bookingNumber}`
+    );
+    window.open(`https://wa.me/?text=${text}`, '_blank');
+  };
+
+  // 3. Native Share / Clipboard Copy Handler
+  const handleNativeShare = async () => {
+    const shareText = `RIDINGO Chauffeur Pass #${booking.bookingNumber}\nPickup: ${booking.pickupLocation}\nDestination: ${booking.destinationLocation}\nTime: ${booking.date}, ${booking.time}`;
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: `RIDINGO Booking #${booking.bookingNumber}`,
+          text: shareText,
+          url: window.location.href,
+        });
+        return;
+      } catch {
+        // user cancelled or fallback
+      }
+    }
+    
+    await navigator.clipboard.writeText(shareText);
+    setIsCopied(true);
+    setTimeout(() => setIsCopied(false), 2000);
+  };
 
   return (
     <div className="w-full h-full flex flex-col bg-[#FAFAFA] animate-fade-in overflow-hidden">
@@ -234,10 +310,10 @@ export const BookingConfirmationView: React.FC<BookingConfirmationViewProps> = (
         <div className="grid grid-cols-2 gap-2">
           <button
             type="button"
-            onClick={() => alert("Trip link copied to clipboard!")}
+            onClick={() => setIsShareModalOpen(true)}
             className="py-2.5 rounded-2xl bg-white border border-slate-200 text-slate-800 font-bold text-xs flex items-center justify-center gap-1.5 hover:bg-slate-50 transition-colors shadow-sm cursor-pointer"
           >
-            <Share2 className="w-4 h-4 text-slate-500" /> Share Booking
+            <Share2 className="w-4 h-4 text-[#4D7C0F]" /> Share Booking
           </button>
           <button
             type="button"
@@ -248,6 +324,167 @@ export const BookingConfirmationView: React.FC<BookingConfirmationViewProps> = (
           </button>
         </div>
       </div>
+
+      {/* ========================================================= */}
+      {/* RICH BOOKING PASS & SCREENSHOT SHARE MODAL */}
+      {/* ========================================================= */}
+      {isShareModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/75 backdrop-blur-md p-4 animate-fade-in">
+          <div className="bg-[#121212] w-full max-w-sm rounded-[36px] overflow-hidden shadow-2xl border border-zinc-800 text-white flex flex-col max-h-[90vh]">
+            {/* Modal Header */}
+            <div className="p-4 border-b border-zinc-800 flex items-center justify-between bg-black/50">
+              <div className="flex items-center gap-2">
+                <Sparkles className="w-4 h-4 text-[#84CC16]" />
+                <h3 className="font-extrabold text-xs text-white uppercase tracking-wider">Share Booking Pass</h3>
+              </div>
+              <button
+                type="button"
+                onClick={() => setIsShareModalOpen(false)}
+                className="w-7 h-7 rounded-full bg-zinc-800 hover:bg-zinc-700 flex items-center justify-center text-slate-300 transition-colors"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+
+            {/* Scrollable Share Body with Ticket Card */}
+            <div className="p-4 overflow-y-auto space-y-4 scrollbar-none flex-1">
+              {/* TICKET PASS CONTAINER (Targeted by html2canvas for screenshot download) */}
+              <div
+                ref={ticketRef}
+                className="bg-gradient-to-br from-slate-900 via-zinc-900 to-[#181818] rounded-[28px] p-5 border border-zinc-700/80 shadow-2xl space-y-3.5 text-white relative overflow-hidden"
+              >
+                {/* Decorative Top Banner */}
+                <div className="flex items-center justify-between border-b border-white/10 pb-3">
+                  <div className="flex items-center gap-2">
+                    <div className="w-7 h-7 rounded-xl bg-[#84CC16] text-[#121212] flex items-center justify-center font-black text-xs shadow-md">
+                      R
+                    </div>
+                    <div>
+                      <h4 className="font-black text-xs tracking-wider text-white uppercase">RIDINGO</h4>
+                      <span className="text-[9px] text-[#84CC16] font-bold block leading-none">Chauffeur Pass</span>
+                    </div>
+                  </div>
+
+                  <span className="px-2.5 py-0.5 rounded-full bg-[#84CC16] text-[#121212] text-[9px] font-black uppercase tracking-wider">
+                    CONFIRMED
+                  </span>
+                </div>
+
+                {/* Booking Ref Number & Service */}
+                <div className="flex items-baseline justify-between pt-0.5">
+                  <div>
+                    <span className="text-[9px] text-slate-400 font-extrabold uppercase block">Booking ID</span>
+                    <span className="text-base font-mono font-black text-[#84CC16]">#{booking.bookingNumber}</span>
+                  </div>
+                  <div className="text-right">
+                    <span className="text-[9px] text-slate-400 font-extrabold uppercase block">Service Type</span>
+                    <span className="text-xs font-bold text-white">{booking.serviceTitle || booking.serviceType}</span>
+                  </div>
+                </div>
+
+                {/* Chauffeur info row */}
+                <div className="bg-white/5 p-3 rounded-2xl border border-white/10 flex items-center justify-between">
+                  <div className="flex items-center gap-2.5">
+                    <img
+                      src={booking.driver?.photo || 'https://images.unsplash.com/photo-1560250097-0b93528c311a?w=150&auto=format&fit=crop'}
+                      alt="Chauffeur"
+                      className="w-10 h-10 rounded-xl object-cover border border-[#84CC16]/40"
+                    />
+                    <div>
+                      <span className="text-xs font-black text-white flex items-center gap-1">
+                        {booking.driver?.name || 'Michael Vance'}
+                        <ShieldCheck className="w-3.5 h-3.5 text-[#84CC16]" />
+                      </span>
+                      <span className="text-[9px] text-slate-300 font-medium block">
+                        ★ {booking.driver?.rating || '4.95'} • {booking.vehicle?.name || 'Executive Sedan'}
+                      </span>
+                    </div>
+                  </div>
+
+                  <span className="text-[10px] font-bold text-[#84CC16] bg-[#84CC16]/10 px-2 py-1 rounded-lg border border-[#84CC16]/30">
+                    Assigned
+                  </span>
+                </div>
+
+                {/* Route detail */}
+                <div className="space-y-2 text-xs pt-1">
+                  <div className="flex items-start gap-2">
+                    <MapPin className="w-3.5 h-3.5 text-[#84CC16] flex-shrink-0 mt-0.5" />
+                    <div>
+                      <span className="text-[9px] text-slate-400 uppercase font-bold block">From</span>
+                      <span className="text-xs font-bold text-slate-200 line-clamp-1">{booking.pickupLocation}</span>
+                    </div>
+                  </div>
+
+                  <div className="flex items-start gap-2">
+                    <Navigation className="w-3.5 h-3.5 text-[#84CC16] flex-shrink-0 mt-0.5" />
+                    <div>
+                      <span className="text-[9px] text-slate-400 uppercase font-bold block">To</span>
+                      <span className="text-xs font-bold text-slate-200 line-clamp-1">{booking.destinationLocation}</span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Schedule & Price Row */}
+                <div className="pt-2 border-t border-white/10 flex items-center justify-between text-xs">
+                  <div>
+                    <span className="text-[9px] text-slate-400 font-bold uppercase block">Schedule Time</span>
+                    <span className="text-xs font-bold text-white">{booking.date}, {booking.time}</span>
+                  </div>
+
+                  <div className="text-right">
+                    <span className="text-[9px] text-[#84CC16] font-bold uppercase block">30% Deposit Paid</span>
+                    <span className="text-sm font-black text-[#84CC16]">{formatPrice(advancePaid, currentRegion, 2)}</span>
+                  </div>
+                </div>
+
+                {/* QR Code Verification Footer */}
+                <div className="pt-2 border-t border-white/10 flex items-center justify-between text-[9px] text-slate-400 font-medium">
+                  <div className="flex items-center gap-1.5">
+                    <QrCode className="w-6 h-6 text-[#84CC16]" />
+                    <span>Scan code for driver arrival verification</span>
+                  </div>
+                  <span className="font-mono text-slate-500">RIDINGO SECURE PASS</span>
+                </div>
+              </div>
+
+              {/* Action Sharing Buttons */}
+              <div className="space-y-2 pt-1">
+                {/* 1. Download Screenshot / Image Pass */}
+                <button
+                  type="button"
+                  onClick={handleDownloadScreenshot}
+                  disabled={isCapturing}
+                  className="w-full py-3.5 rounded-2xl bg-[#84CC16] hover:bg-lime-400 text-[#121212] font-black text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow-lg transition-transform active:scale-[0.98] cursor-pointer disabled:opacity-50"
+                >
+                  <Download className="w-4 h-4 stroke-[2.5]" />
+                  <span>{isCapturing ? 'Generating Image Pass...' : 'Download Screenshot Pass'}</span>
+                </button>
+
+                {/* 2. Share via WhatsApp */}
+                <button
+                  type="button"
+                  onClick={handleShareWhatsApp}
+                  className="w-full py-3 rounded-2xl bg-[#25D366] hover:bg-emerald-600 text-white font-black text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow-md transition-colors cursor-pointer"
+                >
+                  <MessageCircle className="w-4 h-4 fill-current" />
+                  <span>Share via WhatsApp</span>
+                </button>
+
+                {/* 3. Copy Details / Native Share */}
+                <button
+                  type="button"
+                  onClick={handleNativeShare}
+                  className="w-full py-3 rounded-2xl bg-zinc-800 hover:bg-zinc-700 text-white font-extrabold text-xs flex items-center justify-center gap-2 transition-colors cursor-pointer"
+                >
+                  {isCopied ? <Check className="w-4 h-4 text-[#84CC16]" /> : <Copy className="w-4 h-4 text-slate-400" />}
+                  <span>{isCopied ? 'Trip Details Copied!' : 'Copy Trip Details / Share'}</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
