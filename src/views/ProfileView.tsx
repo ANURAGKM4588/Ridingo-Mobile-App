@@ -54,6 +54,8 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
     { name: 'RIDINGO 24/7 Safety Desk', phone: '+1 (800) 743-4646', relation: 'Support' },
   ]);
 
+  const firstName = userName ? userName.trim().split(' ')[0] : 'Alexander';
+
   return (
     <div className="w-full max-w-xl mx-auto space-y-4 animate-fade-in pb-4">
       {/* Premium Profile Header Card */}
@@ -64,14 +66,14 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
           <div className="relative flex-shrink-0">
             <img
               src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80"
-              alt={userName}
+              alt={firstName}
               className="w-18 h-18 sm:w-20 sm:h-20 rounded-2xl object-cover border-2 border-white shadow-md bg-slate-100"
             />
           </div>
 
           <div className="min-w-0 flex-1">
             <div className="flex items-center gap-1.5">
-              <h2 className="text-xl sm:text-2xl font-black tracking-tight text-slate-900 truncate">{userName}</h2>
+              <h2 className="text-xl sm:text-2xl font-black tracking-tight text-slate-900 truncate">{firstName}</h2>
             </div>
             <p className="text-xs text-slate-500 font-medium truncate mt-0.5">{userEmail}</p>
             <p className="text-[11px] text-slate-400 font-bold mt-0.5">{userPhone}</p>
