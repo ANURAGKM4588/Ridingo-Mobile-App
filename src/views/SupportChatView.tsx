@@ -86,8 +86,8 @@ export const SupportChatView: React.FC<SupportChatViewProps> = ({ onBack }) => {
 
   return (
     <div className="w-full h-full flex flex-col bg-[#FAFAFA] animate-fade-in overflow-hidden">
-      {/* Top Support Header */}
-      <div className="bg-white border-b border-slate-200 py-3 px-3.5 flex items-center justify-between shadow-xs z-10 flex-shrink-0 gap-2">
+      {/* Sticky Header Bar */}
+      <div className="bg-white border-b border-slate-200 pt-[max(env(safe-area-inset-top,54px),54px)] pb-3 px-3.5 flex items-center justify-between shadow-xs z-10 flex-shrink-0 gap-2">
         <div className="flex items-center gap-2 min-w-0">
           <button
             type="button"

@@ -30,7 +30,7 @@ export const NotificationsView: React.FC<NotificationsViewProps> = ({
   hideHeader = false,
 }) => {
   return (
-    <div className="w-full max-w-xl mx-auto space-y-3 animate-fade-in pb-10">
+    <div className="w-full max-w-xl mx-auto space-y-3 animate-fade-in pt-[max(env(safe-area-inset-top,54px),54px)] pb-10 px-4">
       {!hideHeader && (
         <div className="flex items-center justify-between px-1">
           <div className="flex-1 text-center">

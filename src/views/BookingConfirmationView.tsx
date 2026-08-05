@@ -146,7 +146,7 @@ export const BookingConfirmationView: React.FC<BookingConfirmationViewProps> = (
       )}
 
       {/* Fixed Centered Header */}
-      <div className="bg-white py-3 px-4 border-b border-slate-200 flex items-center justify-between shadow-xs flex-shrink-0 z-30">
+      <div className="bg-white pt-[max(env(safe-area-inset-top,54px),54px)] pb-3 px-4 border-b border-slate-200 flex items-center justify-between shadow-xs flex-shrink-0 z-30">
         <div className="w-12 flex items-center justify-start">
           <button
             type="button"

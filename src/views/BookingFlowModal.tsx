@@ -115,10 +115,10 @@ export const BookingFlowModal: React.FC<BookingFlowModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-md animate-fade-in">
-      <div className="bg-[#FAFAFA] text-[#0F172A] w-full max-w-xl rounded-[36px] overflow-hidden shadow-2xl border border-white flex flex-col max-h-[90vh]">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/60 backdrop-blur-md animate-fade-in pt-[max(env(safe-area-inset-top,44px),12px)] pb-[max(env(safe-area-inset-bottom,16px),12px)]">
+      <div className="bg-[#FAFAFA] text-[#0F172A] w-full max-w-xl rounded-[36px] overflow-hidden shadow-2xl border border-white flex flex-col h-full max-h-[92vh]">
         {/* Modal Header */}
-        <div className="px-6 pt-6 pb-4 bg-white border-b border-slate-200/70 flex items-center justify-between">
+        <div className="px-6 pt-5 pb-4 bg-white border-b border-slate-200/70 flex items-center justify-between">
           <div className="flex items-center gap-3">
             {step > 1 && (
               <button
