@@ -42,13 +42,11 @@ export const HomeView: React.FC<HomeViewProps> = ({
   return (
     <div className="w-full animate-fade-in pb-4">
 
-      {/* Greeting — scrolls with page content */}
-      <div className="-mx-4 px-4 pt-3 pb-3 bg-white">
-        <span className="text-[10px] font-extrabold uppercase tracking-widest text-[#4D7C0F] block">
-          {t.onDemandSubtitle}
-        </span>
-        <h1 className="text-xl sm:text-2xl font-black text-[#0F172A] tracking-tight truncate mt-0.5">
-          {t.greeting}
+      {/* Greeting — 2-line clean typography matching reference design */}
+      <div className="-mx-4 px-5 pt-2 pb-3 bg-white">
+        <h1 className="text-[26px] sm:text-[28px] font-medium text-slate-900 leading-[1.15] tracking-tight">
+          <span className="block">Good</span>
+          <span className="block">afternoon, Alexander 💪</span>
         </h1>
       </div>
 
