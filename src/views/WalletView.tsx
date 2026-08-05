@@ -114,7 +114,7 @@ export const WalletView: React.FC<WalletViewProps> = ({ onBack, currentRegion = 
       </div>
 
       {/* ─── FIXED ZONE 3: "Recent Transactions" label strip ─── */}
-      <div className="bg-[#FAFAFA] border-b border-slate-200 px-4 py-2.5 flex items-center justify-between flex-shrink-0 z-10">
+      <div className="bg-[#FAFAFA] border-b border-slate-200 px-4 py-2.5 flex items-center justify-between flex-shrink-0 z-10 animate-drop-up stagger-3">
         <h3 className="text-sm font-black text-[#0F172A] tracking-tight flex items-center gap-1.5">
           <Clock className="w-4 h-4 text-slate-500" /> Recent Transactions
         </h3>
@@ -126,10 +126,10 @@ export const WalletView: React.FC<WalletViewProps> = ({ onBack, currentRegion = 
       {/* ─── SCROLL ZONE: Only the transaction list scrolls ─── */}
       <div className="flex-1 overflow-y-auto scrollbar-none pb-24 bg-[#FAFAFA]">
         <div className="p-4 space-y-2">
-          {MOCK_TRANSACTIONS.map((tx) => (
+          {MOCK_TRANSACTIONS.map((tx, idx) => (
             <div
               key={tx.id}
-              className="bg-white rounded-2xl px-4 py-3 border border-slate-200 shadow-sm flex items-center justify-between"
+              className={`bg-white rounded-2xl px-4 py-3 border border-slate-200 shadow-sm flex items-center justify-between animate-drop-up stagger-${Math.min(idx + 3, 6)}`}
             >
               <div className="flex items-center gap-3 min-w-0">
                 <div className={`w-9 h-9 rounded-2xl flex items-center justify-center flex-shrink-0 ${
