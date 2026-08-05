@@ -64,6 +64,7 @@ export function App() {
   // Auth View Modal State - Open by default so Login screen appears first
   const [isAuthOpen, setIsAuthOpen] = useState<boolean>(true);
   const [authInitialMode, setAuthInitialMode] = useState<'login' | 'signup'>('login');
+  const [authKey, setAuthKey] = useState<number>(0);
 
   // Handlers
   const handleSelectService = (service: ServiceItem) => {
@@ -170,6 +171,7 @@ export function App() {
                 <>
                   {activeTab === 'home' && (
                     <HomeView
+                      key={authKey}
                       userName={userProfile.name}
                       onSelectService={handleSelectService}
                       onSelectVehicle={setSelectedVehicle}
@@ -326,6 +328,7 @@ export function App() {
                 email: userData.email || 'alexander.vance@executive.com',
                 phone: userData.phone || '+1 (555) 019-2834',
               });
+              setAuthKey((prev) => prev + 1);
               setIsAuthOpen(false);
               setActiveTab('home');
             }}
