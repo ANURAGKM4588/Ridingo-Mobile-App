@@ -31,10 +31,10 @@ export const WalletView: React.FC<WalletViewProps> = ({ onBack, currentRegion = 
   };
 
   return (
-    <div className="w-full h-full flex flex-col bg-[#FAFAFA] animate-fade-in animate-drop-up overflow-hidden">
+    <div className="w-full h-full flex flex-col bg-[#FAFAFA] animate-fade-in overflow-hidden">
 
       {/* ─── FIXED ZONE 1: Page Header ─── */}
-      <div className="bg-white border-b border-slate-200 shadow-xs flex-shrink-0 z-30">
+      <div className="bg-white border-b border-slate-200 shadow-xs flex-shrink-0 z-30 animate-drop-up stagger-1">
         {onBack ? (
           <div className="py-3.5 px-4 flex items-center justify-between">
             <div className="w-10 flex items-center justify-start">
@@ -60,7 +60,7 @@ export const WalletView: React.FC<WalletViewProps> = ({ onBack, currentRegion = 
       </div>
 
       {/* ─── FIXED ZONE 2: Wallet Reserve Card ─── */}
-      <div className="bg-white border-b border-slate-200 px-4 pb-4 pt-3 flex-shrink-0 z-20">
+      <div className="bg-white border-b border-slate-200 px-4 pb-4 pt-3 flex-shrink-0 z-20 animate-drop-up stagger-2">
         <div className="rounded-[28px] p-5 text-white bg-gradient-to-br from-[#121212] via-zinc-900 to-black shadow-xl border border-zinc-800 relative overflow-hidden group">
           <div className="absolute -top-10 -right-10 w-48 h-48 bg-[#84CC16]/20 rounded-full blur-3xl group-hover:bg-[#84CC16]/30 transition-all duration-700 pointer-events-none" />
 

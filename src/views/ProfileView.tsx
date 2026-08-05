@@ -57,9 +57,9 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
   const firstName = userName ? userName.trim().split(' ')[0] : 'Alexander';
 
   return (
-    <div className="w-full max-w-xl mx-auto space-y-4 animate-fade-in animate-drop-up pb-4">
+    <div className="w-full max-w-xl mx-auto space-y-4 animate-fade-in pb-4">
       {/* Premium Profile Header Card */}
-      <div className="rounded-[32px] p-5 text-slate-900 bg-gradient-to-b from-white via-white to-slate-50 border border-slate-200/90 shadow-lg relative overflow-hidden">
+      <div className="rounded-[32px] p-5 text-slate-900 bg-gradient-to-b from-white via-white to-slate-50 border border-slate-200/90 shadow-lg relative overflow-hidden animate-drop-up stagger-1">
         <div className="absolute top-0 right-0 w-32 h-32 bg-[#84CC16]/10 rounded-full blur-2xl pointer-events-none" />
 
         <div className="flex items-center gap-4 relative z-10">
@@ -100,7 +100,7 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
       </div>
 
       {/* Saved Locations */}
-      <div className="space-y-2">
+      <div className="space-y-2 animate-drop-up stagger-2">
         <div className="flex items-center justify-between px-1">
           <div className="flex items-center gap-2">
             <MapPin className="w-4 h-4 text-[#84CC16]" />
@@ -132,7 +132,7 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
       </div>
 
       {/* Emergency Contacts & SOS */}
-      <div className="space-y-2">
+      <div className="space-y-2 animate-drop-up stagger-3">
         <div className="flex items-center justify-between px-1">
           <div className="flex items-center gap-2">
             <ShieldAlert className="w-4 h-4 text-rose-600" />
@@ -154,7 +154,7 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
       </div>
 
       {/* Account Settings & Preferences */}
-      <div className="bg-white rounded-2xl p-2 border border-slate-200 shadow-xs space-y-1 text-xs font-bold">
+      <div className="bg-white rounded-2xl p-2 border border-slate-200 shadow-xs space-y-1 text-xs font-bold animate-drop-up stagger-4">
         <button
           type="button"
           onClick={onOpenWallet}

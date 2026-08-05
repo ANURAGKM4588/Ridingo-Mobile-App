@@ -43,9 +43,9 @@ export const LiveTrackingView: React.FC<LiveTrackingViewProps> = ({
   }, []);
 
   return (
-    <div className="relative w-full h-[620px] max-h-[75vh] rounded-[32px] overflow-hidden shadow-2xl border border-slate-200/80 bg-slate-900 animate-fade-in animate-drop-up">
+    <div className="relative w-full h-[620px] max-h-[75vh] rounded-[32px] overflow-hidden shadow-2xl border border-slate-200/80 bg-slate-900 animate-fade-in">
       {/* Interactive Vector Map Overlay */}
-      <div className="absolute inset-0 z-0">
+      <div className="absolute inset-0 z-0 animate-drop-up stagger-1">
         <iframe
           title="Live Chauffeur Tracking Map"
           src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d13221.144815417646!2d-118.41164998782352!3d34.06965022067711!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x80c2bc04d6d147ab%3A0xd6c7c379fd081ed1!2sBeverly%20Hills%2C%20CA!5e0!3m2!1sen!2sus!4v1700000000000!5m2!1sen!2sus"
@@ -70,7 +70,7 @@ export const LiveTrackingView: React.FC<LiveTrackingViewProps> = ({
       </div>
 
       {/* Top Floating Action Bar */}
-      <div className="absolute top-3 left-3 right-3 z-20 flex items-center justify-between pointer-events-auto">
+      <div className="absolute top-3 left-3 right-3 z-20 flex items-center justify-between pointer-events-auto animate-drop-up stagger-2">
         <div className="px-3 py-1.5 rounded-full bg-white/90 backdrop-blur-md border border-slate-200 shadow-md flex items-center gap-1.5 text-[10px] font-extrabold text-slate-800">
           <span className="w-2 h-2 rounded-full bg-[#84CC16] animate-pulse"></span>
           <span>Live Tracking Active</span>
@@ -95,7 +95,7 @@ export const LiveTrackingView: React.FC<LiveTrackingViewProps> = ({
       </div>
 
       {/* Bottom Minimal & User-Friendly Floating Card */}
-      <div className="absolute bottom-3 left-3 right-3 z-20 pointer-events-auto">
+      <div className="absolute bottom-3 left-3 right-3 z-20 pointer-events-auto animate-drop-up stagger-3">
         <div className="bg-white rounded-[28px] p-4 shadow-2xl border border-slate-200/90 space-y-3">
           {/* Arrival Status & ETA */}
           <div className="flex items-center justify-between border-b border-slate-100 pb-3">
