@@ -230,7 +230,7 @@ export const AuthView: React.FC<AuthViewProps> = ({
   };
 
   return (
-    <div className="absolute inset-0 z-50 bg-white flex flex-col justify-between overflow-y-auto animate-fade-in pt-[max(env(safe-area-inset-top),1.5rem)]">
+    <div className="absolute inset-0 z-50 bg-white flex flex-col justify-between overflow-y-auto animate-fade-in pt-[max(env(safe-area-inset-top),48px)] pb-[max(env(safe-area-inset-bottom),16px)]">
 
       {/* Main Body Content */}
       <div className="flex-1 px-6 py-4 max-w-md mx-auto w-full flex flex-col justify-center space-y-5">
