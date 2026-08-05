@@ -87,7 +87,7 @@ export const AuthView: React.FC<AuthViewProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 bg-white flex flex-col justify-between overflow-y-auto animate-fade-in">
+    <div className="absolute inset-0 z-50 bg-white flex flex-col justify-between overflow-y-auto animate-fade-in">
       {/* Header Bar */}
       <div className="w-full px-5 pt-[max(env(safe-area-inset-top),1.25rem)] pb-3 flex items-center justify-between border-b border-slate-100">
         <div className="flex items-center gap-2">
