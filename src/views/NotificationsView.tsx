@@ -33,16 +33,16 @@ export const NotificationsView: React.FC<NotificationsViewProps> = ({
     <div className="w-full max-w-xl mx-auto space-y-3 animate-fade-in pb-10">
       {!hideHeader && (
         <div className="flex items-center justify-between px-1">
-          <div>
+          <div className="flex-1 text-center">
             <h2 className="text-2xl font-black text-[#0F172A] tracking-tight">Notifications</h2>
-            <p className="text-xs text-slate-500 font-medium">Driver updates, dispatch alerts & exclusive perks</p>
+            <p className="text-xs text-slate-500 font-medium">Driver updates, dispatch alerts &amp; exclusive perks</p>
           </div>
 
           <button
             onClick={onMarkAllRead}
-            className="text-xs font-bold text-[#4D7C0F] hover:underline flex items-center gap-1 cursor-pointer"
+            className="text-xs font-bold text-[#4D7C0F] hover:underline flex items-center gap-1 cursor-pointer flex-shrink-0 ml-3"
           >
-            <Check className="w-3.5 h-3.5" /> Mark all as read
+            <Check className="w-3.5 h-3.5" /> Mark all
           </button>
         </div>
       )}

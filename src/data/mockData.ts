@@ -317,8 +317,8 @@ export const MOCK_BOOKINGS: Booking[] = [
 export const MOCK_TRANSACTIONS: WalletTransaction[] = [
   {
     id: 'tx-101',
-    title: 'Hourly Driver Service',
-    date: 'Aug 04, 2026 • 02:30 PM',
+    title: 'Hourly Chauffeur Service',
+    date: 'Aug 05, 2026 • 11:30 AM',
     amount: 68.00,
     type: 'debit',
     status: 'completed',
@@ -328,7 +328,7 @@ export const MOCK_TRANSACTIONS: WalletTransaction[] = [
   {
     id: 'tx-102',
     title: 'Wallet Top Up via Apple Pay',
-    date: 'Aug 03, 2026 • 10:15 AM',
+    date: 'Aug 04, 2026 • 09:15 AM',
     amount: 250.00,
     type: 'credit',
     status: 'completed',
@@ -336,7 +336,26 @@ export const MOCK_TRANSACTIONS: WalletTransaction[] = [
   },
   {
     id: 'tx-103',
-    title: 'Corporate Referral Cashback',
+    title: '30% Advance Deposit Refund',
+    date: 'Aug 02, 2026 • 06:40 PM',
+    amount: 42.50,
+    type: 'credit',
+    status: 'completed',
+    method: 'Instant Refund'
+  },
+  {
+    id: 'tx-104',
+    title: 'Airport Transfer - Terminal Pickup',
+    date: 'Jul 30, 2026 • 02:15 PM',
+    amount: 85.00,
+    type: 'debit',
+    status: 'completed',
+    method: 'RIDINGO Wallet',
+    bookingId: 'bk-899'
+  },
+  {
+    id: 'tx-105',
+    title: 'Corporate VIP Referral Cashback',
     date: 'Jul 29, 2026 • 04:00 PM',
     amount: 35.00,
     type: 'credit',
@@ -344,7 +363,7 @@ export const MOCK_TRANSACTIONS: WalletTransaction[] = [
     method: 'Bonus Promo'
   },
   {
-    id: 'tx-104',
+    id: 'tx-106',
     title: 'Night Party Designated Driver',
     date: 'Jul 26, 2026 • 11:45 PM',
     amount: 45.00,
@@ -352,6 +371,60 @@ export const MOCK_TRANSACTIONS: WalletTransaction[] = [
     status: 'completed',
     method: 'RIDINGO Wallet',
     bookingId: 'bk-900'
+  },
+  {
+    id: 'tx-107',
+    title: 'Wedding Luxury Fleet Chauffeur',
+    date: 'Jul 22, 2026 • 01:00 PM',
+    amount: 180.00,
+    type: 'debit',
+    status: 'completed',
+    method: 'Visa •••• 4921'
+  },
+  {
+    id: 'tx-108',
+    title: 'Auto-Reload Deposit Top Up',
+    date: 'Jul 20, 2026 • 10:00 AM',
+    amount: 300.00,
+    type: 'credit',
+    status: 'completed',
+    method: 'UPI / GPay'
+  },
+  {
+    id: 'tx-109',
+    title: 'Outstation Full-Day Driver',
+    date: 'Jul 15, 2026 • 08:30 AM',
+    amount: 140.00,
+    type: 'debit',
+    status: 'completed',
+    method: 'Mastercard •••• 8810'
+  },
+  {
+    id: 'tx-110',
+    title: 'Weekend Special Rider Bonus',
+    date: 'Jul 10, 2026 • 05:20 PM',
+    amount: 25.00,
+    type: 'credit',
+    status: 'completed',
+    method: 'Reward Cashback'
+  },
+  {
+    id: 'tx-111',
+    title: 'Office Daily Commute Chauffeur',
+    date: 'Jul 05, 2026 • 09:00 AM',
+    amount: 55.00,
+    type: 'debit',
+    status: 'completed',
+    method: 'RIDINGO Wallet'
+  },
+  {
+    id: 'tx-112',
+    title: 'Initial Welcome Bonus Credit',
+    date: 'Jul 01, 2026 • 12:00 PM',
+    amount: 50.00,
+    type: 'credit',
+    status: 'completed',
+    method: 'System Bonus'
   }
 ];
 

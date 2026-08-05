@@ -37,16 +37,16 @@ export const BookingsView: React.FC<BookingsViewProps> = ({
   });
 
   return (
-    <div className="w-full h-full flex flex-col bg-[#FAFAFA] animate-fade-in overflow-hidden -mx-4 -mt-3.5">
+    <div className="w-full h-full flex flex-col bg-[#FAFAFA] animate-fade-in overflow-hidden">
       {/* FIXED Sticky Header & Category Filter Bar */}
       <div className="bg-white border-b border-slate-200 shadow-xs flex-shrink-0 z-30">
-        {/* Title Header */}
+        {/* Title Header – center aligned */}
         <div className="py-3.5 px-4 flex items-center justify-between">
-          <div>
+          <div className="flex-1 text-center">
             <h2 className="text-xl font-black text-[#0F172A] tracking-tight">Booking History</h2>
             <p className="text-[11px] text-slate-500 font-medium">All professional driver assignments for your trips</p>
           </div>
-          <span className="px-2.5 py-1 rounded-full bg-slate-100 font-mono font-bold text-xs text-slate-700 border border-slate-200 shadow-xs">
+          <span className="px-2.5 py-1 rounded-full bg-slate-100 font-mono font-bold text-xs text-slate-700 border border-slate-200 shadow-xs flex-shrink-0">
             {filtered.length} {filtered.length === 1 ? 'Trip' : 'Trips'}
           </span>
         </div>

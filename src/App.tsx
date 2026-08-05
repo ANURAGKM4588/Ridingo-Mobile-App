@@ -99,7 +99,7 @@ export function App() {
 
         {/* Main Content Area based on Active Tab or Views */}
         {(() => {
-          const isFullView = isReviewOpen || isInvoiceOpen || isConfirmationOpen || isPaymentSettingsOpen || isSupportChatOpen || isLanguageSettingsOpen;
+          const isFullView = isReviewOpen || isInvoiceOpen || isConfirmationOpen || isPaymentSettingsOpen || isSupportChatOpen || isLanguageSettingsOpen || activeTab === 'wallet' || activeTab === 'bookings';
           return (
             <main className={`flex-1 relative flex flex-col min-h-0 w-full ${isFullView ? 'p-0 overflow-hidden' : 'px-4 pt-3.5 pb-24 overflow-y-auto scrollbar-none'}`}>
               {isLanguageSettingsOpen ? (
