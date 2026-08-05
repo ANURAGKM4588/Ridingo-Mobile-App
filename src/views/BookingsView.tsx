@@ -37,7 +37,7 @@ export const BookingsView: React.FC<BookingsViewProps> = ({
   });
 
   return (
-    <div className="w-full h-full flex flex-col bg-[#FAFAFA] animate-fade-in overflow-hidden">
+    <div className="w-full h-full flex flex-col bg-[#FAFAFA] animate-fade-in animate-drop-up overflow-hidden">
       {/* FIXED Sticky Header & Category Filter Bar */}
       <div className="bg-white border-b border-slate-200 shadow-xs flex-shrink-0 z-30">
         {/* Title Header – center aligned */}

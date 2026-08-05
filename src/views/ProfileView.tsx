@@ -57,7 +57,7 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
   const firstName = userName ? userName.trim().split(' ')[0] : 'Alexander';
 
   return (
-    <div className="w-full max-w-xl mx-auto space-y-4 animate-fade-in pb-4">
+    <div className="w-full max-w-xl mx-auto space-y-4 animate-fade-in animate-drop-up pb-4">
       {/* Premium Profile Header Card */}
       <div className="rounded-[32px] p-5 text-slate-900 bg-gradient-to-b from-white via-white to-slate-50 border border-slate-200/90 shadow-lg relative overflow-hidden">
         <div className="absolute top-0 right-0 w-32 h-32 bg-[#84CC16]/10 rounded-full blur-2xl pointer-events-none" />

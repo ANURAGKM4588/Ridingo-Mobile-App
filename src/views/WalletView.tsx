@@ -31,7 +31,7 @@ export const WalletView: React.FC<WalletViewProps> = ({ onBack, currentRegion = 
   };
 
   return (
-    <div className="w-full h-full flex flex-col bg-[#FAFAFA] animate-fade-in overflow-hidden">
+    <div className="w-full h-full flex flex-col bg-[#FAFAFA] animate-fade-in animate-drop-up overflow-hidden">
 
       {/* ─── FIXED ZONE 1: Page Header ─── */}
       <div className="bg-white border-b border-slate-200 shadow-xs flex-shrink-0 z-30">

@@ -43,7 +43,7 @@ export const LiveTrackingView: React.FC<LiveTrackingViewProps> = ({
   }, []);
 
   return (
-    <div className="relative w-full h-[620px] max-h-[75vh] rounded-[32px] overflow-hidden shadow-2xl border border-slate-200/80 bg-slate-900 animate-fade-in">
+    <div className="relative w-full h-[620px] max-h-[75vh] rounded-[32px] overflow-hidden shadow-2xl border border-slate-200/80 bg-slate-900 animate-fade-in animate-drop-up">
       {/* Interactive Vector Map Overlay */}
       <div className="absolute inset-0 z-0">
         <iframe
