@@ -39,7 +39,7 @@ export const BookingsView: React.FC<BookingsViewProps> = ({
   return (
     <div className="w-full h-full flex flex-col bg-[#FAFAFA] animate-fade-in overflow-hidden">
       {/* FIXED Sticky Header & Category Filter Bar */}
-      <div className="bg-white border-b border-slate-200 shadow-xs flex-shrink-0 z-30 animate-drop-up stagger-1">
+      <div className="bg-white border-b border-slate-200 shadow-xs flex-shrink-0 z-30 animate-drop-up stagger-1 pt-[max(env(safe-area-inset-top,54px),54px)]">
         {/* Title Header – center aligned */}
         <div className="py-3.5 px-4 flex items-center justify-between">
           <div className="flex-1 text-center">
@@ -78,7 +78,7 @@ export const BookingsView: React.FC<BookingsViewProps> = ({
       </div>
 
       {/* Middle Scrollable Section (Only the Booking History List Scrolls) */}
-      <div className="flex-1 overflow-y-auto p-4 space-y-4 scrollbar-none pb-28 bg-[#FAFAFA]">
+      <div className="flex-1 overflow-y-auto p-4 space-y-4 scrollbar-none pb-36 bg-[#FAFAFA]">
         {filtered.length === 0 ? (
           <div className="py-12 text-center space-y-3 bg-white rounded-3xl p-6 border border-slate-200 shadow-xs animate-drop-up stagger-2">
             <div className="w-12 h-12 rounded-full bg-slate-100 text-slate-400 mx-auto flex items-center justify-center">

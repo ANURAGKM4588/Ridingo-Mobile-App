@@ -34,7 +34,7 @@ export const WalletView: React.FC<WalletViewProps> = ({ onBack, currentRegion = 
     <div className="w-full h-full flex flex-col bg-[#FAFAFA] animate-fade-in overflow-hidden">
 
       {/* ─── FIXED ZONE 1: Page Header ─── */}
-      <div className="bg-white border-b border-slate-200 shadow-xs flex-shrink-0 z-30 animate-drop-up stagger-1">
+      <div className="bg-white border-b border-slate-200 shadow-xs flex-shrink-0 z-30 animate-drop-up stagger-1 pt-[max(env(safe-area-inset-top,54px),54px)]">
         {onBack ? (
           <div className="py-3.5 px-4 flex items-center justify-between">
             <div className="w-10 flex items-center justify-start">
@@ -124,7 +124,7 @@ export const WalletView: React.FC<WalletViewProps> = ({ onBack, currentRegion = 
       </div>
 
       {/* ─── SCROLL ZONE: Only the transaction list scrolls ─── */}
-      <div className="flex-1 overflow-y-auto scrollbar-none pb-24 bg-[#FAFAFA]">
+      <div className="flex-1 overflow-y-auto scrollbar-none pb-36 bg-[#FAFAFA]">
         <div className="p-4 space-y-2">
           {MOCK_TRANSACTIONS.map((tx, idx) => (
             <div

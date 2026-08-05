@@ -43,7 +43,7 @@ export const LiveTrackingView: React.FC<LiveTrackingViewProps> = ({
   }, []);
 
   return (
-    <div className="relative w-full h-[620px] max-h-[75vh] rounded-[32px] overflow-hidden shadow-2xl border border-slate-200/80 bg-slate-900 animate-fade-in">
+    <div className="relative w-full h-[calc(100vh-2rem)] min-h-[620px] rounded-[32px] overflow-hidden shadow-2xl border border-slate-200/80 bg-slate-900 animate-fade-in">
       {/* Interactive Vector Map Overlay */}
       <div className="absolute inset-0 z-0 animate-drop-up stagger-1">
         <iframe
@@ -70,7 +70,7 @@ export const LiveTrackingView: React.FC<LiveTrackingViewProps> = ({
       </div>
 
       {/* Top Floating Action Bar */}
-      <div className="absolute top-3 left-3 right-3 z-20 flex items-center justify-between pointer-events-auto animate-drop-up stagger-2">
+      <div className="absolute top-[max(env(safe-area-inset-top,54px),54px)] left-3.5 right-3.5 z-20 flex items-center justify-between pointer-events-auto animate-drop-up stagger-2">
         <div className="px-3 py-1.5 rounded-full bg-white/90 backdrop-blur-md border border-slate-200 shadow-md flex items-center gap-1.5 text-[10px] font-extrabold text-slate-800">
           <span className="w-2 h-2 rounded-full bg-[#fcd502] animate-pulse"></span>
           <span>Live Tracking Active</span>
@@ -95,7 +95,7 @@ export const LiveTrackingView: React.FC<LiveTrackingViewProps> = ({
       </div>
 
       {/* Bottom Minimal & User-Friendly Floating Card */}
-      <div className="absolute bottom-3 left-3 right-3 z-20 pointer-events-auto animate-drop-up stagger-3">
+      <div className="absolute bottom-28 left-3.5 right-3.5 z-20 pointer-events-auto animate-drop-up stagger-3">
         <div className="bg-white rounded-[28px] p-4 shadow-2xl border border-slate-200/90 space-y-3">
           {/* Arrival Status & ETA */}
           <div className="flex items-center justify-between border-b border-slate-100 pb-3">
