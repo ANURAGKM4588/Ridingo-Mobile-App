@@ -315,24 +315,24 @@ export const BookingConfirmationView: React.FC<BookingConfirmationViewProps> = (
         </div>
       </div>
 
-      {/* FIXED Bottom Action Bar */}
-      <div className="bg-white/95 backdrop-blur-md border-t border-slate-200 p-3 px-4 flex-shrink-0 shadow-lg z-30 space-y-2">
+      {/* FIXED Bottom Action Bar - Elevated above iOS Home Indicator Line */}
+      <div className="bg-white border-t border-slate-200 p-3.5 px-4 pb-[max(env(safe-area-inset-bottom,0px)+0.85rem,1.25rem)] flex-shrink-0 shadow-lg z-30 space-y-2.5">
         <button
           type="button"
           onClick={onTrackDriver}
-          className="w-full py-3.5 rounded-2xl bg-[#121212] hover:bg-black text-white font-black text-xs sm:text-sm flex items-center justify-center gap-2 shadow-xl hover:shadow-black/20 transition-all border border-zinc-800 cursor-pointer"
+          className="w-full h-13 py-3.5 rounded-2xl bg-[#121212] hover:bg-black text-white font-black text-xs sm:text-sm uppercase tracking-wider flex items-center justify-center gap-2 shadow-xl hover:shadow-black/20 transition-all border border-zinc-800 cursor-pointer"
         >
           <Navigation className="w-4 h-4 text-[#84CC16]" />
           <span>Track Chauffeur on Live Map</span>
         </button>
 
-        <div className="grid grid-cols-2 gap-2">
+        <div className="grid grid-cols-2 gap-2.5">
           {/* Universal Share Button */}
           <button
             type="button"
             onClick={handleNativeSharePageImage}
             disabled={isSharing}
-            className="py-2.5 rounded-2xl bg-white border border-slate-200 text-slate-800 font-bold text-xs flex items-center justify-center gap-1.5 hover:bg-slate-50 transition-colors shadow-sm cursor-pointer disabled:opacity-50"
+            className="h-11 py-2.5 rounded-2xl bg-white border border-slate-200 text-slate-800 font-extrabold text-xs flex items-center justify-center gap-1.5 hover:bg-slate-50 transition-colors shadow-sm cursor-pointer disabled:opacity-50"
           >
             {isSharing ? (
               <Loader2 className="w-4 h-4 text-[#4D7C0F] animate-spin" />
@@ -345,7 +345,7 @@ export const BookingConfirmationView: React.FC<BookingConfirmationViewProps> = (
           <button
             type="button"
             onClick={onClose}
-            className="py-2.5 rounded-2xl bg-slate-100 border border-slate-200 text-slate-700 font-bold text-xs flex items-center justify-center gap-1.5 hover:bg-slate-200 transition-colors cursor-pointer"
+            className="h-11 py-2.5 rounded-2xl bg-slate-100 border border-slate-200 text-slate-700 font-extrabold text-xs flex items-center justify-center gap-1.5 hover:bg-slate-200 transition-colors cursor-pointer"
           >
             Back to Home
           </button>

@@ -264,12 +264,12 @@ export const LanguageRegionSettingsView: React.FC<LanguageRegionSettingsViewProp
         </div>
       </div>
 
-      {/* FIXED Bottom Action Bar */}
-      <div className="bg-white/95 backdrop-blur-md border-t border-slate-200 p-3 px-4 flex-shrink-0 shadow-lg z-30">
+      {/* FIXED Bottom Action Bar - Elevated above iOS Home Indicator Line */}
+      <div className="bg-white border-t border-slate-200 p-3.5 px-4 pb-[max(env(safe-area-inset-bottom,0px)+0.85rem,1.25rem)] flex-shrink-0 shadow-lg z-30">
         <button
           type="button"
           onClick={handleSave}
-          className="w-full py-3 rounded-2xl bg-slate-900 hover:bg-black text-[#84CC16] font-black text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow-lg transition-transform active:scale-[0.98] cursor-pointer"
+          className="w-full h-13 py-3.5 rounded-2xl bg-slate-900 hover:bg-black text-[#84CC16] font-black text-xs sm:text-sm uppercase tracking-wider flex items-center justify-center gap-2 shadow-lg transition-transform active:scale-[0.98] cursor-pointer"
         >
           <span>Save Language & Region Preferences</span>
           <Check className="w-4 h-4 stroke-[3]" />

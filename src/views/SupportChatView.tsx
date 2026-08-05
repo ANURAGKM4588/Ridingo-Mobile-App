@@ -221,7 +221,7 @@ export const SupportChatView: React.FC<SupportChatViewProps> = ({ onBack }) => {
           e.preventDefault();
           handleSendMessage();
         }}
-        className="p-3 bg-white border-t border-slate-200 flex items-center gap-2 flex-shrink-0"
+        className="p-3 px-4 pb-[max(env(safe-area-inset-bottom,0px)+0.85rem,1.25rem)] bg-white border-t border-slate-200 flex items-center gap-2 flex-shrink-0 z-30"
       >
         <button
           type="button"
