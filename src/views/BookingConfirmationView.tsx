@@ -1,7 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import confetti from 'canvas-confetti';
 import html2canvas from 'html2canvas';
-import { Share } from '@capacitor/share';
 import { 
   CheckCircle2, 
   MapPin, 
@@ -54,7 +53,7 @@ export const BookingConfirmationView: React.FC<BookingConfirmationViewProps> = (
   const advancePaid = Math.round(grandTotal * 0.30 * 100) / 100;
   const remainingBalance = Math.round((grandTotal - advancePaid) * 100) / 100;
 
-  // Direct Native Stock iOS & Android Share Sheet Image Handler (Zero Downloads, Zero Popups!)
+  // Direct Native Stock iOS & Android Share Sheet Image Handler
   const handleNativeSharePageImage = async () => {
     if (!pageRef.current || isSharing) return;
     setIsSharing(true);
@@ -69,32 +68,27 @@ export const BookingConfirmationView: React.FC<BookingConfirmationViewProps> = (
       });
 
       const dataUrl = canvas.toDataURL('image/png');
-
-      // Convert dataUrl to a File Blob
       const res = await fetch(dataUrl);
       const blob = await res.blob();
       const file = new File([blob], `RIDINGO-Booking-${booking.bookingNumber || 'Confirmed'}.png`, { type: 'image/png' });
 
-      // 2. Open Native iOS & Android Stock Share Sheet with the page image attached
+      // 2. Open Native iOS & Android Stock Share Sheet
       if (navigator.canShare && navigator.canShare({ files: [file] })) {
         await navigator.share({
           title: `RIDINGO Booking #${booking.bookingNumber}`,
           text: `RIDINGO Booking Confirmed #${booking.bookingNumber}: ${booking.pickupLocation} ➔ ${booking.destinationLocation} (${booking.date}, ${booking.time})`,
           files: [file],
         });
-      } else {
-        // Fallback to Capacitor Share Plugin for native mobile builds
-        await Share.share({
+      } else if (navigator.share) {
+        await navigator.share({
           title: `RIDINGO Booking #${booking.bookingNumber}`,
-          text: `RIDINGO Booking Confirmed #${booking.bookingNumber}: ${booking.pickupLocation} ➔ ${booking.destinationLocation}`,
-          url: dataUrl,
-          dialogTitle: 'Share Booking Confirmation',
+          text: `RIDINGO Booking Confirmed #${booking.bookingNumber}: ${booking.pickupLocation} ➔ ${booking.destinationLocation} (${booking.date}, ${booking.time})`,
+          url: window.location.href,
         });
       }
     } catch (err: any) {
-      // User closed or cancelled native share sheet
       if (err?.name !== 'AbortError') {
-        console.log("Native share result:", err);
+        console.log("Native share completed:", err);
       }
     } finally {
       setIsSharing(false);
