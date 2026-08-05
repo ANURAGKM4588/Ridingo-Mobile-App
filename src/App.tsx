@@ -97,7 +97,7 @@ export function App() {
   return (
     <div className="min-h-screen h-screen w-full bg-slate-900 md:bg-slate-950 flex items-center justify-center selection:bg-[#fcd502] overflow-hidden p-0 md:p-3">
       {/* Sleek Mobile App Container for All Mobile Devices, iPhone Notch, iPads & Desktop */}
-      <div className="w-full max-w-md h-full md:h-[94vh] max-h-screen md:rounded-[44px] bg-[#FAFAFA] flex flex-col relative shadow-2xl border-x md:border border-slate-200/80 overflow-hidden">
+      <div className="w-full max-w-md h-full md:h-[94vh] max-h-screen md:rounded-[44px] bg-white flex flex-col relative shadow-2xl border-x md:border border-slate-200/80 overflow-hidden">
         {/* Global Header Bar */}
         {activeTab === 'home' && !isReviewOpen && !isInvoiceOpen && !isConfirmationOpen && !isPaymentSettingsOpen && !isSupportChatOpen && !isLanguageSettingsOpen && (
           <HeaderBar
