@@ -21,6 +21,7 @@ interface HomeViewProps {
   onRepeatBooking?: (booking: Booking) => void;
   currentLanguage?: LanguageCode;
   currentRegion?: RegionCode;
+  userName?: string;
 }
 
 export const HomeView: React.FC<HomeViewProps> = ({
@@ -34,8 +35,10 @@ export const HomeView: React.FC<HomeViewProps> = ({
   onRepeatBooking,
   currentLanguage = 'en-us',
   currentRegion = 'in',
+  userName = 'Alexander Vance',
 }) => {
   const t = TRANSLATIONS[currentLanguage] || TRANSLATIONS['en-us'];
+  const firstName = userName ? userName.trim().split(' ')[0] : 'Alexander';
   const [searchQuery, setSearchQuery] = useState('');
   const recentBookingList = (recentBookings && recentBookings.length > 0) ? recentBookings : MOCK_BOOKINGS;
 
@@ -46,7 +49,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
       <div className="-mx-4 px-5 pt-2 pb-3 bg-white">
         <h1 className="text-[26px] sm:text-[28px] font-medium text-slate-900 leading-[1.15] tracking-tight">
           <span className="block">Good</span>
-          <span className="block">afternoon, Alexander 💪</span>
+          <span className="block">afternoon, {firstName} 💪</span>
         </h1>
       </div>
 

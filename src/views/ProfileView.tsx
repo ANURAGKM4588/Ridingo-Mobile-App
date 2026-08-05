@@ -25,6 +25,9 @@ interface ProfileViewProps {
   onOpenAuth?: (mode?: 'login' | 'signup') => void;
   currentLanguage?: LanguageCode;
   currentRegion?: RegionCode;
+  userName?: string;
+  userEmail?: string;
+  userPhone?: string;
 }
 
 export const ProfileView: React.FC<ProfileViewProps> = ({
@@ -34,6 +37,9 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
   onOpenAuth,
   currentLanguage = 'en-us',
   currentRegion = 'in',
+  userName = 'Alexander Vance',
+  userEmail = 'alexander.vance@executive.com',
+  userPhone = '+1 (555) 019-2834',
 }) => {
   const t = TRANSLATIONS[currentLanguage] || TRANSLATIONS['en-us'];
   const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
@@ -65,10 +71,10 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
 
           <div className="min-w-0 flex-1">
             <div className="flex items-center gap-1.5">
-              <h2 className="text-xl sm:text-2xl font-black tracking-tight text-slate-900 truncate">Johnathan Sterling</h2>
+              <h2 className="text-xl sm:text-2xl font-black tracking-tight text-slate-900 truncate">{userName}</h2>
             </div>
-            <p className="text-xs text-slate-500 font-medium truncate mt-0.5">johnathan.sterling@executive.com</p>
-            <p className="text-[11px] text-slate-400 font-bold mt-0.5">+1 (555) 019-2834</p>
+            <p className="text-xs text-slate-500 font-medium truncate mt-0.5">{userEmail}</p>
+            <p className="text-[11px] text-slate-400 font-bold mt-0.5">{userPhone}</p>
           </div>
         </div>
 

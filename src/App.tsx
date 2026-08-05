@@ -36,6 +36,11 @@ export function App() {
   const [bookings, setBookings] = useState<Booking[]>(MOCK_BOOKINGS);
   const [activeBooking, setActiveBooking] = useState<Booking | null>(MOCK_BOOKINGS[0]);
   const [notifications, setNotifications] = useState(MOCK_NOTIFICATIONS);
+  const [userProfile, setUserProfile] = useState({
+    name: 'Alexander Vance',
+    email: 'alexander.vance@executive.com',
+    phone: '+1 (555) 019-2834',
+  });
 
   // View / Modal Flags
   const [isBookingFlowOpen, setIsBookingFlowOpen] = useState<boolean>(false);
@@ -95,7 +100,7 @@ export function App() {
         {/* Global Header Bar */}
         {activeTab === 'home' && !isReviewOpen && !isInvoiceOpen && !isConfirmationOpen && !isPaymentSettingsOpen && !isSupportChatOpen && !isLanguageSettingsOpen && (
           <HeaderBar
-            userName="Alexander Vance"
+            userName={userProfile.name}
             unreadNotificationsCount={unreadCount}
             onOpenNotifications={() => setIsNotificationsOpen(true)}
             onOpenProfile={() => setActiveTab('profile')}
@@ -165,6 +170,7 @@ export function App() {
                 <>
                   {activeTab === 'home' && (
                     <HomeView
+                      userName={userProfile.name}
                       onSelectService={handleSelectService}
                       onSelectVehicle={setSelectedVehicle}
                       selectedVehicle={selectedVehicle}
@@ -211,6 +217,9 @@ export function App() {
 
                   {activeTab === 'profile' && (
                     <ProfileView
+                      userName={userProfile.name}
+                      userEmail={userProfile.email}
+                      userPhone={userProfile.phone}
                       onOpenWallet={() => setIsPaymentSettingsOpen(true)}
                       onOpenSupport={() => setIsSupportChatOpen(true)}
                       onOpenLanguage={() => setIsLanguageSettingsOpen(true)}
@@ -312,8 +321,12 @@ export function App() {
             onClose={() => setIsAuthOpen(false)}
             initialMode={authInitialMode}
             onSuccess={(userData) => {
+              setUserProfile({
+                name: userData.name || 'Alexander Vance',
+                email: userData.email || 'alexander.vance@executive.com',
+                phone: userData.phone || '+1 (555) 019-2834',
+              });
               setIsAuthOpen(false);
-              alert(`Successfully authenticated as ${userData.name}!`);
             }}
             currentLanguage={currentLanguage}
           />
