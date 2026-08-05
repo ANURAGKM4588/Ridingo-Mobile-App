@@ -110,3 +110,26 @@
 .animate-slide-left {
   animation: slide-left 0.28s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
+
+/* Luxury Drop-Up Reveal Keyframe Animations */
+@keyframes drop-up {
+  0% {
+    opacity: 0;
+    transform: translateY(40px) scale(0.96);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.animate-drop-up {
+  animation: drop-up 0.65s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.stagger-1 { animation-delay: 0.05s; }
+.stagger-2 { animation-delay: 0.12s; }
+.stagger-3 { animation-delay: 0.19s; }
+.stagger-4 { animation-delay: 0.26s; }
+.stagger-5 { animation-delay: 0.33s; }
+.stagger-6 { animation-delay: 0.40s; }

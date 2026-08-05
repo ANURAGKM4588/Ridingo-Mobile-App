@@ -46,17 +46,15 @@ export const HomeView: React.FC<HomeViewProps> = ({
     <div className="w-full animate-fade-in animate-scale-up transition-all duration-500 pb-4">
 
       {/* Greeting — 2-line clean typography matching reference design */}
-      <div className="-mx-4 px-5 pt-2 pb-3 bg-white">
+      <div className="-mx-4 px-5 pt-2 pb-3 bg-white animate-drop-up stagger-1">
         <h1 className="text-[26px] sm:text-[28px] font-medium text-slate-900 leading-[1.15] tracking-tight">
           <span className="block">Good</span>
           <span className="block">afternoon, {firstName} 💪</span>
         </h1>
       </div>
 
-      {/* Search Bar — sticky top-0.
-          Direct sibling of root div = sticky boundary is entire page.
-          Sticks flush under header for the full page scroll. No bleed. */}
-      <div className="sticky top-0 z-40 bg-white -mx-4 px-4 py-2.5 border-b border-slate-200 shadow-sm">
+      {/* Search Bar — sticky top-0 */}
+      <div className="sticky top-0 z-40 bg-white -mx-4 px-4 py-2.5 border-b border-slate-200 shadow-sm animate-drop-up stagger-2">
         <div className="relative w-full">
           <div className="absolute inset-y-0 left-3.5 flex items-center pointer-events-none">
             <Search className="w-4 h-4 text-[#84CC16]" />
@@ -74,17 +72,19 @@ export const HomeView: React.FC<HomeViewProps> = ({
       {/* ── SCROLLABLE CONTENT ─── */}
       <div className="space-y-4 pt-4">
         {/* Quick Booking Floating Widget */}
-        <QuickBookingWidget
-          onStartBooking={onStartBooking}
-          vehicles={MOCK_VEHICLES}
-          selectedVehicle={selectedVehicle}
-          onOpenVehicleModal={() => { }}
-          currentLanguage={currentLanguage}
-        />
+        <div className="animate-drop-up stagger-3">
+          <QuickBookingWidget
+            onStartBooking={onStartBooking}
+            vehicles={MOCK_VEHICLES}
+            selectedVehicle={selectedVehicle}
+            onOpenVehicleModal={() => { }}
+            currentLanguage={currentLanguage}
+          />
+        </div>
 
         {/* Horizontal Scrollable Recent Bookings Section */}
         {recentBookingList.length > 0 && (
-          <div className="space-y-3">
+          <div className="space-y-3 animate-drop-up stagger-4">
             <div className="flex items-center justify-between px-0">
               <div className="flex items-center gap-1.5">
                 <span className="w-2 h-2 rounded-full bg-[#84CC16] animate-pulse flex-shrink-0" />
@@ -156,7 +156,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
         )}
 
         {/* Spotlight Master Chauffeur */}
-        <div className="glass-card rounded-3xl p-4 border border-slate-200 bg-gradient-to-r from-slate-900 via-zinc-900 to-[#121212] text-white shadow-xl relative overflow-hidden group">
+        <div className="glass-card rounded-3xl p-4 border border-slate-200 bg-gradient-to-r from-slate-900 via-zinc-900 to-[#121212] text-white shadow-xl relative overflow-hidden group animate-drop-up stagger-5">
           <div className="flex items-center justify-between mb-2.5">
             <span className="px-2.5 py-0.5 rounded-full bg-[#84CC16] text-[#121212] text-[10px] font-black uppercase tracking-wider">
               Spotlight Chauffeur
@@ -188,18 +188,24 @@ export const HomeView: React.FC<HomeViewProps> = ({
         </div>
 
         {/* Promotions Carousel */}
-        <PromotionsCarousel
-          promotions={PROMOTIONS}
-          onClaimPromotion={(promo) => {
-            alert(`Applied promo code ${promo.code} to your next booking!`);
-          }}
-        />
+        <div className="animate-drop-up stagger-6">
+          <PromotionsCarousel
+            promotions={PROMOTIONS}
+            onClaimPromotion={(promo) => {
+              alert(`Applied promo code ${promo.code} to your next booking!`);
+            }}
+          />
+        </div>
 
-        {/* Why Choose RIDINGO */}
-        <WhyChooseUs />
+        {/* Verified User Reviews & Rating Badges */}
+        <div className="animate-drop-up stagger-6">
+          <BrandReviews />
+        </div>
 
-        {/* Brand Customer Reviews */}
-        <BrandReviews />
+        {/* Why Choose Us */}
+        <div className="animate-drop-up stagger-6">
+          <WhyChooseUs />
+        </div>
       </div>
     </div>
   );
