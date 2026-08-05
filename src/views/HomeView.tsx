@@ -52,7 +52,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
       </div>
 
       {/* Search Bar — sticky: scrolls with page, sticks under header once greeting leaves view */}
-      <div className="sticky top-0 z-40 bg-white/95 backdrop-blur-xl -mx-4 px-4 py-2.5 border-b border-slate-200/80 shadow-sm">
+      <div className="sticky top-0 z-40 bg-white -mx-4 px-4 py-2.5 border-b border-slate-200 shadow-sm">
         <div className="relative w-full">
           <div className="absolute inset-y-0 left-3.5 flex items-center pointer-events-none">
             <Search className="w-4 h-4 text-[#84CC16]" />
