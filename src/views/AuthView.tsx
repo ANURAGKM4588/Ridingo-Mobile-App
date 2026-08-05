@@ -26,8 +26,8 @@ interface AuthViewProps {
 }
 
 const COUNTRY_CODES = [
-  { code: '+1', flag: '🇺🇸', name: 'USA / Canada' },
   { code: '+91', flag: '🇮🇳', name: 'India' },
+  { code: '+1', flag: '🇺🇸', name: 'USA / Canada' },
   { code: '+44', flag: '🇬🇧', name: 'United Kingdom' },
   { code: '+971', flag: '🇦🇪', name: 'UAE' },
   { code: '+49', flag: '🇩🇪', name: 'Germany' },
