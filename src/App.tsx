@@ -95,7 +95,7 @@ export function App() {
   const unreadCount = notifications.filter((n) => !n.read).length;
 
   return (
-    <div className="min-h-screen h-screen w-full bg-slate-900 md:bg-slate-950 flex items-center justify-center selection:bg-[#84CC16] overflow-hidden p-0 md:p-3">
+    <div className="min-h-screen h-screen w-full bg-slate-900 md:bg-slate-950 flex items-center justify-center selection:bg-[#fcd502] overflow-hidden p-0 md:p-3">
       {/* Sleek Mobile App Container for All Mobile Devices, iPhone Notch, iPads & Desktop */}
       <div className="w-full max-w-md h-full md:h-[94vh] max-h-screen md:rounded-[44px] bg-[#FAFAFA] flex flex-col relative shadow-2xl border-x md:border border-slate-200/80 overflow-hidden">
         {/* Global Header Bar */}
@@ -276,7 +276,7 @@ export function App() {
                 <div className="flex items-center gap-2">
                   <h3 className="font-extrabold text-sm text-slate-900 tracking-tight">Notifications</h3>
                   {notifications.filter(n => !n.read).length > 0 && (
-                    <span className="px-2 py-0.5 rounded-full bg-[#84CC16] text-[#121212] text-[10px] font-black">
+                    <span className="px-2 py-0.5 rounded-full bg-[#fcd502] text-[#121212] text-[10px] font-black">
                       {notifications.filter(n => !n.read).length}
                     </span>
                   )}
@@ -285,7 +285,7 @@ export function App() {
                 <button
                   type="button"
                   onClick={() => setNotifications(notifications.map((n) => ({ ...n, read: true })))}
-                  className="text-[11px] font-extrabold text-[#4D7C0F] hover:underline whitespace-nowrap cursor-pointer"
+                  className="text-[11px] font-extrabold text-[#a18200] hover:underline whitespace-nowrap cursor-pointer"
                 >
                   Mark all read
                 </button>

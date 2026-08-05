@@ -78,8 +78,8 @@ export const BrandReviews: React.FC = () => {
       {/* Section Header */}
       <div className="flex items-center justify-between px-1">
         <div>
-          <div className="flex items-center gap-1.5 text-[10px] font-black uppercase tracking-wider text-[#4D7C0F]">
-            <ShieldCheck className="w-3.5 h-3.5 text-[#84CC16]" />
+          <div className="flex items-center gap-1.5 text-[10px] font-black uppercase tracking-wider text-[#a18200]">
+            <ShieldCheck className="w-3.5 h-3.5 text-[#fcd502]" />
             <span>Verified Customer Reviews</span>
           </div>
           <h3 className="text-base font-black text-[#0F172A] tracking-tight mt-0.5 flex items-center gap-2">
@@ -134,7 +134,7 @@ export const BrandReviews: React.FC = () => {
 
         {/* Vehicle Badge */}
         <div className="flex items-center gap-1.5 text-[11px] font-bold text-slate-600 bg-slate-50 p-2 rounded-xl border border-slate-200/60 z-10 relative">
-          <Car className="w-3.5 h-3.5 text-[#84CC16]" />
+          <Car className="w-3.5 h-3.5 text-[#fcd502]" />
           <span>Vehicle Driven: <strong>{currentReview.vehicleDriven}</strong></span>
         </div>
 

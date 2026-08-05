@@ -60,7 +60,7 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
     <div className="w-full max-w-xl mx-auto space-y-4 animate-fade-in pb-4">
       {/* Premium Profile Header Card */}
       <div className="rounded-[32px] p-5 text-slate-900 bg-gradient-to-b from-white via-white to-slate-50 border border-slate-200/90 shadow-lg relative overflow-hidden animate-drop-up stagger-1">
-        <div className="absolute top-0 right-0 w-32 h-32 bg-[#84CC16]/10 rounded-full blur-2xl pointer-events-none" />
+        <div className="absolute top-0 right-0 w-32 h-32 bg-[#fcd502]/10 rounded-full blur-2xl pointer-events-none" />
 
         <div className="flex items-center gap-4 relative z-10">
           <div className="relative flex-shrink-0">
@@ -103,13 +103,13 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
       <div className="space-y-2 animate-drop-up stagger-2">
         <div className="flex items-center justify-between px-1">
           <div className="flex items-center gap-2">
-            <MapPin className="w-4 h-4 text-[#84CC16]" />
+            <MapPin className="w-4 h-4 text-[#fcd502]" />
             <h3 className="text-sm font-black text-[#0F172A] tracking-tight">{t.savedAddresses}</h3>
           </div>
           <button 
             type="button"
             onClick={() => alert("Add new address modal coming soon")}
-            className="text-[11px] font-extrabold text-[#4D7C0F] hover:underline flex items-center gap-0.5 cursor-pointer"
+            className="text-[11px] font-extrabold text-[#a18200] hover:underline flex items-center gap-0.5 cursor-pointer"
           >
             <Plus className="w-3 h-3" /> Add Address
           </button>
@@ -161,7 +161,7 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
           className="w-full p-3 rounded-xl hover:bg-slate-50 flex items-center justify-between text-slate-800 transition-colors cursor-pointer"
         >
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-lg bg-lime-100 text-[#4D7C0F] flex items-center justify-center">
+            <div className="w-8 h-8 rounded-lg bg-lime-100 text-[#a18200] flex items-center justify-center">
               <CreditCard className="w-4 h-4" />
             </div>
             <span className="font-extrabold">{t.paymentMethodsWallet}</span>
@@ -194,7 +194,7 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
             </div>
             <span className="font-extrabold">{t.languageRegion}</span>
           </div>
-          <span className="text-[11px] font-extrabold text-[#4D7C0F]">
+          <span className="text-[11px] font-extrabold text-[#a18200]">
             {currentLanguage === 'ml-in' ? 'മലയാളം' : currentLanguage === 'hi-in' ? 'ഹിन्दी' : currentLanguage === 'es-es' ? 'Español' : currentLanguage === 'fr-fr' ? 'Français' : currentLanguage === 'de-de' ? 'Deutsch' : currentLanguage === 'ar-sa' ? 'العربية' : currentLanguage === 'pt-br' ? 'Português' : 'English'} • {CURRENCIES[currentRegion]?.currencySymbol || '$'} ({CURRENCIES[currentRegion]?.currencyCode || 'USD'})
           </span>
         </button>

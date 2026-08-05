@@ -89,7 +89,7 @@ export const PaymentSettingsView: React.FC<PaymentSettingsViewProps> = ({ onBack
           <button
             type="button"
             onClick={onBack}
-            className="text-xs font-bold text-[#4D7C0F] hover:underline cursor-pointer whitespace-nowrap"
+            className="text-xs font-bold text-[#a18200] hover:underline cursor-pointer whitespace-nowrap"
           >
             Done
           </button>
@@ -108,7 +108,7 @@ export const PaymentSettingsView: React.FC<PaymentSettingsViewProps> = ({ onBack
             { id: 'apple-pay', title: 'Apple Pay', desc: 'Touch ID / Face ID Instant Pay', icon: Smartphone, iconBg: 'bg-slate-900 text-white' },
             { id: 'gpay', title: 'Google Pay', desc: 'Direct One-Tap Wallet', icon: Smartphone, iconBg: 'bg-blue-600 text-white' },
             { id: 'upi', title: 'UPI AutoPay / VPA', desc: upiId, icon: Sparkles, iconBg: 'bg-emerald-600 text-white' },
-            { id: 'visa-4921', title: 'Visa •••• 4921', desc: 'Primary Credit Card', icon: CreditCard, iconBg: 'bg-slate-800 text-[#84CC16]' },
+            { id: 'visa-4921', title: 'Visa •••• 4921', desc: 'Primary Credit Card', icon: CreditCard, iconBg: 'bg-slate-800 text-[#fcd502]' },
             { id: 'cash', title: 'Pay Cash to Driver', desc: 'Direct cash payment at trip completion', icon: DollarSign, iconBg: 'bg-amber-600 text-white' },
           ].map((pm) => {
             const isSelected = defaultMethod === pm.id;
@@ -137,7 +137,7 @@ export const PaymentSettingsView: React.FC<PaymentSettingsViewProps> = ({ onBack
 
                 <div className="flex items-center gap-2 flex-shrink-0 ml-2">
                   {isSelected ? (
-                    <div className="w-6 h-6 rounded-full bg-[#84CC16] text-[#121212] flex items-center justify-center shadow-sm">
+                    <div className="w-6 h-6 rounded-full bg-[#fcd502] text-[#121212] flex items-center justify-center shadow-sm">
                       <Check className="w-3.5 h-3.5 stroke-[3]" />
                     </div>
                   ) : (
@@ -159,7 +159,7 @@ export const PaymentSettingsView: React.FC<PaymentSettingsViewProps> = ({ onBack
           <button
             type="button"
             onClick={() => setShowAddCardForm(!showAddCardForm)}
-            className="text-[11px] font-black text-[#4D7C0F] hover:underline flex items-center gap-1 cursor-pointer"
+            className="text-[11px] font-black text-[#a18200] hover:underline flex items-center gap-1 cursor-pointer"
           >
             <Plus className="w-3.5 h-3.5" /> Add New Card
           </button>
@@ -169,7 +169,7 @@ export const PaymentSettingsView: React.FC<PaymentSettingsViewProps> = ({ onBack
         {showAddCardForm && (
           <form onSubmit={handleAddCard} className="bg-slate-900 text-white rounded-2xl p-4 space-y-3 border border-zinc-800 shadow-xl animate-fade-in">
             <div className="flex items-center justify-between border-b border-zinc-800 pb-2">
-              <span className="text-xs font-black text-[#84CC16] uppercase tracking-wider flex items-center gap-1.5">
+              <span className="text-xs font-black text-[#fcd502] uppercase tracking-wider flex items-center gap-1.5">
                 <CreditCard className="w-3.5 h-3.5" /> Add Credit / Debit Card
               </span>
               <button
@@ -188,7 +188,7 @@ export const PaymentSettingsView: React.FC<PaymentSettingsViewProps> = ({ onBack
                 value={cardholder}
                 onChange={(e) => setCardholder(e.target.value)}
                 placeholder="Name on card"
-                className="w-full px-3 py-2 rounded-xl bg-zinc-800 border border-zinc-700 text-xs font-bold text-white focus:outline-none focus:border-[#84CC16]"
+                className="w-full px-3 py-2 rounded-xl bg-zinc-800 border border-zinc-700 text-xs font-bold text-white focus:outline-none focus:border-[#fcd502]"
                 required
               />
             </div>
@@ -200,7 +200,7 @@ export const PaymentSettingsView: React.FC<PaymentSettingsViewProps> = ({ onBack
                 value={cardNumber}
                 onChange={(e) => setCardNumber(e.target.value)}
                 placeholder="4000 1234 5678 9010"
-                className="w-full px-3 py-2 rounded-xl bg-zinc-800 border border-zinc-700 text-xs font-bold text-white focus:outline-none focus:border-[#84CC16]"
+                className="w-full px-3 py-2 rounded-xl bg-zinc-800 border border-zinc-700 text-xs font-bold text-white focus:outline-none focus:border-[#fcd502]"
                 required
               />
             </div>
@@ -213,7 +213,7 @@ export const PaymentSettingsView: React.FC<PaymentSettingsViewProps> = ({ onBack
                   value={expiry}
                   onChange={(e) => setExpiry(e.target.value)}
                   placeholder="MM/YY"
-                  className="w-full px-3 py-2 rounded-xl bg-zinc-800 border border-zinc-700 text-xs font-bold text-white focus:outline-none focus:border-[#84CC16]"
+                  className="w-full px-3 py-2 rounded-xl bg-zinc-800 border border-zinc-700 text-xs font-bold text-white focus:outline-none focus:border-[#fcd502]"
                   required
                 />
               </div>
@@ -225,7 +225,7 @@ export const PaymentSettingsView: React.FC<PaymentSettingsViewProps> = ({ onBack
                   onChange={(e) => setCvv(e.target.value)}
                   placeholder="123"
                   maxLength={4}
-                  className="w-full px-3 py-2 rounded-xl bg-zinc-800 border border-zinc-700 text-xs font-bold text-white focus:outline-none focus:border-[#84CC16]"
+                  className="w-full px-3 py-2 rounded-xl bg-zinc-800 border border-zinc-700 text-xs font-bold text-white focus:outline-none focus:border-[#fcd502]"
                   required
                 />
               </div>
@@ -241,7 +241,7 @@ export const PaymentSettingsView: React.FC<PaymentSettingsViewProps> = ({ onBack
               </button>
               <button
                 type="submit"
-                className="px-4 py-2 rounded-xl bg-[#84CC16] text-[#121212] text-xs font-black hover:bg-lime-400 cursor-pointer"
+                className="px-4 py-2 rounded-xl bg-[#fcd502] text-[#121212] text-xs font-black hover:bg-lime-400 cursor-pointer"
               >
                 Save Card
               </button>
@@ -253,7 +253,7 @@ export const PaymentSettingsView: React.FC<PaymentSettingsViewProps> = ({ onBack
           {savedCards.map((card) => (
             <div key={card.id} className="p-3 rounded-xl bg-slate-50 border border-slate-200/80 flex items-center justify-between">
               <div className="flex items-center gap-3">
-                <div className="w-9 h-9 rounded-xl bg-slate-900 text-[#84CC16] flex items-center justify-center font-black text-xs">
+                <div className="w-9 h-9 rounded-xl bg-slate-900 text-[#fcd502] flex items-center justify-center font-black text-xs">
                   <CreditCard className="w-4 h-4" />
                 </div>
                 <div>
@@ -298,7 +298,7 @@ export const PaymentSettingsView: React.FC<PaymentSettingsViewProps> = ({ onBack
                 const newUpi = prompt("Enter your new UPI ID (e.g., username@upi):", upiId);
                 if (newUpi) setUpiId(newUpi);
               }}
-              className="text-[11px] font-extrabold text-[#4D7C0F] hover:underline cursor-pointer"
+              className="text-[11px] font-extrabold text-[#a18200] hover:underline cursor-pointer"
             >
               Edit
             </button>
@@ -327,7 +327,7 @@ export const PaymentSettingsView: React.FC<PaymentSettingsViewProps> = ({ onBack
               <button
                 type="button"
                 onClick={() => setAutoDeduct(!autoDeduct)}
-                className={`w-11 h-6 rounded-full p-0.5 transition-colors cursor-pointer ${autoDeduct ? 'bg-[#84CC16]' : 'bg-slate-300'}`}
+                className={`w-11 h-6 rounded-full p-0.5 transition-colors cursor-pointer ${autoDeduct ? 'bg-[#fcd502]' : 'bg-slate-300'}`}
               >
                 <div className={`w-5 h-5 rounded-full bg-white transition-transform ${autoDeduct ? 'translate-x-5' : ''}`} />
               </button>
@@ -342,7 +342,7 @@ export const PaymentSettingsView: React.FC<PaymentSettingsViewProps> = ({ onBack
               <button
                 type="button"
                 onClick={() => setEmailReceipts(!emailReceipts)}
-                className={`w-11 h-6 rounded-full p-0.5 transition-colors cursor-pointer ${emailReceipts ? 'bg-[#84CC16]' : 'bg-slate-300'}`}
+                className={`w-11 h-6 rounded-full p-0.5 transition-colors cursor-pointer ${emailReceipts ? 'bg-[#fcd502]' : 'bg-slate-300'}`}
               >
                 <div className={`w-5 h-5 rounded-full bg-white transition-transform ${emailReceipts ? 'translate-x-5' : ''}`} />
               </button>
@@ -357,7 +357,7 @@ export const PaymentSettingsView: React.FC<PaymentSettingsViewProps> = ({ onBack
               <button
                 type="button"
                 onClick={() => setRequirePin(!requirePin)}
-                className={`w-11 h-6 rounded-full p-0.5 transition-colors cursor-pointer ${requirePin ? 'bg-[#84CC16]' : 'bg-slate-300'}`}
+                className={`w-11 h-6 rounded-full p-0.5 transition-colors cursor-pointer ${requirePin ? 'bg-[#fcd502]' : 'bg-slate-300'}`}
               >
                 <div className={`w-5 h-5 rounded-full bg-white transition-transform ${requirePin ? 'translate-x-5' : ''}`} />
               </button>
@@ -367,7 +367,7 @@ export const PaymentSettingsView: React.FC<PaymentSettingsViewProps> = ({ onBack
 
         {/* Security Footer Note */}
         <div className="p-3 rounded-2xl bg-slate-100 border border-slate-200/80 flex items-center gap-2.5 text-[10px] text-slate-500 font-semibold">
-          <Lock className="w-4 h-4 text-[#84CC16] flex-shrink-0" />
+          <Lock className="w-4 h-4 text-[#fcd502] flex-shrink-0" />
           <span>Your financial details are encrypted with 256-bit SSL security and PCI-DSS Compliance.</span>
         </div>
       </div>
@@ -377,7 +377,7 @@ export const PaymentSettingsView: React.FC<PaymentSettingsViewProps> = ({ onBack
         <button
           type="button"
           onClick={onBack}
-          className="w-full h-13 py-3.5 rounded-2xl bg-[#84CC16] hover:bg-lime-400 text-[#121212] font-black text-xs sm:text-sm uppercase tracking-wider flex items-center justify-center gap-2 shadow-lg transition-transform active:scale-[0.98] cursor-pointer"
+          className="w-full h-13 py-3.5 rounded-2xl bg-[#fcd502] hover:bg-lime-400 text-[#121212] font-black text-xs sm:text-sm uppercase tracking-wider flex items-center justify-center gap-2 shadow-lg transition-transform active:scale-[0.98] cursor-pointer"
         >
           <span>Save Payment Settings</span>
           <Check className="w-4 h-4 stroke-[3]" />

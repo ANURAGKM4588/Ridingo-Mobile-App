@@ -84,7 +84,7 @@ export const LanguageRegionSettingsView: React.FC<LanguageRegionSettingsViewProp
           <button
             type="button"
             onClick={handleSave}
-            className="text-xs font-bold text-[#4D7C0F] hover:underline cursor-pointer whitespace-nowrap"
+            className="text-xs font-bold text-[#a18200] hover:underline cursor-pointer whitespace-nowrap"
           >
             Save
           </button>
@@ -110,7 +110,7 @@ export const LanguageRegionSettingsView: React.FC<LanguageRegionSettingsViewProp
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search language / ഭാഷ തിരയുക..."
-              className="w-full pl-9 pr-3 py-2 rounded-xl bg-white border border-slate-200 text-xs font-extrabold text-slate-900 placeholder:text-slate-400 placeholder:font-normal focus:outline-none focus:border-[#84CC16]"
+              className="w-full pl-9 pr-3 py-2 rounded-xl bg-white border border-slate-200 text-xs font-extrabold text-slate-900 placeholder:text-slate-400 placeholder:font-normal focus:outline-none focus:border-[#fcd502]"
             />
           </div>
 
@@ -134,12 +134,12 @@ export const LanguageRegionSettingsView: React.FC<LanguageRegionSettingsViewProp
                     <span className="text-base">{lang.flag}</span>
                     <div>
                       <span className="font-extrabold text-xs block leading-snug">{lang.name}</span>
-                      <span className={`text-[10px] font-medium ${isSel ? 'text-[#84CC16]' : 'text-slate-400'}`}>{lang.native}</span>
+                      <span className={`text-[10px] font-medium ${isSel ? 'text-[#fcd502]' : 'text-slate-400'}`}>{lang.native}</span>
                     </div>
                   </div>
 
                   {isSel && (
-                    <div className="w-5 h-5 rounded-full bg-[#84CC16] text-[#121212] flex items-center justify-center">
+                    <div className="w-5 h-5 rounded-full bg-[#fcd502] text-[#121212] flex items-center justify-center">
                       <Check className="w-3 h-3 stroke-[3]" />
                     </div>
                   )}
@@ -153,7 +153,7 @@ export const LanguageRegionSettingsView: React.FC<LanguageRegionSettingsViewProp
         <div className="space-y-2">
           <div className="px-1">
             <div className="flex items-center gap-2">
-              <MapPin className="w-4 h-4 text-[#84CC16]" />
+              <MapPin className="w-4 h-4 text-[#fcd502]" />
               <h3 className="text-xs font-black uppercase text-slate-400 tracking-wider">Region & Currency</h3>
             </div>
           </div>
@@ -178,14 +178,14 @@ export const LanguageRegionSettingsView: React.FC<LanguageRegionSettingsViewProp
                     <span className="text-sm flex-shrink-0">{reg.flag}</span>
                     <div className="min-w-0">
                       <span className="font-extrabold text-xs block truncate leading-snug">{reg.name}</span>
-                      <span className={`text-[10px] font-bold block truncate ${isSel ? 'text-[#84CC16]' : 'text-slate-400'}`}>
+                      <span className={`text-[10px] font-bold block truncate ${isSel ? 'text-[#fcd502]' : 'text-slate-400'}`}>
                         {reg.currency}
                       </span>
                     </div>
                   </div>
 
                   {isSel && (
-                    <CheckCircle2 className="w-4 h-4 text-[#84CC16] flex-shrink-0" />
+                    <CheckCircle2 className="w-4 h-4 text-[#fcd502] flex-shrink-0" />
                   )}
                 </div>
               );
@@ -215,7 +215,7 @@ export const LanguageRegionSettingsView: React.FC<LanguageRegionSettingsViewProp
                   type="button"
                   onClick={() => setTimeFormat('12h')}
                   className={`px-3 py-1 rounded-lg text-xs font-extrabold transition-all cursor-pointer ${
-                    timeFormat === '12h' ? 'bg-slate-900 text-[#84CC16] shadow-xs' : 'text-slate-600'
+                    timeFormat === '12h' ? 'bg-slate-900 text-[#fcd502] shadow-xs' : 'text-slate-600'
                   }`}
                 >
                   12h
@@ -224,7 +224,7 @@ export const LanguageRegionSettingsView: React.FC<LanguageRegionSettingsViewProp
                   type="button"
                   onClick={() => setTimeFormat('24h')}
                   className={`px-3 py-1 rounded-lg text-xs font-extrabold transition-all cursor-pointer ${
-                    timeFormat === '24h' ? 'bg-slate-900 text-[#84CC16] shadow-xs' : 'text-slate-600'
+                    timeFormat === '24h' ? 'bg-slate-900 text-[#fcd502] shadow-xs' : 'text-slate-600'
                   }`}
                 >
                   24h
@@ -244,7 +244,7 @@ export const LanguageRegionSettingsView: React.FC<LanguageRegionSettingsViewProp
                   type="button"
                   onClick={() => setDistanceUnit('mi')}
                   className={`px-3 py-1 rounded-lg text-xs font-extrabold transition-all cursor-pointer ${
-                    distanceUnit === 'mi' ? 'bg-slate-900 text-[#84CC16] shadow-xs' : 'text-slate-600'
+                    distanceUnit === 'mi' ? 'bg-slate-900 text-[#fcd502] shadow-xs' : 'text-slate-600'
                   }`}
                 >
                   Miles
@@ -253,7 +253,7 @@ export const LanguageRegionSettingsView: React.FC<LanguageRegionSettingsViewProp
                   type="button"
                   onClick={() => setDistanceUnit('km')}
                   className={`px-3 py-1 rounded-lg text-xs font-extrabold transition-all cursor-pointer ${
-                    distanceUnit === 'km' ? 'bg-slate-900 text-[#84CC16] shadow-xs' : 'text-slate-600'
+                    distanceUnit === 'km' ? 'bg-slate-900 text-[#fcd502] shadow-xs' : 'text-slate-600'
                   }`}
                 >
                   Km
@@ -269,7 +269,7 @@ export const LanguageRegionSettingsView: React.FC<LanguageRegionSettingsViewProp
         <button
           type="button"
           onClick={handleSave}
-          className="w-full h-13 py-3.5 rounded-2xl bg-slate-900 hover:bg-black text-[#84CC16] font-black text-xs sm:text-sm uppercase tracking-wider flex items-center justify-center gap-2 shadow-lg transition-transform active:scale-[0.98] cursor-pointer"
+          className="w-full h-13 py-3.5 rounded-2xl bg-slate-900 hover:bg-black text-[#fcd502] font-black text-xs sm:text-sm uppercase tracking-wider flex items-center justify-center gap-2 shadow-lg transition-transform active:scale-[0.98] cursor-pointer"
         >
           <span>Save Language & Region Preferences</span>
           <Check className="w-4 h-4 stroke-[3]" />

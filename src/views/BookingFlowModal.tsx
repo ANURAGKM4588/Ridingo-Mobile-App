@@ -131,7 +131,7 @@ export const BookingFlowModal: React.FC<BookingFlowModalProps> = ({
             )}
             <div>
               <div className="flex items-center gap-2">
-                <span className="px-2.5 py-0.5 rounded-full bg-[#84CC16]/20 text-[#4D7C0F] text-[10px] font-black uppercase tracking-wider">
+                <span className="px-2.5 py-0.5 rounded-full bg-[#fcd502]/20 text-[#a18200] text-[10px] font-black uppercase tracking-wider">
                   Step {step} of 8
                 </span>
                 <span className="text-xs font-semibold text-slate-400">RIDINGO Driver Setup</span>
@@ -160,7 +160,7 @@ export const BookingFlowModal: React.FC<BookingFlowModalProps> = ({
         {/* Progress Bar */}
         <div className="w-full bg-slate-200 h-1.5">
           <div
-            className="bg-gradient-to-r from-[#84CC16] to-[#00E676] h-full transition-all duration-300"
+            className="bg-gradient-to-r from-[#fcd502] to-[#00E676] h-full transition-all duration-300"
             style={{ width: `${(step / 8) * 100}%` }}
           />
         </div>
@@ -179,14 +179,14 @@ export const BookingFlowModal: React.FC<BookingFlowModalProps> = ({
                     onClick={() => setSelectedService(srv)}
                     className={`p-4 rounded-2xl cursor-pointer border transition-all ${
                       selectedService.id === srv.id
-                        ? 'bg-[#121212] text-white border-[#84CC16] shadow-lg scale-[1.01]'
+                        ? 'bg-[#121212] text-white border-[#fcd502] shadow-lg scale-[1.01]'
                         : 'bg-white text-slate-800 border-slate-200 hover:border-slate-300'
                     }`}
                   >
                     <div className="flex items-center justify-between">
                       <span className="font-extrabold text-sm">{srv.title}</span>
                       {selectedService.id === srv.id && (
-                        <span className="w-5 h-5 rounded-full bg-[#84CC16] text-[#121212] flex items-center justify-center">
+                        <span className="w-5 h-5 rounded-full bg-[#fcd502] text-[#121212] flex items-center justify-center">
                           <Check className="w-3 h-3" />
                         </span>
                       )}
@@ -194,7 +194,7 @@ export const BookingFlowModal: React.FC<BookingFlowModalProps> = ({
                     <p className={`text-xs mt-1 ${selectedService.id === srv.id ? 'text-slate-300' : 'text-slate-500'}`}>
                       {srv.subtitle}
                     </p>
-                    <span className={`text-xs font-bold mt-2 block ${selectedService.id === srv.id ? 'text-[#84CC16]' : 'text-slate-900'}`}>
+                    <span className={`text-xs font-bold mt-2 block ${selectedService.id === srv.id ? 'text-[#fcd502]' : 'text-slate-900'}`}>
                       {srv.priceStarting}
                     </span>
                   </div>
@@ -217,7 +217,7 @@ export const BookingFlowModal: React.FC<BookingFlowModalProps> = ({
                     onClick={() => setSelectedVehicle(v)}
                     className={`p-3.5 rounded-2xl cursor-pointer border transition-all flex items-center gap-3 ${
                       selectedVehicle.id === v.id
-                        ? 'bg-[#121212] text-white border-[#84CC16] shadow-lg'
+                        ? 'bg-[#121212] text-white border-[#fcd502] shadow-lg'
                         : 'bg-white text-slate-800 border-slate-200 hover:border-slate-300'
                     }`}
                   >
@@ -226,7 +226,7 @@ export const BookingFlowModal: React.FC<BookingFlowModalProps> = ({
                       <div className="flex items-center justify-between">
                         <span className="font-extrabold text-sm truncate">{v.name}</span>
                         {selectedVehicle.id === v.id && (
-                          <Check className="w-4 h-4 text-[#84CC16]" />
+                          <Check className="w-4 h-4 text-[#fcd502]" />
                         )}
                       </div>
                       <p className={`text-xs truncate ${selectedVehicle.id === v.id ? 'text-slate-300' : 'text-slate-500'}`}>
@@ -244,7 +244,7 @@ export const BookingFlowModal: React.FC<BookingFlowModalProps> = ({
             <div className="space-y-4">
               <label className="block text-xs font-extrabold uppercase tracking-wider text-slate-600">Enter Pickup Address</label>
               <div className="flex items-center bg-white rounded-2xl p-4 border border-slate-300 shadow-sm">
-                <MapPin className="w-5 h-5 text-[#84CC16] mr-3" />
+                <MapPin className="w-5 h-5 text-[#fcd502] mr-3" />
                 <input
                   type="text"
                   value={pickup}
@@ -263,7 +263,7 @@ export const BookingFlowModal: React.FC<BookingFlowModalProps> = ({
                 />
                 <div className="absolute inset-0 bg-black/20 flex items-center justify-center">
                   <div className="px-4 py-2 rounded-full bg-[#121212] text-white text-xs font-bold flex items-center gap-2 shadow-xl border border-white/20">
-                    <MapPin className="w-4 h-4 text-[#84CC16]" /> Pin Position Verified
+                    <MapPin className="w-4 h-4 text-[#fcd502]" /> Pin Position Verified
                   </div>
                 </div>
               </div>
@@ -306,7 +306,7 @@ export const BookingFlowModal: React.FC<BookingFlowModalProps> = ({
                       type="button"
                       onClick={() => setDate(d)}
                       className={`p-3 rounded-2xl text-xs font-bold border transition-all ${
-                        date === d ? 'bg-[#121212] text-white border-[#84CC16]' : 'bg-white text-slate-700 border-slate-200'
+                        date === d ? 'bg-[#121212] text-white border-[#fcd502]' : 'bg-white text-slate-700 border-slate-200'
                       }`}
                     >
                       {d}
@@ -324,7 +324,7 @@ export const BookingFlowModal: React.FC<BookingFlowModalProps> = ({
                       type="button"
                       onClick={() => setTime(t)}
                       className={`p-2.5 rounded-2xl text-xs font-bold border transition-all ${
-                        time === t ? 'bg-[#84CC16] text-[#121212] border-[#84CC16] shadow-md' : 'bg-white text-slate-700 border-slate-200'
+                        time === t ? 'bg-[#fcd502] text-[#121212] border-[#fcd502] shadow-md' : 'bg-white text-slate-700 border-slate-200'
                       }`}
                     >
                       {t}
@@ -343,7 +343,7 @@ export const BookingFlowModal: React.FC<BookingFlowModalProps> = ({
                       onClick={() => setDurationHours(hrs)}
                       className={`flex-1 py-3 rounded-2xl text-xs font-extrabold border transition-all ${
                         durationHours === hrs
-                          ? 'bg-[#121212] text-white border-[#84CC16]'
+                          ? 'bg-[#121212] text-white border-[#fcd502]'
                           : 'bg-white text-slate-700 border-slate-200'
                       }`}
                     >
@@ -363,7 +363,7 @@ export const BookingFlowModal: React.FC<BookingFlowModalProps> = ({
               {/* Language */}
               <div className="bg-white p-4 rounded-2xl border border-slate-200/80 flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                  <Globe className="w-5 h-5 text-[#84CC16]" />
+                  <Globe className="w-5 h-5 text-[#fcd502]" />
                   <div>
                     <span className="font-extrabold text-sm block">Driver Language</span>
                     <span className="text-xs text-slate-500">English, Spanish, French, German</span>
@@ -384,7 +384,7 @@ export const BookingFlowModal: React.FC<BookingFlowModalProps> = ({
               {/* Formal Uniform Toggle */}
               <div className="bg-white p-4 rounded-2xl border border-slate-200/80 flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                  <Shirt className="w-5 h-5 text-[#84CC16]" />
+                  <Shirt className="w-5 h-5 text-[#fcd502]" />
                   <div>
                     <span className="font-extrabold text-sm block">Full Chauffeur Suit Uniform</span>
                     <span className="text-xs text-slate-500">Formal dark suit, tie & white gloves</span>
@@ -393,7 +393,7 @@ export const BookingFlowModal: React.FC<BookingFlowModalProps> = ({
                 <button
                   type="button"
                   onClick={() => setPreferences({ ...preferences, uniformRequired: !preferences.uniformRequired })}
-                  className={`w-12 h-7 rounded-full p-1 transition-colors ${preferences.uniformRequired ? 'bg-[#84CC16]' : 'bg-slate-300'}`}
+                  className={`w-12 h-7 rounded-full p-1 transition-colors ${preferences.uniformRequired ? 'bg-[#fcd502]' : 'bg-slate-300'}`}
                 >
                   <div className={`w-5 h-5 rounded-full bg-white transition-transform ${preferences.uniformRequired ? 'translate-x-5' : ''}`} />
                 </button>
@@ -402,7 +402,7 @@ export const BookingFlowModal: React.FC<BookingFlowModalProps> = ({
               {/* Non-Smoking */}
               <div className="bg-white p-4 rounded-2xl border border-slate-200/80 flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                  <VolumeX className="w-5 h-5 text-[#84CC16]" />
+                  <VolumeX className="w-5 h-5 text-[#fcd502]" />
                   <div>
                     <span className="font-extrabold text-sm block">Strict Non-Smoking Chauffeur</span>
                     <span className="text-xs text-slate-500">Guaranteed tobacco-free driver</span>
@@ -411,7 +411,7 @@ export const BookingFlowModal: React.FC<BookingFlowModalProps> = ({
                 <button
                   type="button"
                   onClick={() => setPreferences({ ...preferences, nonSmokingRequired: !preferences.nonSmokingRequired })}
-                  className={`w-12 h-7 rounded-full p-1 transition-colors ${preferences.nonSmokingRequired ? 'bg-[#84CC16]' : 'bg-slate-300'}`}
+                  className={`w-12 h-7 rounded-full p-1 transition-colors ${preferences.nonSmokingRequired ? 'bg-[#fcd502]' : 'bg-slate-300'}`}
                 >
                   <div className={`w-5 h-5 rounded-full bg-white transition-transform ${preferences.nonSmokingRequired ? 'translate-x-5' : ''}`} />
                 </button>
@@ -420,16 +420,16 @@ export const BookingFlowModal: React.FC<BookingFlowModalProps> = ({
               {/* Senior Master Driver */}
               <div className="bg-white p-4 rounded-2xl border border-slate-200/80 flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                  <Award className="w-5 h-5 text-[#84CC16]" />
+                  <Award className="w-5 h-5 text-[#fcd502]" />
                   <div>
                     <span className="font-extrabold text-sm block">Senior Driver (5+ Yrs Exp)</span>
-                    <span className="text-[#4D7C0F] text-xs font-semibold">Highest rated master drivers</span>
+                    <span className="text-[#a18200] text-xs font-semibold">Highest rated master drivers</span>
                   </div>
                 </div>
                 <button
                   type="button"
                   onClick={() => setPreferences({ ...preferences, seniorDriverOnly: !preferences.seniorDriverOnly })}
-                  className={`w-12 h-7 rounded-full p-1 transition-colors ${preferences.seniorDriverOnly ? 'bg-[#84CC16]' : 'bg-slate-300'}`}
+                  className={`w-12 h-7 rounded-full p-1 transition-colors ${preferences.seniorDriverOnly ? 'bg-[#fcd502]' : 'bg-slate-300'}`}
                 >
                   <div className={`w-5 h-5 rounded-full bg-white transition-transform ${preferences.seniorDriverOnly ? 'translate-x-5' : ''}`} />
                 </button>
@@ -438,7 +438,7 @@ export const BookingFlowModal: React.FC<BookingFlowModalProps> = ({
               {/* Female Driver Option */}
               <div className="bg-white p-4 rounded-2xl border border-slate-200/80 flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                  <User className="w-5 h-5 text-[#84CC16]" />
+                  <User className="w-5 h-5 text-[#fcd502]" />
                   <div>
                     <span className="font-extrabold text-sm block">Female Chauffeur Preferred</span>
                     <span className="text-xs text-slate-500">Subject to local team availability</span>
@@ -447,7 +447,7 @@ export const BookingFlowModal: React.FC<BookingFlowModalProps> = ({
                 <button
                   type="button"
                   onClick={() => setPreferences({ ...preferences, femaleDriverPreferred: !preferences.femaleDriverPreferred })}
-                  className={`w-12 h-7 rounded-full p-1 transition-colors ${preferences.femaleDriverPreferred ? 'bg-[#84CC16]' : 'bg-slate-300'}`}
+                  className={`w-12 h-7 rounded-full p-1 transition-colors ${preferences.femaleDriverPreferred ? 'bg-[#fcd502]' : 'bg-slate-300'}`}
                 >
                   <div className={`w-5 h-5 rounded-full bg-white transition-transform ${preferences.femaleDriverPreferred ? 'translate-x-5' : ''}`} />
                 </button>
@@ -461,10 +461,10 @@ export const BookingFlowModal: React.FC<BookingFlowModalProps> = ({
               <div className="bg-[#121212] text-white p-5 rounded-3xl space-y-3 shadow-xl">
                 <div className="flex items-center justify-between border-b border-zinc-800 pb-3">
                   <div>
-                    <span className="text-xs font-bold text-[#84CC16] uppercase">{selectedService.title}</span>
+                    <span className="text-xs font-bold text-[#fcd502] uppercase">{selectedService.title}</span>
                     <h4 className="text-lg font-black">{selectedVehicle.name} • {durationHours} Hours</h4>
                   </div>
-                  <Sparkles className="w-6 h-6 text-[#84CC16]" />
+                  <Sparkles className="w-6 h-6 text-[#fcd502]" />
                 </div>
 
                 <div className="space-y-2 text-xs text-slate-300 pt-1">
@@ -484,7 +484,7 @@ export const BookingFlowModal: React.FC<BookingFlowModalProps> = ({
 
                 <div className="border-t border-zinc-800 pt-3 flex justify-between items-center text-base font-extrabold">
                   <span className="text-white">Total Amount:</span>
-                  <span className="text-2xl text-[#84CC16]">${total.toFixed(2)}</span>
+                  <span className="text-2xl text-[#fcd502]">${total.toFixed(2)}</span>
                 </div>
               </div>
 
@@ -498,11 +498,11 @@ export const BookingFlowModal: React.FC<BookingFlowModalProps> = ({
                       type="button"
                       onClick={() => setPaymentMethod(pm)}
                       className={`p-3 rounded-2xl text-xs font-bold border flex items-center justify-between ${
-                        paymentMethod === pm ? 'bg-[#121212] text-white border-[#84CC16]' : 'bg-white text-slate-800 border-slate-200'
+                        paymentMethod === pm ? 'bg-[#121212] text-white border-[#fcd502]' : 'bg-white text-slate-800 border-slate-200'
                       }`}
                     >
                       <span>{pm}</span>
-                      {paymentMethod === pm && <Check className="w-4 h-4 text-[#84CC16]" />}
+                      {paymentMethod === pm && <Check className="w-4 h-4 text-[#fcd502]" />}
                     </button>
                   ))}
                 </div>
@@ -513,8 +513,8 @@ export const BookingFlowModal: React.FC<BookingFlowModalProps> = ({
           {/* STEP 8: Confirm Booking */}
           {step === 8 && (
             <div className="space-y-4 text-center py-2">
-              <div className="w-16 h-16 rounded-full bg-[#84CC16]/20 text-[#4D7C0F] mx-auto flex items-center justify-center animate-bounce">
-                <ShieldCheck className="w-8 h-8 text-[#84CC16]" />
+              <div className="w-16 h-16 rounded-full bg-[#fcd502]/20 text-[#a18200] mx-auto flex items-center justify-center animate-bounce">
+                <ShieldCheck className="w-8 h-8 text-[#fcd502]" />
               </div>
               <h4 className="text-xl font-black text-slate-900">Ready to Lock in Your Chauffeur?</h4>
               <p className="text-xs text-slate-500 max-w-sm mx-auto font-medium">
@@ -532,7 +532,7 @@ export const BookingFlowModal: React.FC<BookingFlowModalProps> = ({
                 </div>
                 <div className="flex justify-between">
                   <span className="text-slate-400">Total Price:</span>
-                  <span className="font-extrabold text-[#4D7C0F]">${total.toFixed(2)} ({paymentMethod})</span>
+                  <span className="font-extrabold text-[#a18200]">${total.toFixed(2)} ({paymentMethod})</span>
                 </div>
               </div>
             </div>
@@ -549,13 +549,13 @@ export const BookingFlowModal: React.FC<BookingFlowModalProps> = ({
               className="px-6 py-3.5 rounded-2xl bg-[#121212] hover:bg-black text-white font-extrabold text-sm flex items-center gap-2 shadow-lg transition-all"
             >
               <span>Continue</span>
-              <ArrowRight className="w-4 h-4 text-[#84CC16]" />
+              <ArrowRight className="w-4 h-4 text-[#fcd502]" />
             </button>
           ) : (
             <button
               onClick={handleFinalConfirm}
               disabled={isSubmitting}
-              className="px-8 py-3.5 rounded-2xl bg-[#84CC16] hover:bg-[#A3E635] text-[#121212] font-black text-sm flex items-center gap-2 shadow-xl hover:shadow-lime-500/20 transition-all disabled:opacity-50"
+              className="px-8 py-3.5 rounded-2xl bg-[#fcd502] hover:bg-[#fde047] text-[#121212] font-black text-sm flex items-center gap-2 shadow-xl hover:shadow-lime-500/20 transition-all disabled:opacity-50"
             >
               {isSubmitting ? (
                 <span>Reserving Driver...</span>

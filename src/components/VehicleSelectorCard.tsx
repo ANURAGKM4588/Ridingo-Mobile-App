@@ -24,7 +24,7 @@ export const VehicleSelectorCard: React.FC<VehicleSelectorCardProps> = ({
     <div className="w-full space-y-2.5">
       <div className="flex items-center justify-between px-1">
         <h3 className="text-base font-extrabold text-[#0F172A] tracking-tight">Select My Vehicle</h3>
-        <span className="text-[11px] font-bold text-[#4D7C0F]">Your Car • Trained Driver</span>
+        <span className="text-[11px] font-bold text-[#a18200]">Your Car • Trained Driver</span>
       </div>
 
       {/* Minimal 4-Pill Vehicle Type Selection Grid */}
@@ -52,14 +52,14 @@ export const VehicleSelectorCard: React.FC<VehicleSelectorCardProps> = ({
               <div className="flex items-center justify-between w-full mb-1">
                 <div
                   className={`w-7 h-7 rounded-xl flex items-center justify-center ${
-                    isSelected ? 'bg-[#84CC16] text-[#121212]' : 'bg-slate-100 text-slate-600'
+                    isSelected ? 'bg-[#fcd502] text-[#121212]' : 'bg-slate-100 text-slate-600'
                   }`}
                 >
                   <IconComponent className="w-3.5 h-3.5" />
                 </div>
 
                 {isSelected && (
-                  <span className="w-2 h-2 rounded-full bg-[#84CC16] animate-pulse" />
+                  <span className="w-2 h-2 rounded-full bg-[#fcd502] animate-pulse" />
                 )}
               </div>
 
@@ -67,7 +67,7 @@ export const VehicleSelectorCard: React.FC<VehicleSelectorCardProps> = ({
                 <span className={`text-xs font-black tracking-tight block ${isSelected ? 'text-white' : 'text-slate-900'}`}>
                   {vType.name}
                 </span>
-                <span className={`text-[9px] font-bold uppercase tracking-wider block mt-0.5 ${isSelected ? 'text-[#84CC16]' : 'text-slate-400'}`}>
+                <span className={`text-[9px] font-bold uppercase tracking-wider block mt-0.5 ${isSelected ? 'text-[#fcd502]' : 'text-slate-400'}`}>
                   {vType.tag}
                 </span>
               </div>

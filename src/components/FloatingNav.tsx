@@ -38,7 +38,7 @@ export const FloatingNav: React.FC<FloatingNavProps> = ({
               onClick={() => onTabChange(tab.id)}
               className={`relative flex items-center justify-center gap-2 py-3 px-4 rounded-full transition-all duration-300 cursor-pointer ${
                 isActive
-                  ? 'bg-[#84CC16] text-[#121212] shadow-lg shadow-[#84CC16]/20 font-black flex-1'
+                  ? 'bg-[#fcd502] text-[#121212] shadow-lg shadow-[#fcd502]/20 font-black flex-1'
                   : 'text-slate-400 hover:text-white font-bold hover:bg-slate-800/60'
               }`}
               aria-label={tab.label}

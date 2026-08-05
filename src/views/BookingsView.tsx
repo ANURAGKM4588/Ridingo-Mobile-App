@@ -66,7 +66,7 @@ export const BookingsView: React.FC<BookingsViewProps> = ({
                 onClick={() => setActiveFilter(tab.id as any)}
                 className={`flex-1 py-2 rounded-xl text-xs font-extrabold transition-all cursor-pointer ${
                   activeFilter === tab.id
-                    ? 'bg-slate-900 text-[#84CC16] shadow-sm'
+                    ? 'bg-slate-900 text-[#fcd502] shadow-sm'
                     : 'text-slate-600 hover:text-slate-900 hover:bg-slate-200/60'
                 }`}
               >
@@ -115,8 +115,8 @@ export const BookingsView: React.FC<BookingsViewProps> = ({
                   </span>
                 )}
                 {(b.status === 'upcoming' || b.status === 'in-progress') && (
-                  <span className="px-2.5 py-0.5 rounded-full bg-[#84CC16]/20 text-[#4D7C0F] text-[10px] font-black uppercase tracking-wider flex items-center gap-1.5 border border-[#84CC16]/40 whitespace-nowrap flex-shrink-0">
-                    <span className="w-1.5 h-1.5 rounded-full bg-[#84CC16] animate-pulse"></span> Driver Assigned
+                  <span className="px-2.5 py-0.5 rounded-full bg-[#fcd502]/20 text-[#a18200] text-[10px] font-black uppercase tracking-wider flex items-center gap-1.5 border border-[#fcd502]/40 whitespace-nowrap flex-shrink-0">
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#fcd502] animate-pulse"></span> Driver Assigned
                   </span>
                 )}
                 {b.status === 'cancelled' && (
@@ -131,11 +131,11 @@ export const BookingsView: React.FC<BookingsViewProps> = ({
                 <div className="flex items-center justify-between gap-2">
                   <h3 className="font-black text-base text-slate-900">{b.serviceTitle}</h3>
                   {b.serviceType === 'Airport' ? (
-                    <span className="px-2 py-0.5 rounded-full bg-slate-900 text-[#84CC16] text-[9px] font-black uppercase whitespace-nowrap">
+                    <span className="px-2 py-0.5 rounded-full bg-slate-900 text-[#fcd502] text-[9px] font-black uppercase whitespace-nowrap">
                       ✈️ Airport
                     </span>
                   ) : b.serviceType === 'Hourly' ? (
-                    <span className="px-2 py-0.5 rounded-full bg-[#84CC16]/20 text-[#4D7C0F] text-[9px] font-black uppercase whitespace-nowrap">
+                    <span className="px-2 py-0.5 rounded-full bg-[#fcd502]/20 text-[#a18200] text-[9px] font-black uppercase whitespace-nowrap">
                       ⏱️ Hourly
                     </span>
                   ) : b.tripCause ? (
@@ -147,7 +147,7 @@ export const BookingsView: React.FC<BookingsViewProps> = ({
 
                 <div className="space-y-1.5 text-xs text-slate-600 bg-slate-50 p-3 rounded-2xl border border-slate-200/60">
                   <div className="flex items-start gap-2">
-                    <MapPin className="w-4 h-4 text-[#84CC16] fill-[#84CC16]/25 stroke-[2] flex-shrink-0 mt-0.5" />
+                    <MapPin className="w-4 h-4 text-[#fcd502] fill-[#fcd502]/25 stroke-[2] flex-shrink-0 mt-0.5" />
                     <span className="font-medium text-slate-800">{b.pickupLocation}</span>
                   </div>
                   <div className="flex items-start gap-2">
@@ -160,7 +160,7 @@ export const BookingsView: React.FC<BookingsViewProps> = ({
               {/* Driver & Vehicle */}
               <div className="flex items-center justify-between text-xs pt-1">
                 <div className="flex items-center gap-2">
-                  <Car className="w-4 h-4 text-[#84CC16] fill-[#84CC16]/25 stroke-[2]" />
+                  <Car className="w-4 h-4 text-[#fcd502] fill-[#fcd502]/25 stroke-[2]" />
                   <span className="font-bold text-slate-800">{b.vehicle.name} ({b.vehicle.capacity})</span>
                 </div>
 
@@ -193,7 +193,7 @@ export const BookingsView: React.FC<BookingsViewProps> = ({
                   <button
                     type="button"
                     onClick={() => onRepeatBooking(b)}
-                    className="px-3.5 py-2 rounded-xl bg-[#121212] hover:bg-black text-[#84CC16] font-bold text-xs flex items-center gap-1 shadow-md transition-colors cursor-pointer"
+                    className="px-3.5 py-2 rounded-xl bg-[#121212] hover:bg-black text-[#fcd502] font-bold text-xs flex items-center gap-1 shadow-md transition-colors cursor-pointer"
                   >
                     <RotateCcw className="w-3.5 h-3.5 stroke-[2.2]" />
                     <span>Repeat</span>

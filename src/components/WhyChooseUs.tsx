@@ -19,7 +19,7 @@ export const WhyChooseUs: React.FC = () => {
       icon: Clock,
       title: 'Always On Time',
       desc: 'Punctual arrival guaranteed.',
-      color: 'bg-lime-500/10 text-[#4D7C0F]',
+      color: 'bg-lime-500/10 text-[#a18200]',
     },
     {
       icon: Navigation,
@@ -39,7 +39,7 @@ export const WhyChooseUs: React.FC = () => {
     <div className="w-full space-y-3">
       <div className="flex items-center justify-between px-1">
         <div className="flex items-center gap-2">
-          <UserCheck className="w-4 h-4 text-[#84CC16]" />
+          <UserCheck className="w-4 h-4 text-[#fcd502]" />
           <h3 className="text-sm font-extrabold text-[#0F172A] tracking-tight">
             Why Choose RIDINGO
           </h3>

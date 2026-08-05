@@ -57,13 +57,13 @@ export const LiveTrackingView: React.FC<LiveTrackingViewProps> = ({
         {/* Live Animated Driver Pulse Marker on Map */}
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 flex flex-col items-center pointer-events-none">
           <div className="relative flex items-center justify-center">
-            <span className="animate-ping absolute inline-flex h-12 w-12 rounded-full bg-[#84CC16] opacity-75"></span>
-            <div className="w-10 h-10 rounded-2xl bg-[#121212] text-[#84CC16] flex items-center justify-center border-2 border-white shadow-2xl">
-              <Car className="w-5 h-5 text-[#84CC16]" />
+            <span className="animate-ping absolute inline-flex h-12 w-12 rounded-full bg-[#fcd502] opacity-75"></span>
+            <div className="w-10 h-10 rounded-2xl bg-[#121212] text-[#fcd502] flex items-center justify-center border-2 border-white shadow-2xl">
+              <Car className="w-5 h-5 text-[#fcd502]" />
             </div>
           </div>
           <div className="mt-1.5 px-3 py-1 rounded-full bg-[#121212]/90 text-white text-[10px] font-black backdrop-blur-md shadow-lg border border-white/20 whitespace-nowrap flex items-center gap-1.5">
-            <span className="w-1.5 h-1.5 rounded-full bg-[#84CC16] animate-pulse" />
+            <span className="w-1.5 h-1.5 rounded-full bg-[#fcd502] animate-pulse" />
             <span>{driver.name.split(' ')[0]} • En Route</span>
           </div>
         </div>
@@ -72,7 +72,7 @@ export const LiveTrackingView: React.FC<LiveTrackingViewProps> = ({
       {/* Top Floating Action Bar */}
       <div className="absolute top-3 left-3 right-3 z-20 flex items-center justify-between pointer-events-auto animate-drop-up stagger-2">
         <div className="px-3 py-1.5 rounded-full bg-white/90 backdrop-blur-md border border-slate-200 shadow-md flex items-center gap-1.5 text-[10px] font-extrabold text-slate-800">
-          <span className="w-2 h-2 rounded-full bg-[#84CC16] animate-pulse"></span>
+          <span className="w-2 h-2 rounded-full bg-[#fcd502] animate-pulse"></span>
           <span>Live Tracking Active</span>
         </div>
 
@@ -100,14 +100,14 @@ export const LiveTrackingView: React.FC<LiveTrackingViewProps> = ({
           {/* Arrival Status & ETA */}
           <div className="flex items-center justify-between border-b border-slate-100 pb-3">
             <div>
-              <span className="text-[10px] font-extrabold uppercase tracking-widest text-[#4D7C0F]">Estimated Arrival</span>
+              <span className="text-[10px] font-extrabold uppercase tracking-widest text-[#a18200]">Estimated Arrival</span>
               <h3 className="text-xl font-black text-slate-900 flex items-center gap-1.5 mt-0.5">
-                <Clock className="w-4.5 h-4.5 text-[#84CC16] fill-[#84CC16]/25 stroke-[2]" /> {etaMins} Mins
+                <Clock className="w-4.5 h-4.5 text-[#fcd502] fill-[#fcd502]/25 stroke-[2]" /> {etaMins} Mins
               </h3>
             </div>
 
             <div className="text-right">
-              <span className="px-3 py-1 rounded-full bg-[#121212] text-[#84CC16] text-[10px] font-black uppercase tracking-wider shadow-sm">
+              <span className="px-3 py-1 rounded-full bg-[#121212] text-[#fcd502] text-[10px] font-black uppercase tracking-wider shadow-sm">
                 {booking ? booking.vehicle.name : 'Executive Sedan'}
               </span>
               <p className="text-[10px] text-slate-400 font-bold mt-1">Confirmed Chauffeur</p>
@@ -126,13 +126,13 @@ export const LiveTrackingView: React.FC<LiveTrackingViewProps> = ({
                   alt={driver.name}
                   className="w-11 h-11 rounded-2xl object-cover border border-slate-100 shadow-md group-hover:scale-105 transition-transform"
                 />
-                <span className="absolute -bottom-1 -right-1 w-4 h-4 rounded-full bg-[#84CC16] text-[#121212] flex items-center justify-center text-[8px] font-black shadow-sm">
+                <span className="absolute -bottom-1 -right-1 w-4 h-4 rounded-full bg-[#fcd502] text-[#121212] flex items-center justify-center text-[8px] font-black shadow-sm">
                   ✓
                 </span>
               </div>
 
               <div className="min-w-0 flex-1">
-                <h4 className="font-extrabold text-sm text-slate-900 group-hover:text-[#4D7C0F] transition-colors truncate leading-snug">
+                <h4 className="font-extrabold text-sm text-slate-900 group-hover:text-[#a18200] transition-colors truncate leading-snug">
                   {driver.name}
                 </h4>
                 <div className="flex items-center gap-1 text-[11px] text-slate-500 font-bold mt-0.5 whitespace-nowrap truncate">
@@ -149,10 +149,10 @@ export const LiveTrackingView: React.FC<LiveTrackingViewProps> = ({
             <div className="flex items-center gap-1.5 flex-shrink-0">
               <a
                 href={`tel:${driver.phone}`}
-                className="w-9 h-9 rounded-xl bg-[#121212] hover:bg-black text-[#84CC16] flex items-center justify-center shadow-md transition-all active:scale-95 cursor-pointer"
+                className="w-9 h-9 rounded-xl bg-[#121212] hover:bg-black text-[#fcd502] flex items-center justify-center shadow-md transition-all active:scale-95 cursor-pointer"
                 title="Call Driver"
               >
-                <Phone className="w-4 h-4 text-[#84CC16] fill-[#84CC16]/25 stroke-[2]" />
+                <Phone className="w-4 h-4 text-[#fcd502] fill-[#fcd502]/25 stroke-[2]" />
               </a>
               <button
                 type="button"
@@ -167,8 +167,8 @@ export const LiveTrackingView: React.FC<LiveTrackingViewProps> = ({
 
           {/* Minimal Collapsible Trip Details Toggle */}
           <div className="pt-2 border-t border-slate-100 flex items-center justify-between text-[11px] font-extrabold text-slate-700">
-            <span className="flex items-center gap-1 text-[#4D7C0F]">
-              <CheckCircle2 className="w-3.5 h-3.5 text-[#84CC16] fill-[#84CC16]/25 stroke-[2]" /> Suit Uniform Driver
+            <span className="flex items-center gap-1 text-[#a18200]">
+              <CheckCircle2 className="w-3.5 h-3.5 text-[#fcd502] fill-[#fcd502]/25 stroke-[2]" /> Suit Uniform Driver
             </span>
 
             <button
@@ -185,7 +185,7 @@ export const LiveTrackingView: React.FC<LiveTrackingViewProps> = ({
           {showDetailsSheet && (
             <div className="pt-2 space-y-2 text-xs text-slate-600 animate-fade-in border-t border-slate-100">
               <div className="flex items-start gap-2">
-                <Navigation className="w-3.5 h-3.5 text-[#84CC16] mt-0.5 flex-shrink-0" />
+                <Navigation className="w-3.5 h-3.5 text-[#fcd502] mt-0.5 flex-shrink-0" />
                 <div className="min-w-0">
                   <p className="text-[10px] text-slate-400 font-bold uppercase">Pickup Location</p>
                   <p className="font-extrabold text-slate-800 truncate">{booking?.pickupLocation || '742 Evergreen Terrace, Beverly Hills'}</p>

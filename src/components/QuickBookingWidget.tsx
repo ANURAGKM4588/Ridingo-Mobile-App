@@ -79,7 +79,7 @@ export const QuickBookingWidget: React.FC<QuickBookingWidgetProps> = ({
       {/* Header Accent */}
       <div className="flex items-center justify-between gap-2 mb-3">
         <div className="flex items-center gap-1.5 min-w-0">
-          <span className="w-2 h-2 rounded-full bg-[#84CC16] animate-pulse flex-shrink-0"></span>
+          <span className="w-2 h-2 rounded-full bg-[#fcd502] animate-pulse flex-shrink-0"></span>
           <span className="text-[10px] font-black uppercase tracking-wider text-slate-800 truncate">
             {t.widgetTitle}
           </span>
@@ -98,7 +98,7 @@ export const QuickBookingWidget: React.FC<QuickBookingWidgetProps> = ({
               onClick={() => handleServiceTabChange(tab)}
               className={`flex-1 py-2 rounded-xl text-xs font-black transition-all duration-200 flex items-center justify-center gap-1.5 cursor-pointer ${
                 isActive
-                  ? 'bg-[#121212] text-[#84CC16] shadow-md scale-[1.02] border border-zinc-800'
+                  ? 'bg-[#121212] text-[#fcd502] shadow-md scale-[1.02] border border-zinc-800'
                   : 'text-slate-700 hover:text-slate-900 hover:bg-white/50'
               }`}
             >
@@ -113,9 +113,9 @@ export const QuickBookingWidget: React.FC<QuickBookingWidgetProps> = ({
         {selectedServiceTab === 'Airport' ? (
           <div className="space-y-2">
             {/* Flight Number */}
-            <div className="relative flex items-center bg-slate-100/90 rounded-2xl px-3 py-2 border border-slate-200/60 focus-within:border-[#84CC16] transition-all">
-              <div className="w-7 h-7 rounded-xl bg-white flex items-center justify-center text-[#84CC16] shadow-sm z-20 mr-2.5 flex-shrink-0">
-                <Plane className="w-4 h-4 text-[#84CC16] fill-[#84CC16]/25 stroke-[2]" />
+            <div className="relative flex items-center bg-slate-100/90 rounded-2xl px-3 py-2 border border-slate-200/60 focus-within:border-[#fcd502] transition-all">
+              <div className="w-7 h-7 rounded-xl bg-white flex items-center justify-center text-[#fcd502] shadow-sm z-20 mr-2.5 flex-shrink-0">
+                <Plane className="w-4 h-4 text-[#fcd502] fill-[#fcd502]/25 stroke-[2]" />
               </div>
               <div className="flex-1 min-w-0">
                 <label className="block text-[9px] font-bold uppercase tracking-wider text-slate-400">{t.flightNoLabel}</label>
@@ -131,9 +131,9 @@ export const QuickBookingWidget: React.FC<QuickBookingWidgetProps> = ({
             </div>
 
             {/* Airline Name */}
-            <div className="relative flex items-center bg-slate-100/90 rounded-2xl px-3 py-2 border border-slate-200/60 focus-within:border-[#84CC16] transition-all">
+            <div className="relative flex items-center bg-slate-100/90 rounded-2xl px-3 py-2 border border-slate-200/60 focus-within:border-[#fcd502] transition-all">
               <div className="w-7 h-7 rounded-xl bg-[#121212] flex items-center justify-center text-white shadow-sm z-20 mr-2.5 flex-shrink-0">
-                <Building2 className="w-3.5 h-3.5 text-[#84CC16] fill-[#84CC16]/25 stroke-[2]" />
+                <Building2 className="w-3.5 h-3.5 text-[#fcd502] fill-[#fcd502]/25 stroke-[2]" />
               </div>
               <div className="flex-1 min-w-0">
                 <label className="block text-[9px] font-bold uppercase tracking-wider text-slate-400">{t.airlineLabel}</label>
@@ -153,9 +153,9 @@ export const QuickBookingWidget: React.FC<QuickBookingWidgetProps> = ({
             <div className="absolute left-[17px] top-[22px] bottom-[22px] w-[1.5px] border-l-2 border-dashed border-slate-300 z-10 pointer-events-none" />
 
             {/* Pickup */}
-            <div className="relative flex items-center bg-slate-100/90 rounded-2xl px-3 py-2 border border-slate-200/60 focus-within:border-[#84CC16] transition-all">
-              <div className="w-7 h-7 rounded-xl bg-white flex items-center justify-center text-[#84CC16] shadow-sm z-20 mr-2.5 flex-shrink-0">
-                <MapPin className="w-3.5 h-3.5 text-[#84CC16] fill-[#84CC16]/25 stroke-[2]" />
+            <div className="relative flex items-center bg-slate-100/90 rounded-2xl px-3 py-2 border border-slate-200/60 focus-within:border-[#fcd502] transition-all">
+              <div className="w-7 h-7 rounded-xl bg-white flex items-center justify-center text-[#fcd502] shadow-sm z-20 mr-2.5 flex-shrink-0">
+                <MapPin className="w-3.5 h-3.5 text-[#fcd502] fill-[#fcd502]/25 stroke-[2]" />
               </div>
               <div className="flex-1 min-w-0">
                 <label className="block text-[9px] font-bold uppercase tracking-wider text-slate-400">{t.pickupLabel}</label>
@@ -171,9 +171,9 @@ export const QuickBookingWidget: React.FC<QuickBookingWidgetProps> = ({
             </div>
 
             {/* Destination */}
-            <div className="relative flex items-center bg-slate-100/90 rounded-2xl px-3 py-2 border border-slate-200/60 focus-within:border-[#84CC16] transition-all">
+            <div className="relative flex items-center bg-slate-100/90 rounded-2xl px-3 py-2 border border-slate-200/60 focus-within:border-[#fcd502] transition-all">
               <div className="w-7 h-7 rounded-xl bg-[#121212] flex items-center justify-center text-white shadow-sm z-20 mr-2.5 flex-shrink-0">
-                <Navigation className="w-3.5 h-3.5 text-[#84CC16] fill-[#84CC16]/25 stroke-[2]" />
+                <Navigation className="w-3.5 h-3.5 text-[#fcd502] fill-[#fcd502]/25 stroke-[2]" />
               </div>
               <div className="flex-1 min-w-0">
                 <label className="block text-[9px] font-bold uppercase tracking-wider text-slate-400">{t.destinationLabel}</label>
@@ -190,12 +190,12 @@ export const QuickBookingWidget: React.FC<QuickBookingWidgetProps> = ({
 
             {/* Cause of the Trip Dropdown (Renders when 'Other' tab is selected) */}
             {selectedServiceTab === 'Other' && (
-              <div className="relative flex items-center bg-white rounded-2xl px-3 py-2 border border-slate-200 shadow-sm focus-within:border-[#84CC16] transition-all">
-                <div className="w-7 h-7 rounded-xl bg-[#121212] flex items-center justify-center text-[#84CC16] shadow-sm z-20 mr-2.5 flex-shrink-0">
-                  <Sparkles className="w-3.5 h-3.5 text-[#84CC16] fill-[#84CC16]/25 stroke-[2]" />
+              <div className="relative flex items-center bg-white rounded-2xl px-3 py-2 border border-slate-200 shadow-sm focus-within:border-[#fcd502] transition-all">
+                <div className="w-7 h-7 rounded-xl bg-[#121212] flex items-center justify-center text-[#fcd502] shadow-sm z-20 mr-2.5 flex-shrink-0">
+                  <Sparkles className="w-3.5 h-3.5 text-[#fcd502] fill-[#fcd502]/25 stroke-[2]" />
                 </div>
                 <div className="flex-1 min-w-0">
-                  <label className="block text-[9px] font-black uppercase tracking-wider text-[#4D7C0F]">
+                  <label className="block text-[9px] font-black uppercase tracking-wider text-[#a18200]">
                     {t.tripCauseLabel}
                   </label>
                   <div className="relative">
@@ -221,9 +221,9 @@ export const QuickBookingWidget: React.FC<QuickBookingWidgetProps> = ({
         {/* Date, Time & Duration row with iOS style pickers & Stepper */}
         <div className={`grid ${selectedServiceTab === 'Hourly' ? 'grid-cols-3' : 'grid-cols-2'} gap-1.5`}>
           {/* iOS Date Picker */}
-          <div className="bg-slate-100/90 rounded-xl p-2 border border-slate-200/60 focus-within:border-[#84CC16] transition-all">
+          <div className="bg-slate-100/90 rounded-xl p-2 border border-slate-200/60 focus-within:border-[#fcd502] transition-all">
             <label className="flex items-center gap-1 text-[9px] font-bold uppercase tracking-wider text-slate-400">
-              <Calendar className="w-3 h-3 text-[#84CC16] fill-[#84CC16]/25 stroke-[2]" /> {t.dateLabel}
+              <Calendar className="w-3 h-3 text-[#fcd502] fill-[#fcd502]/25 stroke-[2]" /> {t.dateLabel}
             </label>
             <input
               type="date"
@@ -234,9 +234,9 @@ export const QuickBookingWidget: React.FC<QuickBookingWidgetProps> = ({
           </div>
 
           {/* iOS Time Picker */}
-          <div className="bg-slate-100/90 rounded-xl p-2 border border-slate-200/60 focus-within:border-[#84CC16] transition-all">
+          <div className="bg-slate-100/90 rounded-xl p-2 border border-slate-200/60 focus-within:border-[#fcd502] transition-all">
             <label className="flex items-center gap-1 text-[9px] font-bold uppercase tracking-wider text-slate-400">
-              <Clock className="w-3 h-3 text-[#84CC16] fill-[#84CC16]/25 stroke-[2]" /> {t.timeLabel}
+              <Clock className="w-3 h-3 text-[#fcd502] fill-[#fcd502]/25 stroke-[2]" /> {t.timeLabel}
             </label>
             <input
               type="time"
@@ -250,7 +250,7 @@ export const QuickBookingWidget: React.FC<QuickBookingWidgetProps> = ({
           {selectedServiceTab === 'Hourly' && (
             <div className="bg-slate-100/90 rounded-xl p-2 border border-slate-200/60 flex flex-col justify-between">
               <label className="flex items-center gap-1 text-[9px] font-bold uppercase tracking-wider text-slate-400">
-                <Clock className="w-3 h-3 text-[#84CC16] fill-[#84CC16]/25 stroke-[2]" /> {t.durationLabel}
+                <Clock className="w-3 h-3 text-[#fcd502] fill-[#fcd502]/25 stroke-[2]" /> {t.durationLabel}
               </label>
               <div className="flex items-center justify-between mt-0.5">
                 <button
@@ -266,7 +266,7 @@ export const QuickBookingWidget: React.FC<QuickBookingWidgetProps> = ({
                 <button
                   type="button"
                   onClick={() => setDurationHours((prev) => Math.min(24, prev + 1))}
-                  className="w-5 h-5 rounded-full bg-[#84CC16] hover:bg-lime-500 active:scale-95 text-[#121212] font-bold flex items-center justify-center transition-all"
+                  className="w-5 h-5 rounded-full bg-[#fcd502] hover:bg-lime-500 active:scale-95 text-[#121212] font-bold flex items-center justify-center transition-all"
                 >
                   <Plus className="w-3 h-3" />
                 </button>
@@ -281,7 +281,7 @@ export const QuickBookingWidget: React.FC<QuickBookingWidgetProps> = ({
           className="w-full py-3.5 rounded-2xl bg-[#121212] hover:bg-black text-white font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-lg transition-all group border border-zinc-800"
         >
           <span>{t.bookDriverBtn}</span>
-          <div className="w-6 h-6 rounded-full bg-[#84CC16] text-[#121212] flex items-center justify-center group-hover:translate-x-1 transition-transform">
+          <div className="w-6 h-6 rounded-full bg-[#fcd502] text-[#121212] flex items-center justify-center group-hover:translate-x-1 transition-transform">
             <ArrowRight className="w-3.5 h-3.5 text-[#121212]" />
           </div>
         </button>
@@ -290,9 +290,9 @@ export const QuickBookingWidget: React.FC<QuickBookingWidgetProps> = ({
       {/* Trust snippet */}
       <div className="mt-3 pt-2.5 border-t border-slate-200/60 flex items-center justify-between text-[10px] text-slate-500 font-semibold">
         <span className="flex items-center gap-1">
-          <Shield className="w-3 h-3 text-[#84CC16] fill-[#84CC16]/25 stroke-[2]" /> {t.insuredBadge}
+          <Shield className="w-3 h-3 text-[#fcd502] fill-[#fcd502]/25 stroke-[2]" /> {t.insuredBadge}
         </span>
-        <span className="text-[#4D7C0F] font-bold">{t.uniformedBadge}</span>
+        <span className="text-[#a18200] font-bold">{t.uniformedBadge}</span>
       </div>
     </div>
   );

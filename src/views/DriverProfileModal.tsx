@@ -21,7 +21,7 @@ export const DriverProfileModal: React.FC<DriverProfileModalProps> = ({
         {/* Header banner */}
         <div className="relative h-32 bg-gradient-to-r from-slate-900 via-zinc-900 to-[#121212] p-6 text-white flex items-start justify-between">
           <div className="flex items-center gap-2">
-            <span className="px-3 py-1 rounded-full bg-[#84CC16] text-[#121212] text-xs font-black uppercase tracking-wider shadow-md">
+            <span className="px-3 py-1 rounded-full bg-[#fcd502] text-[#121212] text-xs font-black uppercase tracking-wider shadow-md">
               RIDINGO Certified Chauffeur
             </span>
           </div>
@@ -42,7 +42,7 @@ export const DriverProfileModal: React.FC<DriverProfileModalProps> = ({
               className="w-24 h-24 rounded-3xl object-cover border-4 border-white shadow-xl bg-slate-100"
             />
             {driver.verifiedBadge && (
-              <div className="absolute -bottom-1 -right-1 w-7 h-7 rounded-full bg-[#84CC16] text-[#121212] flex items-center justify-center shadow-md border-2 border-white">
+              <div className="absolute -bottom-1 -right-1 w-7 h-7 rounded-full bg-[#fcd502] text-[#121212] flex items-center justify-center shadow-md border-2 border-white">
                 <ShieldCheck className="w-4 h-4 fill-current" />
               </div>
             )}
@@ -72,18 +72,18 @@ export const DriverProfileModal: React.FC<DriverProfileModalProps> = ({
             </div>
             <div className="border-x border-slate-200">
               <span className="text-[10px] uppercase font-bold text-slate-400">Completed</span>
-              <span className="text-base font-extrabold text-[#4D7C0F] block">{driver.totalTrips}+ Rides</span>
+              <span className="text-base font-extrabold text-[#a18200] block">{driver.totalTrips}+ Rides</span>
             </div>
             <div>
               <span className="text-[10px] uppercase font-bold text-slate-400">Status</span>
-              <span className="text-xs font-black text-[#84CC16] block mt-1">Verified VIP</span>
+              <span className="text-xs font-black text-[#fcd502] block mt-1">Verified VIP</span>
             </div>
           </div>
 
           {/* Languages spoken */}
           <div className="space-y-2">
             <h4 className="text-xs font-extrabold uppercase tracking-wider text-slate-600 flex items-center gap-1.5">
-              <Globe className="w-4 h-4 text-[#84CC16]" /> Languages Spoken
+              <Globe className="w-4 h-4 text-[#fcd502]" /> Languages Spoken
             </h4>
             <div className="flex flex-wrap gap-1.5">
               {driver.languages.map((lang, idx) => (
@@ -97,7 +97,7 @@ export const DriverProfileModal: React.FC<DriverProfileModalProps> = ({
           {/* Handled Vehicle Types */}
           <div className="space-y-2">
             <h4 className="text-xs font-extrabold uppercase tracking-wider text-slate-600 flex items-center gap-1.5">
-              <Car className="w-4 h-4 text-[#84CC16]" /> Trained Vehicle Classes
+              <Car className="w-4 h-4 text-[#fcd502]" /> Trained Vehicle Classes
             </h4>
             <div className="flex flex-wrap gap-1.5">
               {driver.carHandledTypes.map((type, idx) => (
@@ -111,7 +111,7 @@ export const DriverProfileModal: React.FC<DriverProfileModalProps> = ({
           {/* Certifications */}
           <div className="space-y-2">
             <h4 className="text-xs font-extrabold uppercase tracking-wider text-slate-600 flex items-center gap-1.5">
-              <Award className="w-4 h-4 text-[#84CC16]" /> Certifications & Badges
+              <Award className="w-4 h-4 text-[#fcd502]" /> Certifications & Badges
             </h4>
             <div className="space-y-1.5">
               {driver.certifications.map((cert, idx) => (
@@ -127,13 +127,13 @@ export const DriverProfileModal: React.FC<DriverProfileModalProps> = ({
         {/* Footer Contact Action */}
         <div className="p-5 bg-slate-50 border-t border-slate-200/80 flex items-center justify-between">
           <div className="flex items-center gap-1.5 text-xs text-slate-500 font-semibold">
-            <ThumbsUp className="w-4 h-4 text-[#84CC16]" /> 99.4% Positive Feedback
+            <ThumbsUp className="w-4 h-4 text-[#fcd502]" /> 99.4% Positive Feedback
           </div>
           <a
             href={`tel:${driver.phone}`}
             className="px-6 py-3 rounded-2xl bg-[#121212] hover:bg-black text-white font-extrabold text-xs flex items-center gap-2 shadow-lg transition-all"
           >
-            <Phone className="w-4 h-4 text-[#84CC16]" />
+            <Phone className="w-4 h-4 text-[#fcd502]" />
             <span>Call Driver</span>
           </a>
         </div>

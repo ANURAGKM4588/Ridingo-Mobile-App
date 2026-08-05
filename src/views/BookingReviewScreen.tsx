@@ -129,7 +129,7 @@ export const BookingReviewScreen: React.FC<BookingReviewScreenProps> = ({
           <button
             type="button"
             onClick={() => setIsEditing(!isEditing)}
-            className="text-xs font-bold text-[#4D7C0F] hover:underline cursor-pointer whitespace-nowrap"
+            className="text-xs font-bold text-[#a18200] hover:underline cursor-pointer whitespace-nowrap"
           >
             {isEditing ? 'Done' : 'Edit'}
           </button>
@@ -144,7 +144,7 @@ export const BookingReviewScreen: React.FC<BookingReviewScreenProps> = ({
             <span className="text-xs font-black uppercase text-slate-500 tracking-wider">
               {serviceType} Service Details
             </span>
-            <span className="px-2 py-0.5 rounded-full bg-lime-100 text-[#4D7C0F] text-[10px] font-bold">
+            <span className="px-2 py-0.5 rounded-full bg-lime-100 text-[#a18200] text-[10px] font-bold">
               {isEditing ? 'Editing Mode' : 'Confirmed'}
             </span>
           </div>
@@ -152,7 +152,7 @@ export const BookingReviewScreen: React.FC<BookingReviewScreenProps> = ({
           {serviceType === 'Airport' ? (
             <div className="space-y-2">
               <div className="flex items-center gap-3">
-                <div className="w-8 h-8 rounded-xl bg-lime-50 flex items-center justify-center text-[#84CC16] flex-shrink-0">
+                <div className="w-8 h-8 rounded-xl bg-lime-50 flex items-center justify-center text-[#fcd502] flex-shrink-0">
                   <Plane className="w-4 h-4" />
                 </div>
                 <div className="flex-1">
@@ -162,7 +162,7 @@ export const BookingReviewScreen: React.FC<BookingReviewScreenProps> = ({
                       type="text"
                       value={flightNumber}
                       onChange={(e) => setFlightNumber(e.target.value)}
-                      className="w-full text-xs font-bold text-slate-900 border-b border-slate-300 focus:outline-none focus:border-[#84CC16] py-0.5"
+                      className="w-full text-xs font-bold text-slate-900 border-b border-slate-300 focus:outline-none focus:border-[#fcd502] py-0.5"
                     />
                   ) : (
                     <span className="text-xs font-extrabold text-slate-900">{flightNumber || 'Not specified'}</span>
@@ -171,7 +171,7 @@ export const BookingReviewScreen: React.FC<BookingReviewScreenProps> = ({
               </div>
 
               <div className="flex items-center gap-3">
-                <div className="w-8 h-8 rounded-xl bg-slate-950 flex items-center justify-center text-[#84CC16] flex-shrink-0">
+                <div className="w-8 h-8 rounded-xl bg-slate-950 flex items-center justify-center text-[#fcd502] flex-shrink-0">
                   <Building2 className="w-4 h-4" />
                 </div>
                 <div className="flex-1">
@@ -181,7 +181,7 @@ export const BookingReviewScreen: React.FC<BookingReviewScreenProps> = ({
                       type="text"
                       value={airlineName}
                       onChange={(e) => setAirlineName(e.target.value)}
-                      className="w-full text-xs font-bold text-slate-900 border-b border-slate-300 focus:outline-none focus:border-[#84CC16] py-0.5"
+                      className="w-full text-xs font-bold text-slate-900 border-b border-slate-300 focus:outline-none focus:border-[#fcd502] py-0.5"
                     />
                   ) : (
                     <span className="text-xs font-extrabold text-slate-900">{airlineName || 'Not specified'}</span>
@@ -193,8 +193,8 @@ export const BookingReviewScreen: React.FC<BookingReviewScreenProps> = ({
             <div className="space-y-2 relative">
               <div className="absolute left-[15px] top-[18px] bottom-[18px] w-[1.5px] border-l-2 border-dashed border-slate-200 z-0" />
               <div className="flex items-center gap-3 relative z-10">
-                <div className="w-8 h-8 rounded-xl bg-lime-50 flex items-center justify-center text-[#84CC16] flex-shrink-0">
-                  <MapPin className="w-4 h-4 fill-[#84CC16]/20" />
+                <div className="w-8 h-8 rounded-xl bg-lime-50 flex items-center justify-center text-[#fcd502] flex-shrink-0">
+                  <MapPin className="w-4 h-4 fill-[#fcd502]/20" />
                 </div>
                 <div className="flex-1">
                   <span className="text-[10px] font-bold text-slate-400 uppercase block">From</span>
@@ -203,7 +203,7 @@ export const BookingReviewScreen: React.FC<BookingReviewScreenProps> = ({
                       type="text"
                       value={pickup}
                       onChange={(e) => setPickup(e.target.value)}
-                      className="w-full text-xs font-bold text-slate-900 border-b border-slate-300 focus:outline-none focus:border-[#84CC16] py-0.5"
+                      className="w-full text-xs font-bold text-slate-900 border-b border-slate-300 focus:outline-none focus:border-[#fcd502] py-0.5"
                     />
                   ) : (
                     <span className="text-xs font-bold text-slate-900 truncate block">{pickup}</span>
@@ -212,7 +212,7 @@ export const BookingReviewScreen: React.FC<BookingReviewScreenProps> = ({
               </div>
 
               <div className="flex items-center gap-3 relative z-10">
-                <div className="w-8 h-8 rounded-xl bg-slate-950 flex items-center justify-center text-[#84CC16] flex-shrink-0">
+                <div className="w-8 h-8 rounded-xl bg-slate-950 flex items-center justify-center text-[#fcd502] flex-shrink-0">
                   <Navigation className="w-4 h-4" />
                 </div>
                 <div className="flex-1">
@@ -222,7 +222,7 @@ export const BookingReviewScreen: React.FC<BookingReviewScreenProps> = ({
                       type="text"
                       value={destination}
                       onChange={(e) => setDestination(e.target.value)}
-                      className="w-full text-xs font-bold text-slate-900 border-b border-slate-300 focus:outline-none focus:border-[#84CC16] py-0.5"
+                      className="w-full text-xs font-bold text-slate-900 border-b border-slate-300 focus:outline-none focus:border-[#fcd502] py-0.5"
                     />
                   ) : (
                     <span className="text-xs font-bold text-slate-900 truncate block">{destination}</span>
@@ -235,8 +235,8 @@ export const BookingReviewScreen: React.FC<BookingReviewScreenProps> = ({
           {/* Cause of Trip tag */}
           {serviceType === 'Other' && (
             <div className="pt-2 border-t border-slate-100 flex items-center gap-2">
-              <Sparkles className="w-3.5 h-3.5 text-[#4D7C0F]" />
-              <span className="text-[10px] font-bold text-[#4D7C0F] uppercase">Trip Purpose:</span>
+              <Sparkles className="w-3.5 h-3.5 text-[#a18200]" />
+              <span className="text-[10px] font-bold text-[#a18200] uppercase">Trip Purpose:</span>
               <span className="text-xs font-black text-slate-900">{tripCause}</span>
             </div>
           )}
@@ -255,7 +255,7 @@ export const BookingReviewScreen: React.FC<BookingReviewScreenProps> = ({
             {/* Date */}
             <div className="bg-slate-50 p-2.5 rounded-xl border border-slate-200/60">
               <span className="text-[9px] font-bold text-slate-400 uppercase flex items-center gap-1">
-                <Calendar className="w-3 h-3 text-[#84CC16]" /> Date
+                <Calendar className="w-3 h-3 text-[#fcd502]" /> Date
               </span>
               {isEditing ? (
                 <input
@@ -272,7 +272,7 @@ export const BookingReviewScreen: React.FC<BookingReviewScreenProps> = ({
             {/* Time */}
             <div className="bg-slate-50 p-2.5 rounded-xl border border-slate-200/60">
               <span className="text-[9px] font-bold text-slate-400 uppercase flex items-center gap-1">
-                <Clock className="w-3 h-3 text-[#84CC16]" /> Time
+                <Clock className="w-3 h-3 text-[#fcd502]" /> Time
               </span>
               {isEditing ? (
                 <input
@@ -290,7 +290,7 @@ export const BookingReviewScreen: React.FC<BookingReviewScreenProps> = ({
             {serviceType === 'Hourly' && (
               <div className="bg-slate-50 p-2.5 rounded-xl border border-slate-200/60 flex flex-col justify-between">
                 <span className="text-[9px] font-bold text-slate-400 uppercase flex items-center gap-1">
-                  <Clock className="w-3 h-3 text-[#84CC16]" /> Hours
+                  <Clock className="w-3 h-3 text-[#fcd502]" /> Hours
                 </span>
                 <div className="flex items-center justify-between mt-1">
                   <button
@@ -306,7 +306,7 @@ export const BookingReviewScreen: React.FC<BookingReviewScreenProps> = ({
                   <button
                     type="button"
                     onClick={() => setDurationHours((prev) => Math.min(24, prev + 1))}
-                    className="w-5 h-5 rounded-full bg-[#84CC16] hover:bg-lime-500 active:scale-95 text-[#121212] font-bold flex items-center justify-center transition-all"
+                    className="w-5 h-5 rounded-full bg-[#fcd502] hover:bg-lime-500 active:scale-95 text-[#121212] font-bold flex items-center justify-center transition-all"
                   >
                     <Plus className="w-3 h-3" />
                   </button>
@@ -346,17 +346,17 @@ export const BookingReviewScreen: React.FC<BookingReviewScreenProps> = ({
                   }`}
                 >
                   <div className="flex items-center gap-2">
-                    <div className={`w-7 h-7 rounded-lg flex items-center justify-center ${isSel ? 'bg-[#84CC16] text-[#121212]' : 'bg-slate-200 text-slate-700'}`}>
+                    <div className={`w-7 h-7 rounded-lg flex items-center justify-center ${isSel ? 'bg-[#fcd502] text-[#121212]' : 'bg-slate-200 text-slate-700'}`}>
                       <IconComp className="w-3.5 h-3.5" />
                     </div>
                     <div>
                       <span className="text-xs font-extrabold block leading-none">{v.name}</span>
-                      <span className={`text-[9px] font-semibold ${isSel ? 'text-[#84CC16]' : 'text-slate-500'}`}>
+                      <span className={`text-[9px] font-semibold ${isSel ? 'text-[#fcd502]' : 'text-slate-500'}`}>
                         {v.rate}
                       </span>
                     </div>
                   </div>
-                  {isSel && <Check className="w-4 h-4 text-[#84CC16]" />}
+                  {isSel && <Check className="w-4 h-4 text-[#fcd502]" />}
                 </button>
               );
             })}
@@ -376,14 +376,14 @@ export const BookingReviewScreen: React.FC<BookingReviewScreenProps> = ({
               <span className="text-xs text-slate-400 font-normal"> (Total Estimated)</span>
             </div>
             <div className="text-right">
-              <span className="inline-block px-2.5 py-1 rounded-full bg-[#84CC16]/20 border border-[#84CC16]/40 text-[#84CC16] text-[10px] font-extrabold">
+              <span className="inline-block px-2.5 py-1 rounded-full bg-[#fcd502]/20 border border-[#fcd502]/40 text-[#fcd502] text-[10px] font-extrabold">
                 Extra: +{formatPrice(extraHourRate, currentRegion)}/hr
               </span>
             </div>
           </div>
 
           <div className="flex items-center gap-1.5 text-[10px] text-slate-400 border-t border-white/10 pt-2">
-            <Info className="w-3 h-3 text-[#84CC16] flex-shrink-0" />
+            <Info className="w-3 h-3 text-[#fcd502] flex-shrink-0" />
             <span>Extra hours charged automatically if trip extends beyond {durationHours} hours.</span>
           </div>
         </div>
@@ -394,7 +394,7 @@ export const BookingReviewScreen: React.FC<BookingReviewScreenProps> = ({
         <button
           type="button"
           onClick={handleProceed}
-          className="w-full h-13 py-3.5 rounded-2xl bg-[#84CC16] hover:bg-lime-400 text-[#121212] font-black text-xs sm:text-sm uppercase tracking-wider flex items-center justify-center gap-2 shadow-lg transition-transform active:scale-[0.98] cursor-pointer"
+          className="w-full h-13 py-3.5 rounded-2xl bg-[#fcd502] hover:bg-lime-400 text-[#121212] font-black text-xs sm:text-sm uppercase tracking-wider flex items-center justify-center gap-2 shadow-lg transition-transform active:scale-[0.98] cursor-pointer"
         >
           <span>Continue to Advance Payment</span>
           <ChevronRight className="w-4 h-4 stroke-[3]" />

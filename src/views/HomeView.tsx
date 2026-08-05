@@ -57,14 +57,14 @@ export const HomeView: React.FC<HomeViewProps> = ({
       <div className="sticky top-0 z-40 bg-white -mx-4 px-4 py-2.5 border-b border-slate-200 shadow-sm animate-drop-up stagger-2">
         <div className="relative w-full">
           <div className="absolute inset-y-0 left-3.5 flex items-center pointer-events-none">
-            <Search className="w-4 h-4 text-[#84CC16]" />
+            <Search className="w-4 h-4 text-[#fcd502]" />
           </div>
           <input
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder={t.searchPlaceholder}
-            className="w-full pl-10 pr-4 py-2.5 rounded-2xl bg-slate-100 border border-slate-200 text-slate-900 font-bold placeholder:text-slate-400 placeholder:font-normal focus:outline-none focus:ring-2 focus:ring-[#84CC16] transition-all text-xs"
+            className="w-full pl-10 pr-4 py-2.5 rounded-2xl bg-slate-100 border border-slate-200 text-slate-900 font-bold placeholder:text-slate-400 placeholder:font-normal focus:outline-none focus:ring-2 focus:ring-[#fcd502] transition-all text-xs"
           />
         </div>
       </div>
@@ -87,7 +87,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
           <div className="space-y-3 animate-drop-up stagger-4">
             <div className="flex items-center justify-between px-0">
               <div className="flex items-center gap-1.5">
-                <span className="w-2 h-2 rounded-full bg-[#84CC16] animate-pulse flex-shrink-0" />
+                <span className="w-2 h-2 rounded-full bg-[#fcd502] animate-pulse flex-shrink-0" />
                 <h3 className="font-extrabold text-sm text-slate-900">Recent Bookings</h3>
                 <span className="px-2 py-0.5 rounded-full bg-slate-200 text-slate-700 text-[10px] font-black">
                   {recentBookingList.length}
@@ -97,7 +97,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
               {onViewAllBookings && (
                 <button
                   onClick={onViewAllBookings}
-                  className="text-[11px] font-bold text-[#4D7C0F] hover:underline flex items-center gap-0.5 cursor-pointer"
+                  className="text-[11px] font-bold text-[#a18200] hover:underline flex items-center gap-0.5 cursor-pointer"
                 >
                   <span>View All</span>
                   <ChevronRight className="w-3.5 h-3.5" />
@@ -127,7 +127,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
 
                   <div className="space-y-1 text-xs text-slate-600 bg-slate-50 p-2.5 rounded-2xl border border-slate-200/60">
                     <div className="flex items-start gap-1.5 min-w-0">
-                      <MapPin className="w-3.5 h-3.5 text-[#84CC16] fill-[#84CC16]/25 stroke-[2] flex-shrink-0 mt-0.5" />
+                      <MapPin className="w-3.5 h-3.5 text-[#fcd502] fill-[#fcd502]/25 stroke-[2] flex-shrink-0 mt-0.5" />
                       <span className="font-medium text-slate-800 truncate text-[11px]">{booking.pickupLocation}</span>
                     </div>
                     <div className="flex items-start gap-1.5 min-w-0">
@@ -142,7 +142,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
                     {onRepeatBooking && (
                       <button
                         onClick={() => onRepeatBooking(booking)}
-                        className="px-3 py-1.5 rounded-xl bg-[#121212] hover:bg-black text-[#84CC16] font-extrabold text-[11px] flex items-center gap-1 shadow-sm transition-colors cursor-pointer"
+                        className="px-3 py-1.5 rounded-xl bg-[#121212] hover:bg-black text-[#fcd502] font-extrabold text-[11px] flex items-center gap-1 shadow-sm transition-colors cursor-pointer"
                       >
                         <RotateCcw className="w-3 h-3 stroke-[2.2]" />
                         <span>Repeat</span>
@@ -158,7 +158,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
         {/* Spotlight Master Chauffeur */}
         <div className="glass-card rounded-3xl p-4 border border-slate-200 bg-gradient-to-r from-slate-900 via-zinc-900 to-[#121212] text-white shadow-xl relative overflow-hidden group animate-drop-up stagger-5">
           <div className="flex items-center justify-between mb-2.5">
-            <span className="px-2.5 py-0.5 rounded-full bg-[#84CC16] text-[#121212] text-[10px] font-black uppercase tracking-wider">
+            <span className="px-2.5 py-0.5 rounded-full bg-[#fcd502] text-[#121212] text-[10px] font-black uppercase tracking-wider">
               Spotlight Chauffeur
             </span>
             <div className="flex items-center gap-1 text-amber-400 text-xs font-bold">
@@ -170,7 +170,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
             <img
               src={FEATURED_DRIVER.photo}
               alt={FEATURED_DRIVER.name}
-              className="w-14 h-14 rounded-2xl object-cover border border-[#84CC16] shadow-md group-hover:scale-105 transition-transform flex-shrink-0"
+              className="w-14 h-14 rounded-2xl object-cover border border-[#fcd502] shadow-md group-hover:scale-105 transition-transform flex-shrink-0"
             />
             <div className="flex-1 min-w-0">
               <h4 className="font-extrabold text-sm text-white truncate">{FEATURED_DRIVER.name}</h4>
@@ -179,7 +179,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
               </p>
               <button
                 onClick={() => onOpenDriverProfile(FEATURED_DRIVER)}
-                className="mt-1.5 text-[11px] text-[#84CC16] font-bold hover:underline flex items-center gap-1"
+                className="mt-1.5 text-[11px] text-[#fcd502] font-bold hover:underline flex items-center gap-1"
               >
                 View Chauffeur Profile →
               </button>

@@ -39,7 +39,7 @@ export const HeaderBar: React.FC<HeaderBarProps> = ({
           >
             <Bell className="w-4 h-4 text-slate-800 fill-slate-800/25 stroke-[2]" />
             {unreadNotificationsCount > 0 && (
-              <span className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-[#84CC16] text-[#121212] text-[9px] font-black flex items-center justify-center border border-white shadow-sm animate-pulse">
+              <span className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-[#fcd502] text-[#121212] text-[9px] font-black flex items-center justify-center border border-white shadow-sm animate-pulse">
                 {unreadNotificationsCount}
               </span>
             )}
@@ -48,7 +48,7 @@ export const HeaderBar: React.FC<HeaderBarProps> = ({
           {/* User Avatar - Perfect Circle */}
           <button
             onClick={onOpenProfile}
-            className="w-9 h-9 rounded-full overflow-hidden border-2 border-white shadow-sm hover:ring-2 hover:ring-[#84CC16] active:scale-95 transition-all flex-shrink-0 cursor-pointer"
+            className="w-9 h-9 rounded-full overflow-hidden border-2 border-white shadow-sm hover:ring-2 hover:ring-[#fcd502] active:scale-95 transition-all flex-shrink-0 cursor-pointer"
           >
             <img
               src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80"

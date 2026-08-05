@@ -240,7 +240,7 @@ export const InvoicePaymentScreen: React.FC<InvoicePaymentScreenProps> = ({
         {/* 1. PROMINENT 30% ADVANCE SUMMARY CARD */}
         <div className="bg-gradient-to-br from-slate-900 via-zinc-900 to-[#121212] rounded-3xl p-5 text-white shadow-xl relative overflow-hidden space-y-3">
           <div className="flex items-center justify-between">
-            <span className="px-3 py-1 rounded-full bg-[#84CC16] text-[#121212] text-[10px] font-black uppercase tracking-wider">
+            <span className="px-3 py-1 rounded-full bg-[#fcd502] text-[#121212] text-[10px] font-black uppercase tracking-wider">
               30% Advance Lock
             </span>
             <span className="text-xs font-mono text-slate-400">Total Trip: ${grandTotal.toFixed(2)}</span>
@@ -249,14 +249,14 @@ export const InvoicePaymentScreen: React.FC<InvoicePaymentScreenProps> = ({
           <div>
             <span className="text-[11px] text-slate-400 font-medium block">Payable Now via Razorpay:</span>
             <div className="flex items-baseline gap-2 mt-0.5">
-              <span className="text-3xl font-black text-[#84CC16]">${advanceAmount.toFixed(2)}</span>
+              <span className="text-3xl font-black text-[#fcd502]">${advanceAmount.toFixed(2)}</span>
               <span className="text-xs text-slate-300 font-bold">(30% Deposit)</span>
             </div>
           </div>
 
           <div className="pt-3 border-t border-white/10 flex items-center justify-between text-xs">
             <div className="flex items-center gap-1.5 text-slate-300 font-medium">
-              <Clock className="w-4 h-4 text-[#84CC16]" />
+              <Clock className="w-4 h-4 text-[#fcd502]" />
               <span>Balance Due After Trip:</span>
             </div>
             <span className="font-extrabold text-white text-sm">${remainingBalance.toFixed(2)}</span>
@@ -267,7 +267,7 @@ export const InvoicePaymentScreen: React.FC<InvoicePaymentScreenProps> = ({
         <div className="bg-white rounded-3xl p-5 border border-slate-200 shadow-md space-y-3">
           <div className="flex items-center justify-between border-b border-slate-100 pb-3">
             <div className="flex items-center gap-2">
-              <Receipt className="w-4 h-4 text-[#84CC16]" />
+              <Receipt className="w-4 h-4 text-[#fcd502]" />
               <div>
                 <h3 className="font-extrabold text-xs text-slate-900">Fare & Deposit Details</h3>
                 <span className="text-[10px] font-mono text-slate-400">REF: RDG-2026-{Math.floor(1000 + Math.random() * 9000)}</span>
@@ -316,9 +316,9 @@ export const InvoicePaymentScreen: React.FC<InvoicePaymentScreenProps> = ({
           <div className="pt-3 border-t border-slate-200 bg-slate-50 -mx-5 -mb-5 p-4 rounded-b-3xl space-y-2">
             <div className="flex justify-between text-xs font-extrabold text-slate-900">
               <span className="flex items-center gap-1.5">
-                <ShieldCheck className="w-4 h-4 text-[#84CC16]" /> Pay Now (30% Deposit)
+                <ShieldCheck className="w-4 h-4 text-[#fcd502]" /> Pay Now (30% Deposit)
               </span>
-              <span className="text-[#4D7C0F] text-sm">${advanceAmount.toFixed(2)}</span>
+              <span className="text-[#a18200] text-sm">${advanceAmount.toFixed(2)}</span>
             </div>
             <div className="flex justify-between text-xs font-bold text-slate-500">
               <span className="flex items-center gap-1.5">
@@ -332,7 +332,7 @@ export const InvoicePaymentScreen: React.FC<InvoicePaymentScreenProps> = ({
         {/* 3. PROMO CODE COUPON INPUT */}
         <div className="bg-white rounded-3xl p-4 border border-slate-200 shadow-sm space-y-2">
           <label className="text-xs font-extrabold text-slate-900 flex items-center gap-1.5">
-            <Tag className="w-4 h-4 text-[#84CC16]" /> Have a Promo Code?
+            <Tag className="w-4 h-4 text-[#fcd502]" /> Have a Promo Code?
           </label>
           <form onSubmit={handleApplyPromo} className="flex gap-2">
             <input
@@ -340,11 +340,11 @@ export const InvoicePaymentScreen: React.FC<InvoicePaymentScreenProps> = ({
               value={promoCode}
               onChange={(e) => setPromoCode(e.target.value)}
               placeholder="Try RIDE10 or VIP10"
-              className="flex-1 px-3.5 py-2.5 rounded-2xl bg-slate-100 border border-slate-200 text-xs font-bold text-slate-900 uppercase focus:outline-none focus:ring-2 focus:ring-[#84CC16]"
+              className="flex-1 px-3.5 py-2.5 rounded-2xl bg-slate-100 border border-slate-200 text-xs font-bold text-slate-900 uppercase focus:outline-none focus:ring-2 focus:ring-[#fcd502]"
             />
             <button
               type="submit"
-              className="px-4 py-2.5 rounded-2xl bg-[#121212] hover:bg-black text-[#84CC16] font-extrabold text-xs shadow-md transition-colors cursor-pointer"
+              className="px-4 py-2.5 rounded-2xl bg-[#121212] hover:bg-black text-[#fcd502] font-extrabold text-xs shadow-md transition-colors cursor-pointer"
             >
               Apply
             </button>
@@ -373,7 +373,7 @@ export const InvoicePaymentScreen: React.FC<InvoicePaymentScreenProps> = ({
               type="button"
               onClick={() => setSelectedPayment('apple_pay')}
               className={`w-full p-3.5 rounded-2xl border flex items-center justify-between transition-all cursor-pointer ${selectedPayment === 'apple_pay'
-                  ? 'border-[#84CC16] bg-lime-500/10 shadow-md ring-1 ring-[#84CC16]'
+                  ? 'border-[#fcd502] bg-lime-500/10 shadow-md ring-1 ring-[#fcd502]'
                   : 'border-slate-200/80 hover:bg-slate-50'
                 }`}
             >
@@ -389,7 +389,7 @@ export const InvoicePaymentScreen: React.FC<InvoicePaymentScreenProps> = ({
                   <span className="text-[10px] text-slate-500 font-medium">Default Wallet • Touch / Face ID</span>
                 </div>
               </div>
-              <div className={`w-5 h-5 rounded-full border flex items-center justify-center ${selectedPayment === 'apple_pay' ? 'border-[#84CC16] bg-[#84CC16] text-[#121212]' : 'border-slate-300'
+              <div className={`w-5 h-5 rounded-full border flex items-center justify-center ${selectedPayment === 'apple_pay' ? 'border-[#fcd502] bg-[#fcd502] text-[#121212]' : 'border-slate-300'
                 }`}>
                 {selectedPayment === 'apple_pay' && <Check className="w-3.5 h-3.5 stroke-[3]" />}
               </div>
@@ -400,7 +400,7 @@ export const InvoicePaymentScreen: React.FC<InvoicePaymentScreenProps> = ({
               type="button"
               onClick={() => setSelectedPayment('gpay')}
               className={`w-full p-3.5 rounded-2xl border flex items-center justify-between transition-all cursor-pointer ${selectedPayment === 'gpay'
-                  ? 'border-[#84CC16] bg-lime-500/10 shadow-md ring-1 ring-[#84CC16]'
+                  ? 'border-[#fcd502] bg-lime-500/10 shadow-md ring-1 ring-[#fcd502]'
                   : 'border-slate-200/80 hover:bg-slate-50'
                 }`}
             >
@@ -416,7 +416,7 @@ export const InvoicePaymentScreen: React.FC<InvoicePaymentScreenProps> = ({
                   <span className="text-[10px] text-slate-500 font-medium">Linked bank account or cards</span>
                 </div>
               </div>
-              <div className={`w-5 h-5 rounded-full border flex items-center justify-center ${selectedPayment === 'gpay' ? 'border-[#84CC16] bg-[#84CC16] text-[#121212]' : 'border-slate-300'
+              <div className={`w-5 h-5 rounded-full border flex items-center justify-center ${selectedPayment === 'gpay' ? 'border-[#fcd502] bg-[#fcd502] text-[#121212]' : 'border-slate-300'
                 }`}>
                 {selectedPayment === 'gpay' && <Check className="w-3.5 h-3.5 stroke-[3]" />}
               </div>
@@ -427,13 +427,13 @@ export const InvoicePaymentScreen: React.FC<InvoicePaymentScreenProps> = ({
               type="button"
               onClick={() => setSelectedPayment('card')}
               className={`w-full p-3.5 rounded-2xl border flex items-center justify-between transition-all cursor-pointer ${selectedPayment === 'card'
-                  ? 'border-[#84CC16] bg-lime-500/10 shadow-md ring-1 ring-[#84CC16]'
+                  ? 'border-[#fcd502] bg-lime-500/10 shadow-md ring-1 ring-[#fcd502]'
                   : 'border-slate-200/80 hover:bg-slate-50'
                 }`}
             >
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-xl bg-slate-900 flex items-center justify-center text-white shadow-sm">
-                  <CreditCard className="w-5 h-5 text-[#84CC16]" />
+                  <CreditCard className="w-5 h-5 text-[#fcd502]" />
                 </div>
                 <div className="text-left">
                   <div className="flex items-center gap-1.5">
@@ -443,7 +443,7 @@ export const InvoicePaymentScreen: React.FC<InvoicePaymentScreenProps> = ({
                   <span className="text-[10px] text-slate-500 font-medium">Razorpay 256-Bit SSL Secured</span>
                 </div>
               </div>
-              <div className={`w-5 h-5 rounded-full border flex items-center justify-center ${selectedPayment === 'card' ? 'border-[#84CC16] bg-[#84CC16] text-[#121212]' : 'border-slate-300'
+              <div className={`w-5 h-5 rounded-full border flex items-center justify-center ${selectedPayment === 'card' ? 'border-[#fcd502] bg-[#fcd502] text-[#121212]' : 'border-slate-300'
                 }`}>
                 {selectedPayment === 'card' && <Check className="w-3.5 h-3.5 stroke-[3]" />}
               </div>
@@ -454,7 +454,7 @@ export const InvoicePaymentScreen: React.FC<InvoicePaymentScreenProps> = ({
               type="button"
               onClick={() => setSelectedPayment('upi')}
               className={`w-full p-3.5 rounded-2xl border flex items-center justify-between transition-all cursor-pointer ${selectedPayment === 'upi'
-                  ? 'border-[#84CC16] bg-lime-500/10 shadow-md ring-1 ring-[#84CC16]'
+                  ? 'border-[#fcd502] bg-lime-500/10 shadow-md ring-1 ring-[#fcd502]'
                   : 'border-slate-200/80 hover:bg-slate-50'
                 }`}
             >
@@ -467,7 +467,7 @@ export const InvoicePaymentScreen: React.FC<InvoicePaymentScreenProps> = ({
                   <span className="text-[10px] text-slate-500 font-medium">GPay, PhonePe, Paytm, BHIM UPI</span>
                 </div>
               </div>
-              <div className={`w-5 h-5 rounded-full border flex items-center justify-center ${selectedPayment === 'upi' ? 'border-[#84CC16] bg-[#84CC16] text-[#121212]' : 'border-slate-300'
+              <div className={`w-5 h-5 rounded-full border flex items-center justify-center ${selectedPayment === 'upi' ? 'border-[#fcd502] bg-[#fcd502] text-[#121212]' : 'border-slate-300'
                 }`}>
                 {selectedPayment === 'upi' && <Check className="w-3.5 h-3.5 stroke-[3]" />}
               </div>
@@ -482,7 +482,7 @@ export const InvoicePaymentScreen: React.FC<InvoicePaymentScreenProps> = ({
         <button
           type="button"
           onClick={handleOpenRazorpay}
-          className="w-full h-13 py-3.5 rounded-2xl bg-[#84CC16] hover:bg-lime-400 text-[#121212] font-black text-xs sm:text-sm uppercase tracking-wider flex items-center justify-center gap-2 shadow-xl transition-all active:scale-[0.98] cursor-pointer"
+          className="w-full h-13 py-3.5 rounded-2xl bg-[#fcd502] hover:bg-lime-400 text-[#121212] font-black text-xs sm:text-sm uppercase tracking-wider flex items-center justify-center gap-2 shadow-xl transition-all active:scale-[0.98] cursor-pointer"
         >
           <Lock className="w-4 h-4" />
           <span>Pay {formatPrice(advanceAmount, currentRegion, 2)} Deposit Now</span>
@@ -521,7 +521,7 @@ export const InvoicePaymentScreen: React.FC<InvoicePaymentScreenProps> = ({
             <div className="bg-slate-900 px-5 py-3 text-white flex items-center justify-between border-b border-slate-800">
               <div>
                 <span className="text-[10px] text-slate-400 font-bold uppercase tracking-wider block">30% Advance Deposit</span>
-                <span className="text-xl font-black text-[#84CC16]">${advanceAmount.toFixed(2)}</span>
+                <span className="text-xl font-black text-[#fcd502]">${advanceAmount.toFixed(2)}</span>
               </div>
               <div className="text-right text-[10px] text-slate-400 font-medium">
                 <span>Total Fare: ${grandTotal.toFixed(2)}</span>
@@ -635,9 +635,9 @@ export const InvoicePaymentScreen: React.FC<InvoicePaymentScreenProps> = ({
 
             {/* Animated Radar Pulse */}
             <div className="relative w-24 h-24 mx-auto flex items-center justify-center">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#84CC16] opacity-75"></span>
-              <div className="relative w-16 h-16 rounded-full bg-[#121212] text-[#84CC16] flex items-center justify-center shadow-xl border-2 border-white">
-                <UserCheck className="w-8 h-8 text-[#84CC16]" />
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#fcd502] opacity-75"></span>
+              <div className="relative w-16 h-16 rounded-full bg-[#121212] text-[#fcd502] flex items-center justify-center shadow-xl border-2 border-white">
+                <UserCheck className="w-8 h-8 text-[#fcd502]" />
               </div>
             </div>
 
@@ -658,7 +658,7 @@ export const InvoicePaymentScreen: React.FC<InvoicePaymentScreenProps> = ({
             {/* Step Progress Indicators */}
             <div className="space-y-2 text-xs text-left bg-slate-50 p-3.5 rounded-2xl border border-slate-200">
               <div className="flex items-center gap-2 font-bold text-emerald-700">
-                <CheckCircle2 className="w-4 h-4 text-[#84CC16]" />
+                <CheckCircle2 className="w-4 h-4 text-[#fcd502]" />
                 <span>1. 30% Advance Deposit Paid</span>
               </div>
               <div className={`flex items-center gap-2 font-bold ${dispatchStep >= 2 ? 'text-blue-700' : 'text-slate-400'}`}>
@@ -666,7 +666,7 @@ export const InvoicePaymentScreen: React.FC<InvoicePaymentScreenProps> = ({
                 <span>2. Request Sent to Driver App</span>
               </div>
               <div className={`flex items-center gap-2 font-bold ${dispatchStep >= 3 ? 'text-emerald-700' : 'text-slate-400'}`}>
-                <UserCheck className="w-4 h-4 text-[#84CC16]" />
+                <UserCheck className="w-4 h-4 text-[#fcd502]" />
                 <span>3. Driver Approval Status</span>
               </div>
             </div>
@@ -697,7 +697,7 @@ export const InvoicePaymentScreen: React.FC<InvoicePaymentScreenProps> = ({
                 <button
                   type="button"
                   onClick={handleCloseToBookings}
-                  className="py-2.5 rounded-xl bg-[#121212] hover:bg-black text-[#84CC16] font-bold text-xs flex items-center justify-center gap-1 transition-colors shadow-sm"
+                  className="py-2.5 rounded-xl bg-[#121212] hover:bg-black text-[#fcd502] font-bold text-xs flex items-center justify-center gap-1 transition-colors shadow-sm"
                 >
                   <ExternalLink className="w-3.5 h-3.5" />
                   <span>View Bookings</span>

@@ -40,7 +40,7 @@ export const PromotionsCarousel: React.FC<PromotionsCarouselProps> = ({
       {/* Section Title Header */}
       <div className="flex items-center justify-between px-1">
         <div className="flex items-center gap-2">
-          <Sparkles className="w-4 h-4 text-[#84CC16]" />
+          <Sparkles className="w-4 h-4 text-[#fcd502]" />
           <h3 className="text-sm font-black text-[#0F172A] tracking-tight uppercase">
             Special Offers & Deals
           </h3>
@@ -80,7 +80,7 @@ export const PromotionsCarousel: React.FC<PromotionsCarouselProps> = ({
 
         {/* Top Tag & Expiry */}
         <div className="relative z-10 flex items-center justify-between">
-          <span className="px-2.5 py-0.5 rounded-full bg-[#84CC16] text-[#121212] text-[10px] font-black uppercase tracking-wider flex items-center gap-1 shadow-sm">
+          <span className="px-2.5 py-0.5 rounded-full bg-[#fcd502] text-[#121212] text-[10px] font-black uppercase tracking-wider flex items-center gap-1 shadow-sm">
             <Tag className="w-3 h-3 fill-current" /> {currentPromo.discountTag}
           </span>
           <span className="text-[10px] text-slate-300 font-semibold bg-black/50 px-2 py-0.5 rounded-full backdrop-blur-sm">
@@ -102,7 +102,7 @@ export const PromotionsCarousel: React.FC<PromotionsCarouselProps> = ({
         <div className="relative z-10 pt-2 flex items-center justify-between border-t border-white/15">
           <div className="flex items-center gap-1.5 text-xs">
             <span className="text-[10px] text-slate-300 font-bold uppercase tracking-wider">Use Code:</span>
-            <span className="px-2.5 py-1 rounded-xl bg-white/15 backdrop-blur-md text-[#84CC16] font-mono text-xs font-black border border-white/20 tracking-wider">
+            <span className="px-2.5 py-1 rounded-xl bg-white/15 backdrop-blur-md text-[#fcd502] font-mono text-xs font-black border border-white/20 tracking-wider">
               {currentPromo.code}
             </span>
           </div>
@@ -139,7 +139,7 @@ export const PromotionsCarousel: React.FC<PromotionsCarouselProps> = ({
               type="button"
               onClick={() => setCurrentIndex(idx)}
               className={`h-1 rounded-full transition-all duration-300 ${
-                idx === currentIndex ? 'w-5 bg-[#84CC16]' : 'w-1 bg-white/40'
+                idx === currentIndex ? 'w-5 bg-[#fcd502]' : 'w-1 bg-white/40'
               }`}
               aria-label={`Go to slide ${idx + 1}`}
             />

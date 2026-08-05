@@ -99,10 +99,10 @@ export const SupportChatView: React.FC<SupportChatViewProps> = ({ onBack }) => {
 
           <div className="flex items-center gap-2 min-w-0">
             <div className="relative flex-shrink-0">
-              <div className="w-8 h-8 rounded-xl bg-[#121212] text-[#84CC16] flex items-center justify-center font-black">
-                <Headphones className="w-4 h-4 text-[#84CC16]" />
+              <div className="w-8 h-8 rounded-xl bg-[#121212] text-[#fcd502] flex items-center justify-center font-black">
+                <Headphones className="w-4 h-4 text-[#fcd502]" />
               </div>
-              <span className="w-2 h-2 rounded-full bg-[#84CC16] border border-white absolute -bottom-0.5 -right-0.5 animate-pulse" />
+              <span className="w-2 h-2 rounded-full bg-[#fcd502] border border-white absolute -bottom-0.5 -right-0.5 animate-pulse" />
             </div>
 
             <div className="min-w-0">
@@ -121,10 +121,10 @@ export const SupportChatView: React.FC<SupportChatViewProps> = ({ onBack }) => {
           {/* Direct Call Button */}
           <a
             href="tel:+18007434646"
-            className="px-2.5 py-1.5 rounded-xl bg-slate-900 text-[#84CC16] hover:bg-black font-extrabold text-[11px] flex items-center gap-1 shadow-xs transition-all cursor-pointer whitespace-nowrap"
+            className="px-2.5 py-1.5 rounded-xl bg-slate-900 text-[#fcd502] hover:bg-black font-extrabold text-[11px] flex items-center gap-1 shadow-xs transition-all cursor-pointer whitespace-nowrap"
             title="Call Support Desk"
           >
-            <Phone className="w-3 h-3 text-[#84CC16] fill-[#84CC16]/25 stroke-[2] flex-shrink-0" />
+            <Phone className="w-3 h-3 text-[#fcd502] fill-[#fcd502]/25 stroke-[2] flex-shrink-0" />
             <span>Call</span>
           </a>
 
@@ -158,7 +158,7 @@ export const SupportChatView: React.FC<SupportChatViewProps> = ({ onBack }) => {
               className={`flex items-end gap-2 ${isAgent ? 'justify-start' : 'justify-end'}`}
             >
               {isAgent && (
-                <div className="w-7 h-7 rounded-xl bg-slate-900 text-[#84CC16] flex items-center justify-center font-bold text-xs flex-shrink-0">
+                <div className="w-7 h-7 rounded-xl bg-slate-900 text-[#fcd502] flex items-center justify-center font-bold text-xs flex-shrink-0">
                   R
                 </div>
               )}
@@ -177,7 +177,7 @@ export const SupportChatView: React.FC<SupportChatViewProps> = ({ onBack }) => {
                   }`}
                 >
                   <span>{msg.time}</span>
-                  {!isAgent && <CheckCheck className="w-3 h-3 text-[#84CC16]" />}
+                  {!isAgent && <CheckCheck className="w-3 h-3 text-[#fcd502]" />}
                 </div>
               </div>
             </div>
@@ -187,7 +187,7 @@ export const SupportChatView: React.FC<SupportChatViewProps> = ({ onBack }) => {
         {/* Typing indicator */}
         {isTyping && (
           <div className="flex items-center gap-2">
-            <div className="w-7 h-7 rounded-xl bg-slate-900 text-[#84CC16] flex items-center justify-center font-bold text-xs">
+            <div className="w-7 h-7 rounded-xl bg-slate-900 text-[#fcd502] flex items-center justify-center font-bold text-xs">
               R
             </div>
             <div className="bg-white p-3 rounded-2xl rounded-bl-none border border-slate-200 shadow-sm flex items-center gap-1 text-slate-400">
@@ -208,7 +208,7 @@ export const SupportChatView: React.FC<SupportChatViewProps> = ({ onBack }) => {
             key={i}
             type="button"
             onClick={() => handleSendMessage(topic)}
-            className="px-2.5 py-1 rounded-full bg-slate-100 hover:bg-[#84CC16] hover:text-[#121212] text-slate-700 text-[10px] font-extrabold whitespace-nowrap transition-colors border border-slate-200/80 cursor-pointer flex-shrink-0"
+            className="px-2.5 py-1 rounded-full bg-slate-100 hover:bg-[#fcd502] hover:text-[#121212] text-slate-700 text-[10px] font-extrabold whitespace-nowrap transition-colors border border-slate-200/80 cursor-pointer flex-shrink-0"
           >
             {topic}
           </button>
@@ -237,13 +237,13 @@ export const SupportChatView: React.FC<SupportChatViewProps> = ({ onBack }) => {
           value={inputText}
           onChange={(e) => setInputText(e.target.value)}
           placeholder="Type your question here..."
-          className="flex-1 px-3.5 py-2.5 rounded-2xl bg-slate-100 border border-slate-200 text-xs font-bold text-slate-900 placeholder:text-slate-400 placeholder:font-normal focus:outline-none focus:border-[#84CC16]"
+          className="flex-1 px-3.5 py-2.5 rounded-2xl bg-slate-100 border border-slate-200 text-xs font-bold text-slate-900 placeholder:text-slate-400 placeholder:font-normal focus:outline-none focus:border-[#fcd502]"
         />
 
         <button
           type="submit"
           disabled={!inputText.trim()}
-          className="p-2.5 rounded-2xl bg-[#121212] hover:bg-black text-[#84CC16] disabled:opacity-40 transition-all cursor-pointer flex-shrink-0 shadow-md"
+          className="p-2.5 rounded-2xl bg-[#121212] hover:bg-black text-[#fcd502] disabled:opacity-40 transition-all cursor-pointer flex-shrink-0 shadow-md"
         >
           <Send className="w-4 h-4" />
         </button>

@@ -40,7 +40,7 @@ export const NotificationsView: React.FC<NotificationsViewProps> = ({
 
           <button
             onClick={onMarkAllRead}
-            className="text-xs font-bold text-[#4D7C0F] hover:underline flex items-center gap-1 cursor-pointer flex-shrink-0 ml-3"
+            className="text-xs font-bold text-[#a18200] hover:underline flex items-center gap-1 cursor-pointer flex-shrink-0 ml-3"
           >
             <Check className="w-3.5 h-3.5" /> Mark all
           </button>
@@ -57,11 +57,11 @@ export const NotificationsView: React.FC<NotificationsViewProps> = ({
               className={`glass-card rounded-3xl p-4.5 border transition-all flex items-start gap-3.5 ${
                 item.read
                   ? 'bg-white/80 border-slate-200/70 text-slate-700 opacity-90'
-                  : 'bg-white border-[#84CC16] text-slate-900 shadow-md ring-1 ring-[#84CC16]/30'
+                  : 'bg-white border-[#fcd502] text-slate-900 shadow-md ring-1 ring-[#fcd502]/30'
               }`}
             >
               <div className={`w-11 h-11 rounded-2xl flex items-center justify-center flex-shrink-0 ${
-                item.type === 'driver' ? 'bg-[#121212] text-[#84CC16]' :
+                item.type === 'driver' ? 'bg-[#121212] text-[#fcd502]' :
                 item.type === 'booking' ? 'bg-emerald-500/10 text-emerald-600' :
                 item.type === 'offer' ? 'bg-amber-500/10 text-amber-600' :
                 'bg-blue-500/10 text-blue-600'
@@ -80,7 +80,7 @@ export const NotificationsView: React.FC<NotificationsViewProps> = ({
               </div>
 
               {!item.read && (
-                <span className="w-2.5 h-2.5 rounded-full bg-[#84CC16] flex-shrink-0 mt-2 animate-pulse" />
+                <span className="w-2.5 h-2.5 rounded-full bg-[#fcd502] flex-shrink-0 mt-2 animate-pulse" />
               )}
             </div>
           );
