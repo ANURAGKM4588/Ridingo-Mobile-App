@@ -100,8 +100,11 @@ export function App() {
         {/* Main Content Area based on Active Tab or Views */}
         {(() => {
           const isFullView = isReviewOpen || isInvoiceOpen || isConfirmationOpen || isPaymentSettingsOpen || isSupportChatOpen || isLanguageSettingsOpen || activeTab === 'wallet' || activeTab === 'bookings';
+          // Home tab uses pt-0 — greeting handles its own top spacing.
+          // Other tabs use pt-3.5 for standard content padding.
+          const topPad = activeTab === 'home' ? 'pt-0' : 'pt-3.5';
           return (
-            <main className={`flex-1 relative flex flex-col min-h-0 w-full ${isFullView ? 'p-0 overflow-hidden' : 'px-4 pt-3.5 pb-24 overflow-y-auto scrollbar-none'}`}>
+            <main className={`flex-1 relative flex flex-col min-h-0 w-full ${isFullView ? 'p-0 overflow-hidden' : `px-4 ${topPad} pb-24 overflow-y-auto scrollbar-none`}`}>
               {isLanguageSettingsOpen ? (
                 <LanguageRegionSettingsView
                   onBack={() => setIsLanguageSettingsOpen(false)}
