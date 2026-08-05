@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Search, Star, MapPin, RotateCcw, ChevronRight } from 'lucide-react';
+import React from 'react';
+import { Star, MapPin, RotateCcw, ChevronRight } from 'lucide-react';
 import { Booking, ServiceItem, VehicleOption } from '../types';
 import { MOCK_BOOKINGS, MOCK_VEHICLES, PROMOTIONS, FEATURED_DRIVER } from '../data/mockData';
 import { QuickBookingWidget } from '../components/QuickBookingWidget';
@@ -21,6 +21,7 @@ interface HomeViewProps {
   onRepeatBooking?: (booking: Booking) => void;
   currentLanguage?: LanguageCode;
   currentRegion?: RegionCode;
+  searchQuery?: string;
 }
 
 export const HomeView: React.FC<HomeViewProps> = ({
@@ -34,37 +35,21 @@ export const HomeView: React.FC<HomeViewProps> = ({
   onRepeatBooking,
   currentLanguage = 'en-us',
   currentRegion = 'in',
+  searchQuery = '',
 }) => {
   const t = TRANSLATIONS[currentLanguage] || TRANSLATIONS['en-us'];
-  const [searchQuery, setSearchQuery] = useState('');
   const recentBookingList = (recentBookings && recentBookings.length > 0) ? recentBookings : MOCK_BOOKINGS;
 
   return (
     <div className="w-full space-y-4 animate-fade-in pb-4">
-      {/* Greeting — scrolls with page, pure white background */}
-      <div className="-mx-4 px-4 pt-3 pb-3 bg-white">
+      {/* Greeting — scrolls with page content, no sticky */}
+      <div className="-mx-4 px-4 pt-3 pb-4 bg-[#FAFAFA]">
         <span className="text-[10px] font-extrabold uppercase tracking-widest text-[#4D7C0F] block">
           {t.onDemandSubtitle}
         </span>
         <h1 className="text-xl sm:text-2xl font-black text-[#0F172A] tracking-tight truncate mt-0.5">
           {t.greeting}
         </h1>
-      </div>
-
-      {/* Search Bar — sticky: scrolls with page, sticks under header once greeting leaves view */}
-      <div className="sticky top-0 z-40 bg-white -mx-4 px-4 py-2.5 border-b border-slate-200 shadow-sm">
-        <div className="relative w-full">
-          <div className="absolute inset-y-0 left-3.5 flex items-center pointer-events-none">
-            <Search className="w-4 h-4 text-[#84CC16]" />
-          </div>
-          <input
-            type="text"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder={t.searchPlaceholder}
-            className="w-full pl-10 pr-4 py-2.5 rounded-2xl bg-slate-50 border border-slate-200 text-slate-900 font-bold placeholder:text-slate-400 placeholder:font-normal shadow-sm focus:outline-none focus:ring-2 focus:ring-[#84CC16] transition-all text-xs"
-          />
-        </div>
       </div>
 
       {/* Quick Booking Floating Widget */}
