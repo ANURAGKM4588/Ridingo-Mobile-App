@@ -49,7 +49,8 @@ export const AuthView: React.FC<AuthViewProps> = ({
   const [phoneNumber, setPhoneNumber] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [fullName, setFullName] = useState('');
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
   const [referralCode, setReferralCode] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [agreeTerms, setAgreeTerms] = useState(true);
@@ -79,8 +80,9 @@ export const AuthView: React.FC<AuthViewProps> = ({
 
   const handleVerifyOtp = (e: React.FormEvent) => {
     e.preventDefault();
+    const constructedName = [firstName, lastName].filter(Boolean).join(' ') || (authMode === 'login' ? 'Alexander Vance' : 'New User');
     onSuccess({
-      name: fullName || (authMode === 'login' ? 'Alexander Vance' : 'New User'),
+      name: constructedName,
       email: email || 'alexander.vance@executive.com',
       phone: `${selectedCountry.code} ${phoneNumber || '555-0192'}`,
     });
@@ -185,23 +187,38 @@ export const AuthView: React.FC<AuthViewProps> = ({
               </div>
             </div>
 
-            {/* Sign Up Fields: Full Name */}
+            {/* Sign Up Fields: First Name (Required) & Last Name (Optional) */}
             {authMode === 'signup' && (
-              <div className="space-y-1">
-                <label className="text-[11px] font-extrabold uppercase tracking-wider text-slate-600">
-                  Full Name
-                </label>
-                <div className="relative">
-                  <div className="absolute inset-y-0 left-3.5 flex items-center pointer-events-none text-slate-400">
-                    <User className="w-4 h-4" />
+              <div className="grid grid-cols-2 gap-2.5">
+                <div className="space-y-1">
+                  <label className="text-[11px] font-extrabold uppercase tracking-wider text-slate-600">
+                    First Name <span className="text-rose-500">*</span>
+                  </label>
+                  <div className="relative">
+                    <div className="absolute inset-y-0 left-3 flex items-center pointer-events-none text-slate-400">
+                      <User className="w-3.5 h-3.5" />
+                    </div>
+                    <input
+                      type="text"
+                      required
+                      value={firstName}
+                      onChange={(e) => setFirstName(e.target.value)}
+                      placeholder="e.g. Alexander"
+                      className="w-full pl-9 pr-3 py-3 rounded-2xl bg-slate-50 border border-slate-200 text-slate-900 font-bold placeholder:text-slate-400 placeholder:font-normal text-xs focus:outline-none focus:ring-2 focus:ring-[#84CC16] transition-all"
+                    />
                   </div>
+                </div>
+
+                <div className="space-y-1">
+                  <label className="text-[11px] font-extrabold uppercase tracking-wider text-slate-600">
+                    Last Name <span className="text-slate-400 font-normal text-[10px] lowercase">(optional)</span>
+                  </label>
                   <input
                     type="text"
-                    required
-                    value={fullName}
-                    onChange={(e) => setFullName(e.target.value)}
-                    placeholder="e.g. Alexander Vance"
-                    className="w-full pl-10 pr-4 py-3 rounded-2xl bg-slate-50 border border-slate-200 text-slate-900 font-bold placeholder:text-slate-400 placeholder:font-normal text-xs focus:outline-none focus:ring-2 focus:ring-[#84CC16] transition-all"
+                    value={lastName}
+                    onChange={(e) => setLastName(e.target.value)}
+                    placeholder="e.g. Vance"
+                    className="w-full px-3.5 py-3 rounded-2xl bg-slate-50 border border-slate-200 text-slate-900 font-bold placeholder:text-slate-400 placeholder:font-normal text-xs focus:outline-none focus:ring-2 focus:ring-[#84CC16] transition-all"
                   />
                 </div>
               </div>
