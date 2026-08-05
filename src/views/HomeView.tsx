@@ -41,8 +41,8 @@ export const HomeView: React.FC<HomeViewProps> = ({
 
   return (
     <div className="w-full space-y-4 animate-fade-in pb-4">
-      {/* Greeting — scrolls with page content (not sticky) */}
-      <div className="-mx-4 px-4 pt-1 pb-3">
+      {/* Greeting — scrolls with page, pure white background */}
+      <div className="-mx-4 px-4 pt-3 pb-3 bg-white">
         <span className="text-[10px] font-extrabold uppercase tracking-widest text-[#4D7C0F] block">
           {t.onDemandSubtitle}
         </span>

@@ -18,7 +18,7 @@ export const HeaderBar: React.FC<HeaderBarProps> = ({
   onOpenProfile
 }) => {
   return (
-    <header className="shrink-0 sticky top-0 z-50 w-full px-4 sm:px-5 pt-[max(env(safe-area-inset-top),1.25rem)] pb-3 bg-white/95 backdrop-blur-xl border-b border-slate-200/80 shadow-xs transition-all duration-300">
+    <header className="shrink-0 sticky top-0 z-50 w-full px-4 sm:px-5 pt-[max(env(safe-area-inset-top),1.25rem)] pb-3 bg-white border-b border-slate-200 shadow-xs transition-all duration-300">
       <div className="flex items-center justify-between gap-3 max-w-md mx-auto">
         {/* RIDINGO Brand Logo */}
         <div className="flex items-center">
