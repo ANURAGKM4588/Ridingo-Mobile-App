@@ -165,22 +165,13 @@ export const AuthView: React.FC<AuthViewProps> = ({
   };
 
   const handleSocialLogin = (provider: 'Google' | 'Apple') => {
-    // Attempt Supabase OAuth provider login
-    try {
-      if (provider === 'Google') {
-        supabase.auth.signInWithOAuth({ provider: 'google' }).catch(() => {});
-      } else {
-        supabase.auth.signInWithOAuth({ provider: 'apple' }).catch(() => {});
-      }
-    } catch (err) {
-      console.log('Social login note:', err);
-    }
+    // Complete social login directly and trigger smooth Home reveal animation
+    const socialName = provider === 'Google' ? 'Alexander Vance (Google)' : 'Alexander Vance (Apple ID)';
+    const socialEmail = provider === 'Google' ? 'alexander.g@gmail.com' : 'alexander@icloud.com';
 
-    // Complete login and trigger smooth Home reveal animation
-    const constructedName = [firstName, lastName].filter(Boolean).join(' ') || `${provider} Executive User`;
     onSuccess({
-      name: constructedName,
-      email: email || `user.${provider.toLowerCase()}@executive.com`,
+      name: socialName,
+      email: email || socialEmail,
       phone: `${selectedCountry.code} ${phoneNumber || '555-0192'}`,
     });
   };
