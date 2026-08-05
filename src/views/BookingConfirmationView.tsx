@@ -12,7 +12,8 @@ import {
   ChevronLeft,
   Car,
   CreditCard,
-  Loader2
+  Loader2,
+  Check
 } from 'lucide-react';
 import { Booking } from '../types';
 import { RegionCode, formatPrice } from '../data/currencies';
@@ -31,6 +32,7 @@ export const BookingConfirmationView: React.FC<BookingConfirmationViewProps> = (
   currentRegion = 'in',
 }) => {
   const [isSharing, setIsSharing] = useState(false);
+  const [toastMessage, setToastMessage] = useState<string | null>(null);
   const pageRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -46,6 +48,11 @@ export const BookingConfirmationView: React.FC<BookingConfirmationViewProps> = (
     }
   }, []);
 
+  const showToast = (msg: string) => {
+    setToastMessage(msg);
+    setTimeout(() => setToastMessage(null), 3000);
+  };
+
   const isAirport = booking.serviceType === 'Airport' || booking.serviceId === 'airport-pickup' || Boolean(booking.flightNumber && booking.flightNumber.length > 0);
   const isHourly = booking.serviceType === 'Hourly' || booking.serviceId === 'hourly-driver' || (!isAirport && booking.serviceType !== 'Other');
 
@@ -53,42 +60,75 @@ export const BookingConfirmationView: React.FC<BookingConfirmationViewProps> = (
   const advancePaid = Math.round(grandTotal * 0.30 * 100) / 100;
   const remainingBalance = Math.round((grandTotal - advancePaid) * 100) / 100;
 
-  // Direct Native Stock iOS & Android Share Sheet Image Handler
+  // Universal Bulletproof Share Engine (Native File Share ➔ Native Text Share ➔ WhatsApp ➔ Clipboard)
   const handleNativeSharePageImage = async () => {
-    if (!pageRef.current || isSharing) return;
+    if (isSharing) return;
     setIsSharing(true);
+
+    const shareText = `🚗 RIDINGO Chauffeur Booking Pass #${booking.bookingNumber || 'RDG-2026'}\n` +
+      `Status: Confirmed & Dispatched ✓\n` +
+      `Pickup: ${booking.pickupLocation}\n` +
+      `Destination: ${booking.destinationLocation}\n` +
+      `Date & Time: ${booking.date}, ${booking.time}\n` +
+      `Vehicle: ${booking.vehicle?.name || 'Executive Chauffeur'}\n` +
+      `Driver: ${booking.driver?.name || 'Assigned Chauffeur'} (★ ${booking.driver?.rating || '4.95'})\n` +
+      `30% Advance Deposit Paid: ${formatPrice(advancePaid, currentRegion, 2)}\n` +
+      `70% Balance Due: ${formatPrice(remainingBalance, currentRegion, 2)}`;
 
     try {
       // 1. Capture exact screenshot image of the Booking Confirmed page in memory
-      const canvas = await html2canvas(pageRef.current, {
-        scale: 2,
-        useCORS: true,
-        backgroundColor: '#FAFAFA',
-        logging: false,
-      });
+      let file: File | null = null;
+      if (pageRef.current) {
+        try {
+          const canvas = await html2canvas(pageRef.current, {
+            scale: 2,
+            useCORS: true,
+            backgroundColor: '#FAFAFA',
+            logging: false,
+          });
+          const dataUrl = canvas.toDataURL('image/png');
+          const res = await fetch(dataUrl);
+          const blob = await res.blob();
+          file = new File([blob], `RIDINGO-Booking-${booking.bookingNumber || 'Pass'}.png`, { type: 'image/png' });
+        } catch (canvasErr) {
+          console.warn("Canvas capture warning:", canvasErr);
+        }
+      }
 
-      const dataUrl = canvas.toDataURL('image/png');
-      const res = await fetch(dataUrl);
-      const blob = await res.blob();
-      const file = new File([blob], `RIDINGO-Booking-${booking.bookingNumber || 'Confirmed'}.png`, { type: 'image/png' });
-
-      // 2. Open Native iOS & Android Stock Share Sheet
-      if (navigator.canShare && navigator.canShare({ files: [file] })) {
+      // 2. Mobile OS Native Share with Image File (iOS Safari / Android Chrome Stock Share Sheet)
+      if (file && navigator.canShare && navigator.canShare({ files: [file] })) {
         await navigator.share({
           title: `RIDINGO Booking #${booking.bookingNumber}`,
-          text: `RIDINGO Booking Confirmed #${booking.bookingNumber}: ${booking.pickupLocation} ➔ ${booking.destinationLocation} (${booking.date}, ${booking.time})`,
+          text: shareText,
           files: [file],
         });
-      } else if (navigator.share) {
+        showToast("Booking Pass Shared!");
+        return;
+      }
+
+      // 3. Mobile OS Native Share Text & Link
+      if (navigator.share) {
         await navigator.share({
           title: `RIDINGO Booking #${booking.bookingNumber}`,
-          text: `RIDINGO Booking Confirmed #${booking.bookingNumber}: ${booking.pickupLocation} ➔ ${booking.destinationLocation} (${booking.date}, ${booking.time})`,
+          text: shareText,
           url: window.location.href,
         });
+        showToast("Booking Pass Shared!");
+        return;
       }
+
+      // 4. WhatsApp Direct Share Link Fallback
+      const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(shareText)}`;
+      window.open(whatsappUrl, '_blank');
+      showToast("Opening WhatsApp Share...");
     } catch (err: any) {
       if (err?.name !== 'AbortError') {
-        console.log("Native share completed:", err);
+        try {
+          await navigator.clipboard.writeText(shareText);
+          showToast("Booking details copied to clipboard!");
+        } catch {
+          // silent fallback
+        }
       }
     } finally {
       setIsSharing(false);
@@ -96,7 +136,15 @@ export const BookingConfirmationView: React.FC<BookingConfirmationViewProps> = (
   };
 
   return (
-    <div className="w-full h-full flex flex-col bg-[#FAFAFA] animate-fade-in overflow-hidden">
+    <div className="w-full h-full flex flex-col bg-[#FAFAFA] animate-fade-in overflow-hidden relative">
+      {/* Toast Notification */}
+      {toastMessage && (
+        <div className="absolute top-16 left-1/2 -translate-x-1/2 z-50 bg-slate-900 text-white px-4 py-2.5 rounded-2xl shadow-2xl flex items-center gap-2 text-xs font-bold border border-slate-700 animate-bounce-subtle">
+          <Check className="w-4 h-4 text-[#84CC16]" />
+          <span>{toastMessage}</span>
+        </div>
+      )}
+
       {/* Fixed Centered Header */}
       <div className="bg-white py-3 px-4 border-b border-slate-200 flex items-center justify-between shadow-xs flex-shrink-0 z-30">
         <div className="w-12 flex items-center justify-start">
@@ -279,7 +327,7 @@ export const BookingConfirmationView: React.FC<BookingConfirmationViewProps> = (
         </button>
 
         <div className="grid grid-cols-2 gap-2">
-          {/* Direct Native Stock Mobile Share Sheet Button */}
+          {/* Universal Share Button */}
           <button
             type="button"
             onClick={handleNativeSharePageImage}
@@ -291,7 +339,7 @@ export const BookingConfirmationView: React.FC<BookingConfirmationViewProps> = (
             ) : (
               <Share2 className="w-4 h-4 text-[#4D7C0F]" />
             )}
-            <span>{isSharing ? 'Opening Share...' : 'Share Booking'}</span>
+            <span>{isSharing ? 'Preparing...' : 'Share Booking'}</span>
           </button>
 
           <button
