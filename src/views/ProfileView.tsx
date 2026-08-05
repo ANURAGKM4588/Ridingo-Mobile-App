@@ -57,17 +57,9 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
   const firstName = userName ? userName.trim().split(' ')[0] : 'Alexander';
 
   return (
-    <div className="w-full h-full flex flex-col bg-[#FAFAFA] animate-fade-in overflow-hidden">
-      {/* FIXED Sticky Header Bar matching Bookings & Wallet */}
-      <div className="bg-white border-b border-slate-200 shadow-xs flex-shrink-0 z-30 animate-drop-up stagger-1 pt-[max(env(safe-area-inset-top,54px),54px)]">
-        <div className="py-3.5 px-4 flex flex-col items-start justify-center text-left">
-          <h2 className="text-xl font-black text-[#0F172A] tracking-tight">My Profile &amp; Account</h2>
-          <p className="text-[11px] text-slate-500 font-medium mt-0.5">Manage preferences, saved addresses &amp; membership</p>
-        </div>
-      </div>
-
-      {/* Middle Scrollable Body */}
-      <div className="flex-1 overflow-y-auto p-4 space-y-4 scrollbar-none pb-36 bg-[#FAFAFA]">
+    <div className="w-full h-full overflow-y-auto bg-[#FAFAFA] animate-fade-in p-4 pt-[max(env(safe-area-inset-top,54px),54px)] pb-36 space-y-4 scrollbar-none">
+      {/* Premium Profile Header Card */}
+      <div className="rounded-[32px] p-5 text-slate-900 bg-gradient-to-b from-white via-white to-slate-50 border border-slate-200/90 shadow-lg relative overflow-hidden animate-drop-up stagger-1">
         <div className="absolute top-0 right-0 w-32 h-32 bg-[#fcd502]/10 rounded-full blur-2xl pointer-events-none" />
 
         <div className="flex items-center gap-4 relative z-10">
