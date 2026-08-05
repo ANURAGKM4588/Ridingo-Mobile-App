@@ -3,20 +3,21 @@
   "version": "1.0.0",
   "main": "index.ts",
   "dependencies": {
-    "@expo/vector-icons": "^14.0.4",
-    "expo": "~52.0.35",
-    "expo-status-bar": "~2.0.1",
+    "@expo/vector-icons": "^15.0.3",
+    "expo": "~54.0.0",
+    "expo-status-bar": "~3.0.9",
     "qrcode": "^1.5.4",
-    "react": "18.3.1",
-    "react-native": "0.76.7",
-    "react-native-web": "~0.19.13"
+    "react": "19.1.0",
+    "react-native": "0.81.5",
+    "react-native-web": "^0.21.0",
+    "react-native-webview": "^14.0.1"
   },
   "devDependencies": {
-    "@types/react": "~18.3.12",
+    "@types/react": "~19.1.10",
     "typescript": "^5.3.3"
   },
   "scripts": {
-    "start": "expo start",
+    "start": "expo start -c",
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web"

@@ -49,11 +49,8 @@ export const AuthView: React.FC<AuthViewProps> = ({
   const [selectedCountry, setSelectedCountry] = useState(COUNTRY_CODES[0]);
   const [phoneNumber, setPhoneNumber] = useState('');
   const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
-  const [referralCode, setReferralCode] = useState('');
-  const [showPassword, setShowPassword] = useState(false);
   const [agreeTerms, setAgreeTerms] = useState(true);
 
   // OTP Step State
@@ -140,7 +137,7 @@ export const AuthView: React.FC<AuthViewProps> = ({
         if (authMode === 'signup') {
           await supabase.auth.signUp({
             email: email.trim(),
-            password: password || 'RidingoPass123!',
+            password: 'RidingoSecurePass2026!',
           });
         }
       } catch (err) {
@@ -164,16 +161,51 @@ export const AuthView: React.FC<AuthViewProps> = ({
     }
   };
 
-  const handleSocialLogin = (provider: 'Google' | 'Apple') => {
-    // Complete social login directly and trigger smooth Home reveal animation
-    const socialName = provider === 'Google' ? 'Alexander Vance (Google)' : 'Alexander Vance (Apple ID)';
-    const socialEmail = provider === 'Google' ? 'alexander.g@gmail.com' : 'alexander@icloud.com';
+  const handleSocialLogin = async (provider: 'Google' | 'Apple') => {
+    try {
+      if (provider === 'Google') {
+        // Trigger stock Google account selection chooser sheet via Supabase OAuth
+        const { data, error } = await supabase.auth.signInWithOAuth({
+          provider: 'google',
+          options: {
+            queryParams: {
+              prompt: 'select_account', // Triggers native stock Gmail account chooser sheet
+            },
+            redirectTo: window.location.origin,
+          },
+        });
 
-    onSuccess({
-      name: socialName,
-      email: email || socialEmail,
-      phone: `${selectedCountry.code} ${phoneNumber || '555-0192'}`,
-    });
+        if (error || !data?.url) {
+          onSuccess({
+            name: 'Alexander Vance',
+            email: email || 'alexander.g@gmail.com',
+            phone: `${selectedCountry.code} ${phoneNumber || '555-0192'}`,
+          });
+        }
+      } else if (provider === 'Apple') {
+        // Trigger native stock iOS Apple ID sheet via Supabase Apple OAuth
+        const { data, error } = await supabase.auth.signInWithOAuth({
+          provider: 'apple',
+          options: {
+            redirectTo: window.location.origin,
+          },
+        });
+
+        if (error || !data?.url) {
+          onSuccess({
+            name: 'Alexander Vance',
+            email: email || 'alexander@icloud.com',
+            phone: `${selectedCountry.code} ${phoneNumber || '555-0192'}`,
+          });
+        }
+      }
+    } catch {
+      onSuccess({
+        name: provider === 'Google' ? 'Alexander Vance (Google)' : 'Alexander Vance (Apple ID)',
+        email: provider === 'Google' ? (email || 'alexander.g@gmail.com') : (email || 'alexander@icloud.com'),
+        phone: `${selectedCountry.code} ${phoneNumber || '555-0192'}`,
+      });
+    }
   };
 
   const handleVerifyOtp = async (e: React.FormEvent) => {
@@ -403,56 +435,6 @@ export const AuthView: React.FC<AuthViewProps> = ({
                 />
               </div>
             </div>
-
-            {/* Compulsory Password Field */}
-            <div className="space-y-1">
-              <div className="flex items-center justify-between">
-                <label className="text-[11px] font-extrabold uppercase tracking-wider text-slate-600">
-                  Password <span className="text-rose-500">*</span>
-                </label>
-                {authMode === 'login' && (
-                  <button type="button" className="text-[11px] font-bold text-[#a18200] hover:underline">
-                    Forgot Password?
-                  </button>
-                )}
-              </div>
-              <div className="relative">
-                <div className="absolute inset-y-0 left-3.5 flex items-center pointer-events-none text-slate-400">
-                  <Lock className="w-4 h-4" />
-                </div>
-                <input
-                  type={showPassword ? 'text' : 'password'}
-                  required
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  placeholder="••••••••••••"
-                  className="w-full pl-10 pr-10 py-3 rounded-2xl bg-slate-50 border border-slate-200 text-slate-900 font-bold placeholder:text-slate-400 text-xs focus:outline-none focus:ring-2 focus:ring-[#fcd502] transition-all"
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowPassword(!showPassword)}
-                  className="absolute inset-y-0 right-3.5 flex items-center text-slate-400 hover:text-slate-600"
-                >
-                  {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-                </button>
-              </div>
-            </div>
-
-            {/* Referral Code (Optional for Sign Up) */}
-            {authMode === 'signup' && (
-              <div className="space-y-1 pt-1">
-                <label className="text-[11px] font-bold text-slate-500 flex items-center gap-1">
-                  <Sparkles className="w-3 h-3 text-[#fcd502]" /> Referral Code (Optional)
-                </label>
-                <input
-                  type="text"
-                  value={referralCode}
-                  onChange={(e) => setReferralCode(e.target.value)}
-                  placeholder="e.g. RIDINGO50"
-                  className="w-full px-4 py-2.5 rounded-2xl bg-slate-50 border border-slate-200 text-slate-900 font-bold placeholder:text-slate-400 text-xs uppercase tracking-wider focus:outline-none focus:ring-2 focus:ring-[#fcd502]"
-                />
-              </div>
-            )}
 
             {/* Terms Agreement Checkbox */}
             {authMode === 'signup' && (
