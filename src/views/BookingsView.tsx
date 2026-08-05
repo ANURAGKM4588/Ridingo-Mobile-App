@@ -40,9 +40,9 @@ export const BookingsView: React.FC<BookingsViewProps> = ({
     <div className="w-full h-full flex flex-col bg-[#FAFAFA] animate-fade-in overflow-hidden">
       {/* FIXED Sticky Header & Category Filter Bar */}
       <div className="bg-white border-b border-slate-200 shadow-xs flex-shrink-0 z-30 animate-drop-up stagger-1 pt-[max(env(safe-area-inset-top,54px),54px)]">
-        {/* Title Header – center aligned */}
+        {/* Title Header – left aligned */}
         <div className="py-3.5 px-4 flex items-center justify-between">
-          <div className="flex-1 text-center">
+          <div className="flex-1 text-left">
             <h2 className="text-xl font-black text-[#0F172A] tracking-tight">Booking History</h2>
             <p className="text-[11px] text-slate-500 font-medium">All professional driver assignments for your trips</p>
           </div>

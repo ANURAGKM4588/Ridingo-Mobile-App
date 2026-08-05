@@ -52,7 +52,7 @@ export const WalletView: React.FC<WalletViewProps> = ({ onBack, currentRegion = 
             <div className="w-10" />
           </div>
         ) : (
-          <div className="py-3.5 px-4 flex flex-col items-center justify-center text-center">
+          <div className="py-3.5 px-4 flex flex-col items-start justify-center text-left">
             <h2 className="text-xl font-black text-[#0F172A] tracking-tight">Wallet &amp; Payments</h2>
             <p className="text-[11px] text-slate-500 font-medium mt-0.5">RIDINGO Reserve Pass balance &amp; transactions</p>
           </div>
