@@ -19,11 +19,18 @@ import { BookingFlowModal } from './views/BookingFlowModal';
 import { BookingConfirmationView } from './views/BookingConfirmationView';
 import { BookingReviewScreen } from './views/BookingReviewScreen';
 import { InvoicePaymentScreen } from './views/InvoicePaymentScreen';
+import { PaymentSettingsView } from './views/PaymentSettingsView';
+import { SupportChatView } from './views/SupportChatView';
+import { LanguageRegionSettingsView } from './views/LanguageRegionSettingsView';
 import { NotificationsView } from './views/NotificationsView';
 import { DriverProfileModal } from './views/DriverProfileModal';
+import { LanguageCode } from './data/translations';
+import { RegionCode } from './data/currencies';
 
 export function App() {
   const [activeTab, setActiveTab] = useState<TabType>('home');
+  const [currentLanguage, setCurrentLanguage] = useState<LanguageCode>('en-us');
+  const [currentRegion, setCurrentRegion] = useState<RegionCode>('in');
   const [selectedVehicle, setSelectedVehicle] = useState<VehicleOption>(MOCK_VEHICLES[0]);
   const [bookings, setBookings] = useState<Booking[]>(MOCK_BOOKINGS);
   const [activeBooking, setActiveBooking] = useState<Booking | null>(MOCK_BOOKINGS[0]); // active trip for live tracking
@@ -39,6 +46,9 @@ export function App() {
   // Booking Review & Invoice Screen State
   const [isReviewOpen, setIsReviewOpen] = useState<boolean>(false);
   const [isInvoiceOpen, setIsInvoiceOpen] = useState<boolean>(false);
+  const [isPaymentSettingsOpen, setIsPaymentSettingsOpen] = useState<boolean>(false);
+  const [isSupportChatOpen, setIsSupportChatOpen] = useState<boolean>(false);
+  const [isLanguageSettingsOpen, setIsLanguageSettingsOpen] = useState<boolean>(false);
   const [bookingDraft, setBookingDraft] = useState<any>(null);
 
   // Driver Profile Modal State
@@ -78,7 +88,7 @@ export function App() {
       {/* Sleek Mobile App Container for All Mobile Devices, iPhone Notch, iPads & Desktop */}
       <div className="w-full max-w-md h-full md:h-[94vh] max-h-screen md:rounded-[44px] bg-[#FAFAFA] flex flex-col relative shadow-2xl border-x md:border border-slate-200/80 overflow-hidden">
         {/* Global Header Bar - Rendered on Home Page */}
-        {activeTab === 'home' && !isReviewOpen && !isInvoiceOpen && !isConfirmationOpen && (
+        {activeTab === 'home' && !isReviewOpen && !isInvoiceOpen && !isConfirmationOpen && !isPaymentSettingsOpen && !isSupportChatOpen && !isLanguageSettingsOpen && (
           <HeaderBar
             userName="Alexander Vance"
             unreadNotificationsCount={unreadCount}
@@ -89,13 +99,25 @@ export function App() {
 
         {/* Main Content Area based on Active Tab or Views */}
         <main className={`flex-1 overflow-y-auto px-4 scrollbar-none relative ${
-          activeTab === 'home' && !isReviewOpen && !isInvoiceOpen && !isConfirmationOpen
+          activeTab === 'home' && !isReviewOpen && !isInvoiceOpen && !isConfirmationOpen && !isPaymentSettingsOpen && !isSupportChatOpen && !isLanguageSettingsOpen
             ? 'pt-3.5'
             : 'pt-[calc(env(safe-area-inset-top,0px)+0.75rem)]'
         } ${
-          isReviewOpen || isInvoiceOpen || isConfirmationOpen ? 'pb-6' : 'pb-24'
+          isReviewOpen || isInvoiceOpen || isConfirmationOpen || isPaymentSettingsOpen || isSupportChatOpen || isLanguageSettingsOpen ? 'pb-[#max(env(safe-area-inset-bottom),1rem)]' : 'pb-24'
         }`}>
-          {isReviewOpen && bookingDraft ? (
+          {isLanguageSettingsOpen ? (
+            <LanguageRegionSettingsView
+              onBack={() => setIsLanguageSettingsOpen(false)}
+              currentLanguage={currentLanguage}
+              onLanguageChange={(lang) => setCurrentLanguage(lang)}
+              currentRegion={currentRegion}
+              onRegionChange={(reg) => setCurrentRegion(reg)}
+            />
+          ) : isSupportChatOpen ? (
+            <SupportChatView onBack={() => setIsSupportChatOpen(false)} />
+          ) : isPaymentSettingsOpen ? (
+            <PaymentSettingsView onBack={() => setIsPaymentSettingsOpen(false)} />
+          ) : isReviewOpen && bookingDraft ? (
             <BookingReviewScreen
               draft={bookingDraft}
               onBack={() => setIsReviewOpen(false)}
@@ -103,6 +125,7 @@ export function App() {
                 setIsReviewOpen(false);
                 setIsInvoiceOpen(true);
               }}
+              currentRegion={currentRegion}
             />
           ) : isInvoiceOpen && bookingDraft ? (
             <InvoicePaymentScreen
@@ -121,6 +144,7 @@ export function App() {
                 setActiveBooking(pendingBooking);
                 setActiveTab('bookings');
               }}
+              currentRegion={currentRegion}
             />
           ) : isConfirmationOpen && confirmedBooking ? (
             <BookingConfirmationView
@@ -130,6 +154,7 @@ export function App() {
                 setActiveTab('activity');
               }}
               onClose={() => setIsConfirmationOpen(false)}
+              currentRegion={currentRegion}
             />
           ) : (
             <>
@@ -147,6 +172,8 @@ export function App() {
                     setSelectedVehicle(b.vehicle);
                     setIsBookingFlowOpen(true);
                   }}
+                  currentLanguage={currentLanguage}
+                  currentRegion={currentRegion}
                 />
               )}
 
@@ -158,6 +185,7 @@ export function App() {
                     setIsBookingFlowOpen(true);
                   }}
                   onOpenDriverProfile={handleOpenDriverProfile}
+                  currentRegion={currentRegion}
                 />
               )}
 
@@ -174,21 +202,24 @@ export function App() {
                 />
               )}
 
-              {activeTab === 'wallet' && <WalletView />}
+              {activeTab === 'wallet' && <WalletView currentRegion={currentRegion} />}
 
               {activeTab === 'profile' && (
                 <ProfileView
-                  onOpenVehicleModal={() => setIsBookingFlowOpen(true)}
-                  onOpenWallet={() => setActiveTab('wallet')}
+                  onOpenWallet={() => setIsPaymentSettingsOpen(true)}
+                  onOpenSupport={() => setIsSupportChatOpen(true)}
+                  onOpenLanguage={() => setIsLanguageSettingsOpen(true)}
+                  currentLanguage={currentLanguage}
+                  currentRegion={currentRegion}
                 />
               )}
             </>
           )}
         </main>
 
-        {/* Floating Bottom Navigation - Hidden during review, payment, dispatch & confirmation screens */}
-        {!isReviewOpen && !isInvoiceOpen && !isConfirmationOpen && !isBookingFlowOpen && (
-          <FloatingNav activeTab={activeTab} onTabChange={setActiveTab} />
+        {/* Floating Bottom Navigation - Hidden during review, payment, dispatch, support chat, settings & confirmation screens */}
+        {!isReviewOpen && !isInvoiceOpen && !isConfirmationOpen && !isBookingFlowOpen && !isPaymentSettingsOpen && !isSupportChatOpen && !isLanguageSettingsOpen && (
+          <FloatingNav activeTab={activeTab} onTabChange={setActiveTab} currentLanguage={currentLanguage} />
         )}
 
         {/* 8-Step Interactive Booking Flow Wizard Modal */}

@@ -1,15 +1,15 @@
 import React, { useState } from 'react';
-import { 
-  ChevronLeft, 
-  ShieldCheck, 
-  CreditCard, 
-  Wallet, 
-  DollarSign, 
-  Receipt, 
-  Check, 
-  Sparkles, 
-  Lock, 
-  Tag, 
+import {
+  ChevronLeft,
+  ShieldCheck,
+  CreditCard,
+  Wallet,
+  DollarSign,
+  Receipt,
+  Check,
+  Sparkles,
+  Lock,
+  Tag,
   ArrowRight,
   Info,
   QrCode,
@@ -25,12 +25,14 @@ import {
   ExternalLink
 } from 'lucide-react';
 import { Booking } from '../types';
+import { RegionCode, formatPrice } from '../data/currencies';
 
 interface InvoicePaymentScreenProps {
   bookingDraft: any;
   onBack: () => void;
   onConfirmPayment: (finalBooking: Booking) => void;
   onCloseToBookings?: (pendingBooking: Booking) => void;
+  currentRegion?: RegionCode;
 }
 
 export const InvoicePaymentScreen: React.FC<InvoicePaymentScreenProps> = ({
@@ -38,6 +40,7 @@ export const InvoicePaymentScreen: React.FC<InvoicePaymentScreenProps> = ({
   onBack,
   onConfirmPayment,
   onCloseToBookings,
+  currentRegion = 'in',
 }) => {
   // Payment method selection
   const [selectedPayment, setSelectedPayment] = useState<'apple_pay' | 'gpay' | 'card' | 'wallet' | 'upi' | 'cash'>('apple_pay');
@@ -109,8 +112,8 @@ export const InvoicePaymentScreen: React.FC<InvoicePaymentScreenProps> = ({
       id: `bk-${Math.floor(100 + Math.random() * 900)}`,
       bookingNumber: `RDG-2026-${Math.floor(1000 + Math.random() * 9000)}`,
       serviceId: bookingDraft?.serviceType === 'Airport' ? 'airport-pickup' : 'hourly-driver',
-      serviceTitle: bookingDraft?.serviceType === 'Airport' 
-        ? `Airport Transfer (${bookingDraft?.airlineName || 'LAX'})` 
+      serviceTitle: bookingDraft?.serviceType === 'Airport'
+        ? `Airport Transfer (${bookingDraft?.airlineName || 'LAX'})`
         : `Hourly Chauffeur (${duration} Hours)`,
       pickupLocation: bookingDraft?.pickup || '742 Evergreen Terrace, Beverly Hills',
       destinationLocation: bookingDraft?.destination || 'LAX International Airport',
@@ -213,10 +216,11 @@ export const InvoicePaymentScreen: React.FC<InvoicePaymentScreenProps> = ({
   };
 
   return (
-    <div className="w-full bg-[#FAFAFA] min-h-full pb-24 animate-fade-in space-y-4 relative">
-      {/* Sticky Solid Header */}
-      <div className="sticky -top-3 z-30 bg-white -mx-3.5 -mt-3 pt-3 pb-3 px-4 border-b border-slate-200 flex items-center justify-between shadow-sm">
+    <div className="w-full h-[calc(100vh-3.5rem)] sm:h-[82vh] flex flex-col bg-[#FAFAFA] -mx-4 -mt-3.5 animate-fade-in overflow-hidden">
+      {/* Fixed Sticky Header */}
+      <div className="bg-white py-3 px-4 border-b border-slate-200 flex items-center justify-between shadow-xs flex-shrink-0 z-30">
         <button
+          type="button"
           onClick={onBack}
           className="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-700 hover:bg-slate-200 transition-colors cursor-pointer"
         >
@@ -229,7 +233,8 @@ export const InvoicePaymentScreen: React.FC<InvoicePaymentScreenProps> = ({
         <div className="w-8" />
       </div>
 
-      <div className="max-w-xl mx-auto space-y-4 px-1">
+      {/* Middle Scrollable Body */}
+      <div className="flex-1 overflow-y-auto p-4 space-y-4 scrollbar-none">
         {/* 1. PROMINENT 30% ADVANCE SUMMARY CARD */}
         <div className="bg-gradient-to-br from-slate-900 via-zinc-900 to-[#121212] rounded-3xl p-5 text-white shadow-xl relative overflow-hidden space-y-3">
           <div className="flex items-center justify-between">
@@ -365,11 +370,10 @@ export const InvoicePaymentScreen: React.FC<InvoicePaymentScreenProps> = ({
             <button
               type="button"
               onClick={() => setSelectedPayment('apple_pay')}
-              className={`w-full p-3.5 rounded-2xl border flex items-center justify-between transition-all cursor-pointer ${
-                selectedPayment === 'apple_pay'
+              className={`w-full p-3.5 rounded-2xl border flex items-center justify-between transition-all cursor-pointer ${selectedPayment === 'apple_pay'
                   ? 'border-[#84CC16] bg-lime-500/10 shadow-md ring-1 ring-[#84CC16]'
                   : 'border-slate-200/80 hover:bg-slate-50'
-              }`}
+                }`}
             >
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-xl bg-black flex items-center justify-center text-white font-black text-sm shadow-sm">
@@ -383,9 +387,8 @@ export const InvoicePaymentScreen: React.FC<InvoicePaymentScreenProps> = ({
                   <span className="text-[10px] text-slate-500 font-medium">Default Wallet • Touch / Face ID</span>
                 </div>
               </div>
-              <div className={`w-5 h-5 rounded-full border flex items-center justify-center ${
-                selectedPayment === 'apple_pay' ? 'border-[#84CC16] bg-[#84CC16] text-[#121212]' : 'border-slate-300'
-              }`}>
+              <div className={`w-5 h-5 rounded-full border flex items-center justify-center ${selectedPayment === 'apple_pay' ? 'border-[#84CC16] bg-[#84CC16] text-[#121212]' : 'border-slate-300'
+                }`}>
                 {selectedPayment === 'apple_pay' && <Check className="w-3.5 h-3.5 stroke-[3]" />}
               </div>
             </button>
@@ -394,11 +397,10 @@ export const InvoicePaymentScreen: React.FC<InvoicePaymentScreenProps> = ({
             <button
               type="button"
               onClick={() => setSelectedPayment('gpay')}
-              className={`w-full p-3.5 rounded-2xl border flex items-center justify-between transition-all cursor-pointer ${
-                selectedPayment === 'gpay'
+              className={`w-full p-3.5 rounded-2xl border flex items-center justify-between transition-all cursor-pointer ${selectedPayment === 'gpay'
                   ? 'border-[#84CC16] bg-lime-500/10 shadow-md ring-1 ring-[#84CC16]'
                   : 'border-slate-200/80 hover:bg-slate-50'
-              }`}
+                }`}
             >
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-xl bg-white border border-slate-200 flex items-center justify-center shadow-sm">
@@ -412,9 +414,8 @@ export const InvoicePaymentScreen: React.FC<InvoicePaymentScreenProps> = ({
                   <span className="text-[10px] text-slate-500 font-medium">Linked bank account or cards</span>
                 </div>
               </div>
-              <div className={`w-5 h-5 rounded-full border flex items-center justify-center ${
-                selectedPayment === 'gpay' ? 'border-[#84CC16] bg-[#84CC16] text-[#121212]' : 'border-slate-300'
-              }`}>
+              <div className={`w-5 h-5 rounded-full border flex items-center justify-center ${selectedPayment === 'gpay' ? 'border-[#84CC16] bg-[#84CC16] text-[#121212]' : 'border-slate-300'
+                }`}>
                 {selectedPayment === 'gpay' && <Check className="w-3.5 h-3.5 stroke-[3]" />}
               </div>
             </button>
@@ -423,11 +424,10 @@ export const InvoicePaymentScreen: React.FC<InvoicePaymentScreenProps> = ({
             <button
               type="button"
               onClick={() => setSelectedPayment('card')}
-              className={`w-full p-3.5 rounded-2xl border flex items-center justify-between transition-all cursor-pointer ${
-                selectedPayment === 'card'
+              className={`w-full p-3.5 rounded-2xl border flex items-center justify-between transition-all cursor-pointer ${selectedPayment === 'card'
                   ? 'border-[#84CC16] bg-lime-500/10 shadow-md ring-1 ring-[#84CC16]'
                   : 'border-slate-200/80 hover:bg-slate-50'
-              }`}
+                }`}
             >
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-xl bg-slate-900 flex items-center justify-center text-white shadow-sm">
@@ -441,9 +441,8 @@ export const InvoicePaymentScreen: React.FC<InvoicePaymentScreenProps> = ({
                   <span className="text-[10px] text-slate-500 font-medium">Razorpay 256-Bit SSL Secured</span>
                 </div>
               </div>
-              <div className={`w-5 h-5 rounded-full border flex items-center justify-center ${
-                selectedPayment === 'card' ? 'border-[#84CC16] bg-[#84CC16] text-[#121212]' : 'border-slate-300'
-              }`}>
+              <div className={`w-5 h-5 rounded-full border flex items-center justify-center ${selectedPayment === 'card' ? 'border-[#84CC16] bg-[#84CC16] text-[#121212]' : 'border-slate-300'
+                }`}>
                 {selectedPayment === 'card' && <Check className="w-3.5 h-3.5 stroke-[3]" />}
               </div>
             </button>
@@ -452,11 +451,10 @@ export const InvoicePaymentScreen: React.FC<InvoicePaymentScreenProps> = ({
             <button
               type="button"
               onClick={() => setSelectedPayment('upi')}
-              className={`w-full p-3.5 rounded-2xl border flex items-center justify-between transition-all cursor-pointer ${
-                selectedPayment === 'upi'
+              className={`w-full p-3.5 rounded-2xl border flex items-center justify-between transition-all cursor-pointer ${selectedPayment === 'upi'
                   ? 'border-[#84CC16] bg-lime-500/10 shadow-md ring-1 ring-[#84CC16]'
                   : 'border-slate-200/80 hover:bg-slate-50'
-              }`}
+                }`}
             >
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-xl bg-purple-600 flex items-center justify-center text-white shadow-sm">
@@ -467,23 +465,25 @@ export const InvoicePaymentScreen: React.FC<InvoicePaymentScreenProps> = ({
                   <span className="text-[10px] text-slate-500 font-medium">GPay, PhonePe, Paytm, BHIM UPI</span>
                 </div>
               </div>
-              <div className={`w-5 h-5 rounded-full border flex items-center justify-center ${
-                selectedPayment === 'upi' ? 'border-[#84CC16] bg-[#84CC16] text-[#121212]' : 'border-slate-300'
-              }`}>
+              <div className={`w-5 h-5 rounded-full border flex items-center justify-center ${selectedPayment === 'upi' ? 'border-[#84CC16] bg-[#84CC16] text-[#121212]' : 'border-slate-300'
+                }`}>
                 {selectedPayment === 'upi' && <Check className="w-3.5 h-3.5 stroke-[3]" />}
               </div>
             </button>
           </div>
         </div>
 
-        {/* 5. PAY NOW BUTTON - OPENS RAZORPAY GATEWAY */}
+      </div>
+
+      {/* FIXED Bottom Action Bar - Always Fixed at Bottom of Frame */}
+      <div className="bg-white/95 backdrop-blur-md border-t border-slate-200 p-3 px-4 flex-shrink-0 shadow-lg z-30">
         <button
           type="button"
           onClick={handleOpenRazorpay}
-          className="w-full py-4 rounded-2xl bg-[#84CC16] hover:bg-lime-400 text-[#121212] font-black text-sm uppercase tracking-wider flex items-center justify-center gap-2 shadow-xl transition-all active:scale-[0.98] cursor-pointer"
+          className="w-full py-3.5 rounded-2xl bg-[#84CC16] hover:bg-lime-400 text-[#121212] font-black text-xs sm:text-sm uppercase tracking-wider flex items-center justify-center gap-2 shadow-xl transition-all active:scale-[0.98] cursor-pointer"
         >
           <Lock className="w-4 h-4" />
-          <span>Pay Now</span>
+          <span>Pay {formatPrice(advanceAmount, currentRegion, 2)} Deposit Now</span>
           <ArrowRight className="w-4 h-4 stroke-[3]" />
         </button>
       </div>
@@ -539,9 +539,8 @@ export const InvoicePaymentScreen: React.FC<InvoicePaymentScreenProps> = ({
                   <button
                     type="button"
                     onClick={() => setRazorpayMethod('upi')}
-                    className={`w-full p-3 rounded-xl border flex items-center justify-between transition-all ${
-                      razorpayMethod === 'upi' ? 'border-blue-600 bg-blue-50/60 ring-1 ring-blue-600' : 'border-slate-200'
-                    }`}
+                    className={`w-full p-3 rounded-xl border flex items-center justify-between transition-all ${razorpayMethod === 'upi' ? 'border-blue-600 bg-blue-50/60 ring-1 ring-blue-600' : 'border-slate-200'
+                      }`}
                   >
                     <div className="flex items-center gap-2.5">
                       <QrCode className="w-4 h-4 text-purple-600" />
@@ -554,9 +553,8 @@ export const InvoicePaymentScreen: React.FC<InvoicePaymentScreenProps> = ({
                   <button
                     type="button"
                     onClick={() => setRazorpayMethod('card')}
-                    className={`w-full p-3 rounded-xl border flex items-center justify-between transition-all ${
-                      razorpayMethod === 'card' ? 'border-blue-600 bg-blue-50/60 ring-1 ring-blue-600' : 'border-slate-200'
-                    }`}
+                    className={`w-full p-3 rounded-xl border flex items-center justify-between transition-all ${razorpayMethod === 'card' ? 'border-blue-600 bg-blue-50/60 ring-1 ring-blue-600' : 'border-slate-200'
+                      }`}
                   >
                     <div className="flex items-center gap-2.5">
                       <CreditCard className="w-4 h-4 text-blue-600" />
@@ -569,9 +567,8 @@ export const InvoicePaymentScreen: React.FC<InvoicePaymentScreenProps> = ({
                   <button
                     type="button"
                     onClick={() => setRazorpayMethod('netbanking')}
-                    className={`w-full p-3 rounded-xl border flex items-center justify-between transition-all ${
-                      razorpayMethod === 'netbanking' ? 'border-blue-600 bg-blue-50/60 ring-1 ring-blue-600' : 'border-slate-200'
-                    }`}
+                    className={`w-full p-3 rounded-xl border flex items-center justify-between transition-all ${razorpayMethod === 'netbanking' ? 'border-blue-600 bg-blue-50/60 ring-1 ring-blue-600' : 'border-slate-200'
+                      }`}
                   >
                     <div className="flex items-center gap-2.5">
                       <Building2 className="w-4 h-4 text-slate-700" />

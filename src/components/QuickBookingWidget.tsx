@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { MapPin, Navigation, Calendar, Clock, ArrowRight, Car, Shield, Plane, Building2, Plus, Minus, Sparkles, ChevronDown } from 'lucide-react';
 import { VehicleOption } from '../types';
+import { LanguageCode, TRANSLATIONS } from '../data/translations';
 
 const TRIP_PURPOSES = [
   { id: 'wedding', label: 'Wedding function', emoji: '💒' },
@@ -26,13 +27,16 @@ interface QuickBookingWidgetProps {
   vehicles: VehicleOption[];
   selectedVehicle: VehicleOption;
   onOpenVehicleModal: () => void;
+  currentLanguage?: LanguageCode;
 }
 
 export const QuickBookingWidget: React.FC<QuickBookingWidgetProps> = ({
   onStartBooking,
   selectedVehicle,
   onOpenVehicleModal,
+  currentLanguage = 'en-us',
 }) => {
+  const t = TRANSLATIONS[currentLanguage] || TRANSLATIONS['en-us'];
   const [selectedServiceTab, setSelectedServiceTab] = useState<'Hourly' | 'Airport' | 'Other'>('Hourly');
   const [pickup, setPickup] = useState('742 Evergreen Terrace, Beverly Hills');
   const [destination, setDestination] = useState('LAX Airport Terminal 4');
@@ -77,7 +81,7 @@ export const QuickBookingWidget: React.FC<QuickBookingWidgetProps> = ({
         <div className="flex items-center gap-1.5 min-w-0">
           <span className="w-2 h-2 rounded-full bg-[#84CC16] animate-pulse flex-shrink-0"></span>
           <span className="text-[10px] font-black uppercase tracking-wider text-slate-800 truncate">
-            Book Driver for YOUR Vehicle
+            {t.widgetTitle}
           </span>
         </div>
       </div>
@@ -86,6 +90,7 @@ export const QuickBookingWidget: React.FC<QuickBookingWidgetProps> = ({
       <div className="mb-3.5 p-1 bg-slate-200/70 backdrop-blur-md rounded-2xl flex items-center gap-1 border border-slate-300/40 shadow-inner">
         {(['Hourly', 'Airport', 'Other'] as const).map((tab) => {
           const isActive = selectedServiceTab === tab;
+          const label = tab === 'Hourly' ? t.tabHourly : tab === 'Airport' ? t.tabAirport : t.tabOther;
           return (
             <button
               key={tab}
@@ -97,7 +102,7 @@ export const QuickBookingWidget: React.FC<QuickBookingWidgetProps> = ({
                   : 'text-slate-700 hover:text-slate-900 hover:bg-white/50'
               }`}
             >
-              <span>{tab}</span>
+              <span>{label}</span>
             </button>
           );
         })}
@@ -113,7 +118,7 @@ export const QuickBookingWidget: React.FC<QuickBookingWidgetProps> = ({
                 <Plane className="w-4 h-4 text-[#84CC16] fill-[#84CC16]/25 stroke-[2]" />
               </div>
               <div className="flex-1 min-w-0">
-                <label className="block text-[9px] font-bold uppercase tracking-wider text-slate-400">Flight No.</label>
+                <label className="block text-[9px] font-bold uppercase tracking-wider text-slate-400">{t.flightNoLabel}</label>
                 <input
                   type="text"
                   value={flightNumber}
@@ -131,7 +136,7 @@ export const QuickBookingWidget: React.FC<QuickBookingWidgetProps> = ({
                 <Building2 className="w-3.5 h-3.5 text-[#84CC16] fill-[#84CC16]/25 stroke-[2]" />
               </div>
               <div className="flex-1 min-w-0">
-                <label className="block text-[9px] font-bold uppercase tracking-wider text-slate-400">Airline Name</label>
+                <label className="block text-[9px] font-bold uppercase tracking-wider text-slate-400">{t.airlineLabel}</label>
                 <input
                   type="text"
                   value={airlineName}
@@ -153,7 +158,7 @@ export const QuickBookingWidget: React.FC<QuickBookingWidgetProps> = ({
                 <MapPin className="w-3.5 h-3.5 text-[#84CC16] fill-[#84CC16]/25 stroke-[2]" />
               </div>
               <div className="flex-1 min-w-0">
-                <label className="block text-[9px] font-bold uppercase tracking-wider text-slate-400">Pickup Address</label>
+                <label className="block text-[9px] font-bold uppercase tracking-wider text-slate-400">{t.pickupLabel}</label>
                 <input
                   type="text"
                   value={pickup}
@@ -171,7 +176,7 @@ export const QuickBookingWidget: React.FC<QuickBookingWidgetProps> = ({
                 <Navigation className="w-3.5 h-3.5 text-[#84CC16] fill-[#84CC16]/25 stroke-[2]" />
               </div>
               <div className="flex-1 min-w-0">
-                <label className="block text-[9px] font-bold uppercase tracking-wider text-slate-400">Destination</label>
+                <label className="block text-[9px] font-bold uppercase tracking-wider text-slate-400">{t.destinationLabel}</label>
                 <input
                   type="text"
                   value={destination}
@@ -191,7 +196,7 @@ export const QuickBookingWidget: React.FC<QuickBookingWidgetProps> = ({
                 </div>
                 <div className="flex-1 min-w-0">
                   <label className="block text-[9px] font-black uppercase tracking-wider text-[#4D7C0F]">
-                    Cause of the Trip
+                    {t.tripCauseLabel}
                   </label>
                   <div className="relative">
                     <select
@@ -214,11 +219,11 @@ export const QuickBookingWidget: React.FC<QuickBookingWidgetProps> = ({
         )}
 
         {/* Date, Time & Duration row with iOS style pickers & Stepper */}
-        <div className="grid grid-cols-3 gap-1.5">
+        <div className={`grid ${selectedServiceTab === 'Hourly' ? 'grid-cols-3' : 'grid-cols-2'} gap-1.5`}>
           {/* iOS Date Picker */}
           <div className="bg-slate-100/90 rounded-xl p-2 border border-slate-200/60 focus-within:border-[#84CC16] transition-all">
             <label className="flex items-center gap-1 text-[9px] font-bold uppercase tracking-wider text-slate-400">
-              <Calendar className="w-3 h-3 text-[#84CC16] fill-[#84CC16]/25 stroke-[2]" /> Date
+              <Calendar className="w-3 h-3 text-[#84CC16] fill-[#84CC16]/25 stroke-[2]" /> {t.dateLabel}
             </label>
             <input
               type="date"
@@ -231,7 +236,7 @@ export const QuickBookingWidget: React.FC<QuickBookingWidgetProps> = ({
           {/* iOS Time Picker */}
           <div className="bg-slate-100/90 rounded-xl p-2 border border-slate-200/60 focus-within:border-[#84CC16] transition-all">
             <label className="flex items-center gap-1 text-[9px] font-bold uppercase tracking-wider text-slate-400">
-              <Clock className="w-3 h-3 text-[#84CC16] fill-[#84CC16]/25 stroke-[2]" /> Time
+              <Clock className="w-3 h-3 text-[#84CC16] fill-[#84CC16]/25 stroke-[2]" /> {t.timeLabel}
             </label>
             <input
               type="time"
@@ -241,31 +246,33 @@ export const QuickBookingWidget: React.FC<QuickBookingWidgetProps> = ({
             />
           </div>
 
-          {/* Duration Stepper (+ / -) */}
-          <div className="bg-slate-100/90 rounded-xl p-2 border border-slate-200/60 flex flex-col justify-between">
-            <label className="flex items-center gap-1 text-[9px] font-bold uppercase tracking-wider text-slate-400">
-              <Clock className="w-3 h-3 text-[#84CC16] fill-[#84CC16]/25 stroke-[2]" /> Duration
-            </label>
-            <div className="flex items-center justify-between mt-0.5">
-              <button
-                type="button"
-                onClick={() => setDurationHours((prev) => Math.max(1, prev - 1))}
-                className="w-5 h-5 rounded-full bg-slate-200 hover:bg-slate-300 active:scale-95 text-slate-800 font-bold flex items-center justify-center transition-all"
-              >
-                <Minus className="w-3 h-3" />
-              </button>
-              <span className="text-[11px] font-extrabold text-slate-900 select-none">
-                {durationHours} {durationHours === 1 ? 'hr' : 'hrs'}
-              </span>
-              <button
-                type="button"
-                onClick={() => setDurationHours((prev) => Math.min(24, prev + 1))}
-                className="w-5 h-5 rounded-full bg-[#84CC16] hover:bg-lime-500 active:scale-95 text-[#121212] font-bold flex items-center justify-center transition-all"
-              >
-                <Plus className="w-3 h-3" />
-              </button>
+          {/* Duration Stepper (+ / -) - Only for Hourly service */}
+          {selectedServiceTab === 'Hourly' && (
+            <div className="bg-slate-100/90 rounded-xl p-2 border border-slate-200/60 flex flex-col justify-between">
+              <label className="flex items-center gap-1 text-[9px] font-bold uppercase tracking-wider text-slate-400">
+                <Clock className="w-3 h-3 text-[#84CC16] fill-[#84CC16]/25 stroke-[2]" /> {t.durationLabel}
+              </label>
+              <div className="flex items-center justify-between mt-0.5">
+                <button
+                  type="button"
+                  onClick={() => setDurationHours((prev) => Math.max(1, prev - 1))}
+                  className="w-5 h-5 rounded-full bg-slate-200 hover:bg-slate-300 active:scale-95 text-slate-800 font-bold flex items-center justify-center transition-all"
+                >
+                  <Minus className="w-3 h-3" />
+                </button>
+                <span className="text-[11px] font-extrabold text-slate-900 select-none">
+                  {durationHours} {durationHours === 1 ? 'hr' : 'hrs'}
+                </span>
+                <button
+                  type="button"
+                  onClick={() => setDurationHours((prev) => Math.min(24, prev + 1))}
+                  className="w-5 h-5 rounded-full bg-[#84CC16] hover:bg-lime-500 active:scale-95 text-[#121212] font-bold flex items-center justify-center transition-all"
+                >
+                  <Plus className="w-3 h-3" />
+                </button>
+              </div>
             </div>
-          </div>
+          )}
         </div>
 
         {/* CTA Button */}
@@ -273,7 +280,7 @@ export const QuickBookingWidget: React.FC<QuickBookingWidgetProps> = ({
           type="submit"
           className="w-full py-3.5 rounded-2xl bg-[#121212] hover:bg-black text-white font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-lg transition-all group border border-zinc-800"
         >
-          <span>Book a Driver</span>
+          <span>{t.bookDriverBtn}</span>
           <div className="w-6 h-6 rounded-full bg-[#84CC16] text-[#121212] flex items-center justify-center group-hover:translate-x-1 transition-transform">
             <ArrowRight className="w-3.5 h-3.5 text-[#121212]" />
           </div>
@@ -283,9 +290,9 @@ export const QuickBookingWidget: React.FC<QuickBookingWidgetProps> = ({
       {/* Trust snippet */}
       <div className="mt-3 pt-2.5 border-t border-slate-200/60 flex items-center justify-between text-[10px] text-slate-500 font-semibold">
         <span className="flex items-center gap-1">
-          <Shield className="w-3 h-3 text-[#84CC16] fill-[#84CC16]/25 stroke-[2]" /> $1M Vehicle Insured
+          <Shield className="w-3 h-3 text-[#84CC16] fill-[#84CC16]/25 stroke-[2]" /> {t.insuredBadge}
         </span>
-        <span className="text-[#4D7C0F] font-bold">Uniformed Chauffeur</span>
+        <span className="text-[#4D7C0F] font-bold">{t.uniformedBadge}</span>
       </div>
     </div>
   );

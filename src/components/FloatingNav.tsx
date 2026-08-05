@@ -1,19 +1,27 @@
 import React from 'react';
 import { Home, Calendar, Activity, Wallet, User } from 'lucide-react';
 import type { TabType } from '../types';
+import { LanguageCode, TRANSLATIONS } from '../data/translations';
 
 interface FloatingNavProps {
   activeTab: TabType;
   onTabChange: (tab: TabType) => void;
+  currentLanguage?: LanguageCode;
 }
 
-export const FloatingNav: React.FC<FloatingNavProps> = ({ activeTab, onTabChange }) => {
+export const FloatingNav: React.FC<FloatingNavProps> = ({ 
+  activeTab, 
+  onTabChange,
+  currentLanguage = 'en-us',
+}) => {
+  const t = TRANSLATIONS[currentLanguage] || TRANSLATIONS['en-us'];
+
   const tabs = [
-    { id: 'home' as TabType, label: 'Home', icon: Home },
-    { id: 'bookings' as TabType, label: 'Bookings', icon: Calendar },
-    { id: 'activity' as TabType, label: 'Tracking', icon: Activity },
-    { id: 'wallet' as TabType, label: 'Wallet', icon: Wallet },
-    { id: 'profile' as TabType, label: 'Profile', icon: User },
+    { id: 'home' as TabType, label: t.tabHome, icon: Home },
+    { id: 'bookings' as TabType, label: t.tabBookings, icon: Calendar },
+    { id: 'activity' as TabType, label: t.tabTracking, icon: Activity },
+    { id: 'wallet' as TabType, label: t.tabWallet, icon: Wallet },
+    { id: 'profile' as TabType, label: t.tabProfile, icon: User },
   ];
 
   return (

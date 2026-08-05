@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { 
   X, 
-  ArrowLeft, 
+  ChevronLeft, 
   ArrowRight, 
   Check, 
   Car, 
@@ -122,10 +122,11 @@ export const BookingFlowModal: React.FC<BookingFlowModalProps> = ({
           <div className="flex items-center gap-3">
             {step > 1 && (
               <button
+                type="button"
                 onClick={handleBack}
-                className="p-2 rounded-2xl bg-slate-100 hover:bg-slate-200 text-slate-700 transition-colors"
+                className="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-700 hover:bg-slate-200 transition-colors cursor-pointer"
               >
-                <ArrowLeft className="w-5 h-5" />
+                <ChevronLeft className="w-5 h-5" />
               </button>
             )}
             <div>

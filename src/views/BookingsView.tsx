@@ -12,17 +12,20 @@ import {
   ShieldCheck
 } from 'lucide-react';
 import { Booking } from '../types';
+import { RegionCode, formatPrice } from '../data/currencies';
 
 interface BookingsViewProps {
   bookings: Booking[];
   onRepeatBooking: (booking: Booking) => void;
   onOpenDriverProfile: (driver: any) => void;
+  currentRegion?: RegionCode;
 }
 
 export const BookingsView: React.FC<BookingsViewProps> = ({
   bookings,
   onRepeatBooking,
   onOpenDriverProfile,
+  currentRegion = 'in',
 }) => {
   const [activeFilter, setActiveFilter] = useState<'all' | 'upcoming' | 'completed' | 'cancelled'>('all');
 
@@ -33,7 +36,7 @@ export const BookingsView: React.FC<BookingsViewProps> = ({
   });
 
   return (
-    <div className="w-full max-w-xl mx-auto space-y-5 animate-fade-in pb-20">
+    <div className="w-full max-w-xl mx-auto space-y-5 animate-fade-in pb-4">
       {/* Title & Header */}
       <div className="flex items-center justify-between px-1">
         <div>
@@ -156,7 +159,7 @@ export const BookingsView: React.FC<BookingsViewProps> = ({
 
             {/* Price & Action Buttons */}
             <div className="pt-3 border-t border-slate-100 flex items-center justify-between">
-              <span className="text-base font-black text-slate-900">${b.priceTotal.toFixed(2)}</span>
+              <span className="text-base font-black text-slate-900">{formatPrice(b.priceTotal, currentRegion, 2)}</span>
 
               <div className="flex items-center gap-2">
                 <button

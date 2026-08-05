@@ -6,6 +6,8 @@ import { QuickBookingWidget } from '../components/QuickBookingWidget';
 import { PromotionsCarousel } from '../components/PromotionsCarousel';
 import { BrandReviews } from '../components/BrandReviews';
 import { WhyChooseUs } from '../components/WhyChooseUs';
+import { LanguageCode, TRANSLATIONS } from '../data/translations';
+import { RegionCode, formatPrice } from '../data/currencies';
 
 interface HomeViewProps {
   onSelectService: (service: ServiceItem) => void;
@@ -17,6 +19,8 @@ interface HomeViewProps {
   recentBooking?: Booking;
   onViewAllBookings?: () => void;
   onRepeatBooking?: (booking: Booking) => void;
+  currentLanguage?: LanguageCode;
+  currentRegion?: RegionCode;
 }
 
 export const HomeView: React.FC<HomeViewProps> = ({
@@ -28,20 +32,23 @@ export const HomeView: React.FC<HomeViewProps> = ({
   recentBooking,
   onViewAllBookings,
   onRepeatBooking,
+  currentLanguage = 'en-us',
+  currentRegion = 'in',
 }) => {
+  const t = TRANSLATIONS[currentLanguage] || TRANSLATIONS['en-us'];
   const [searchQuery, setSearchQuery] = useState('');
   const recentBookingList = (recentBookings && recentBookings.length > 0) ? recentBookings : MOCK_BOOKINGS;
 
   return (
-    <div className="w-full space-y-4 animate-fade-in pb-24">
+    <div className="w-full space-y-4 animate-fade-in pb-4">
       {/* Fixed Sticky Greeting & Search Bar with Zero Gap */}
       <div className="sticky -top-3.5 z-40 bg-[#FAFAFA] -mt-3.5 pt-3 pb-3 space-y-2.5 border-b border-slate-200/80 -mx-4 px-4 shadow-2xs">
         <div>
           <span className="text-[10px] font-extrabold uppercase tracking-widest text-[#4D7C0F] block">
-            On-Demand Chauffeur Service
+            {t.onDemandSubtitle}
           </span>
           <h1 className="text-xl sm:text-2xl font-black text-[#0F172A] tracking-tight truncate mt-0.5">
-            Good Morning, John 👋
+            {t.greeting}
           </h1>
         </div>
 
@@ -54,7 +61,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="What service do you need today?"
+            placeholder={t.searchPlaceholder}
             className="w-full pl-10 pr-4 py-2.5 rounded-2xl bg-white border border-slate-200 text-slate-900 font-bold placeholder:text-slate-400 placeholder:font-normal shadow-sm focus:outline-none focus:ring-2 focus:ring-[#84CC16] transition-all text-xs"
           />
         </div>
@@ -66,6 +73,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
         vehicles={MOCK_VEHICLES}
         selectedVehicle={selectedVehicle}
         onOpenVehicleModal={() => { }}
+        currentLanguage={currentLanguage}
       />
 
       {/* Horizontal Scrollable Recent Bookings Section */}

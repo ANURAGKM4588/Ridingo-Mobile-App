@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { 
-  ArrowLeft, 
+  ChevronLeft, 
   MapPin, 
   Navigation, 
   Calendar, 
@@ -18,6 +18,7 @@ import {
 } from 'lucide-react';
 import { VehicleOption, Booking } from '../types';
 import { MOCK_VEHICLES, FEATURED_DRIVER } from '../data/mockData';
+import { RegionCode, formatPrice } from '../data/currencies';
 
 interface BookingReviewScreenProps {
   draft: {
@@ -34,12 +35,14 @@ interface BookingReviewScreenProps {
   };
   onBack: () => void;
   onConfirm: (booking: Booking) => void;
+  currentRegion?: RegionCode;
 }
 
 export const BookingReviewScreen: React.FC<BookingReviewScreenProps> = ({
   draft,
   onBack,
   onConfirm,
+  currentRegion = 'in',
 }) => {
   // Editable State initialized from draft
   const [serviceType, setServiceType] = useState(draft.serviceType || 'Hourly');
@@ -107,25 +110,28 @@ export const BookingReviewScreen: React.FC<BookingReviewScreenProps> = ({
   };
 
   return (
-    <div className="w-full bg-[#FAFAFA] min-h-full pb-20 animate-fade-in">
-      {/* Top Header with Solid Background */}
-      <div className="sticky -top-3 z-30 bg-white -mx-3.5 -mt-3 pt-3 pb-3 px-4 border-b border-slate-200 flex items-center justify-between shadow-sm">
+    <div className="w-full h-[calc(100vh-3.5rem)] sm:h-[82vh] flex flex-col bg-[#FAFAFA] -mx-4 -mt-3.5 animate-fade-in overflow-hidden">
+      {/* Fixed Sticky Header */}
+      <div className="bg-white py-3 px-4 border-b border-slate-200 flex items-center justify-between shadow-xs flex-shrink-0 z-30">
         <button
+          type="button"
           onClick={onBack}
-          className="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-700 hover:bg-slate-200 transition-colors"
+          className="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-700 hover:bg-slate-200 transition-colors cursor-pointer"
         >
-          <ArrowLeft className="w-4 h-4" />
+          <ChevronLeft className="w-5 h-5" />
         </button>
         <h2 className="font-extrabold text-sm text-slate-900 tracking-tight">Booking Confirmation</h2>
         <button
+          type="button"
           onClick={() => setIsEditing(!isEditing)}
-          className="text-xs font-bold text-[#4D7C0F] hover:underline"
+          className="text-xs font-bold text-[#4D7C0F] hover:underline cursor-pointer"
         >
           {isEditing ? 'Done' : 'Edit'}
         </button>
       </div>
 
-      <div className="p-4 space-y-4">
+      {/* Middle Scrollable Body */}
+      <div className="flex-1 overflow-y-auto p-4 space-y-4 scrollbar-none">
         {/* 1. Trip & Location Details Card */}
         <div className="bg-white rounded-2xl p-4 border border-slate-200/80 shadow-sm space-y-3">
           <div className="flex items-center justify-between border-b border-slate-100 pb-2">
@@ -217,38 +223,29 @@ export const BookingReviewScreen: React.FC<BookingReviewScreenProps> = ({
                   )}
                 </div>
               </div>
+            </div>
+          )}
 
-              {serviceType === 'Other' && (
-                <div className="pt-2 border-t border-slate-100 flex items-center gap-3 relative z-10">
-                  <div className="w-8 h-8 rounded-xl bg-purple-100 flex items-center justify-center text-purple-700 flex-shrink-0">
-                    <Sparkles className="w-4 h-4" />
-                  </div>
-                  <div className="flex-1">
-                    <span className="text-[10px] font-extrabold text-purple-600 uppercase block">Selected Service Purpose</span>
-                    {isEditing ? (
-                      <input
-                        type="text"
-                        value={tripCause}
-                        onChange={(e) => setTripCause(e.target.value)}
-                        className="w-full text-xs font-bold text-slate-900 border-b border-slate-300 focus:outline-none focus:border-purple-500 py-0.5"
-                      />
-                    ) : (
-                      <span className="text-xs font-black text-purple-950 block">{tripCause || 'Special Occasion'}</span>
-                    )}
-                  </div>
-                </div>
-              )}
+          {/* Cause of Trip tag */}
+          {serviceType === 'Other' && (
+            <div className="pt-2 border-t border-slate-100 flex items-center gap-2">
+              <Sparkles className="w-3.5 h-3.5 text-[#4D7C0F]" />
+              <span className="text-[10px] font-bold text-[#4D7C0F] uppercase">Trip Purpose:</span>
+              <span className="text-xs font-black text-slate-900">{tripCause}</span>
             </div>
           )}
         </div>
 
-        {/* 2. Date, Time & Duration Section */}
+        {/* 2. Date, Time & Duration Selection */}
         <div className="bg-white rounded-2xl p-4 border border-slate-200/80 shadow-sm space-y-3">
-          <span className="text-xs font-black uppercase text-slate-500 tracking-wider block border-b border-slate-100 pb-2">
-            Schedule & Duration
-          </span>
+          <div className="flex items-center justify-between border-b border-slate-100 pb-2">
+            <span className="text-xs font-black uppercase text-slate-500 tracking-wider">
+              Schedule & Duration
+            </span>
+            <span className="text-[10px] text-slate-400 font-semibold">Editable</span>
+          </div>
 
-          <div className="grid grid-cols-3 gap-2">
+          <div className={`grid ${serviceType === 'Hourly' ? 'grid-cols-3' : 'grid-cols-2'} gap-2`}>
             {/* Date */}
             <div className="bg-slate-50 p-2.5 rounded-xl border border-slate-200/60">
               <span className="text-[9px] font-bold text-slate-400 uppercase flex items-center gap-1">
@@ -283,35 +280,37 @@ export const BookingReviewScreen: React.FC<BookingReviewScreenProps> = ({
               )}
             </div>
 
-            {/* Duration */}
-            <div className="bg-slate-50 p-2.5 rounded-xl border border-slate-200/60 flex flex-col justify-between">
-              <span className="text-[9px] font-bold text-slate-400 uppercase flex items-center gap-1">
-                <Clock className="w-3 h-3 text-[#84CC16]" /> Hours
-              </span>
-              <div className="flex items-center justify-between mt-1">
-                <button
-                  type="button"
-                  onClick={() => setDurationHours((prev) => Math.max(1, prev - 1))}
-                  className="w-5 h-5 rounded-full bg-slate-200 hover:bg-slate-300 active:scale-95 text-slate-800 font-bold flex items-center justify-center transition-all"
-                >
-                  <Minus className="w-3 h-3" />
-                </button>
-                <span className="text-xs font-extrabold text-slate-900">
-                  {durationHours}h
+            {/* Duration - Only shown for Hourly service */}
+            {serviceType === 'Hourly' && (
+              <div className="bg-slate-50 p-2.5 rounded-xl border border-slate-200/60 flex flex-col justify-between">
+                <span className="text-[9px] font-bold text-slate-400 uppercase flex items-center gap-1">
+                  <Clock className="w-3 h-3 text-[#84CC16]" /> Hours
                 </span>
-                <button
-                  type="button"
-                  onClick={() => setDurationHours((prev) => Math.min(24, prev + 1))}
-                  className="w-5 h-5 rounded-full bg-[#84CC16] hover:bg-lime-500 active:scale-95 text-[#121212] font-bold flex items-center justify-center transition-all"
-                >
-                  <Plus className="w-3 h-3" />
-                </button>
+                <div className="flex items-center justify-between mt-1">
+                  <button
+                    type="button"
+                    onClick={() => setDurationHours((prev) => Math.max(1, prev - 1))}
+                    className="w-5 h-5 rounded-full bg-slate-200 hover:bg-slate-300 active:scale-95 text-slate-800 font-bold flex items-center justify-center transition-all"
+                  >
+                    <Minus className="w-3 h-3" />
+                  </button>
+                  <span className="text-xs font-extrabold text-slate-900">
+                    {durationHours}h
+                  </span>
+                  <button
+                    type="button"
+                    onClick={() => setDurationHours((prev) => Math.min(24, prev + 1))}
+                    className="w-5 h-5 rounded-full bg-[#84CC16] hover:bg-lime-500 active:scale-95 text-[#121212] font-bold flex items-center justify-center transition-all"
+                  >
+                    <Plus className="w-3 h-3" />
+                  </button>
+                </div>
               </div>
-            </div>
+            )}
           </div>
         </div>
 
-        {/* 3. Vehicle Model Selection (Sedan, SUV, Luxury, Hatchback) */}
+        {/* 3. Vehicle Model Selection */}
         <div className="bg-white rounded-2xl p-4 border border-slate-200/80 shadow-sm space-y-3">
           <div className="flex items-center justify-between border-b border-slate-100 pb-2">
             <span className="text-xs font-black uppercase text-slate-500 tracking-wider">
@@ -322,10 +321,10 @@ export const BookingReviewScreen: React.FC<BookingReviewScreenProps> = ({
 
           <div className="grid grid-cols-2 gap-2">
             {[
-              { id: 'sedan', name: 'Sedan', icon: Car, rate: '$15/hr' },
-              { id: 'suv', name: 'SUV', icon: ShieldCheck, rate: '$22/hr' },
-              { id: 'luxury', name: 'Luxury', icon: SparklesIcon, rate: '$35/hr' },
-              { id: 'hatchback', name: 'Hatchback', icon: Car, rate: '$12/hr' },
+              { id: 'sedan', name: 'Sedan', icon: Car, rate: `${formatPrice(15, currentRegion)}/hr` },
+              { id: 'suv', name: 'SUV', icon: ShieldCheck, rate: `${formatPrice(22, currentRegion)}/hr` },
+              { id: 'luxury', name: 'Luxury', icon: SparklesIcon, rate: `${formatPrice(35, currentRegion)}/hr` },
+              { id: 'hatchback', name: 'Hatchback', icon: Car, rate: `${formatPrice(12, currentRegion)}/hr` },
             ].map((v) => {
               const isSel = selectedVehicleId === v.id;
               const IconComp = v.icon;
@@ -362,17 +361,17 @@ export const BookingReviewScreen: React.FC<BookingReviewScreenProps> = ({
         <div className="bg-gradient-to-br from-slate-900 to-[#121212] rounded-2xl p-4 text-white shadow-xl space-y-3">
           <div className="flex items-center justify-between border-b border-white/10 pb-2">
             <span className="text-xs font-bold text-slate-300">Fare Summary</span>
-            <span className="text-[10px] text-slate-400">({durationHours} hrs × ${currentRate.hourly}/hr + $4.50 fee)</span>
+            <span className="text-[10px] text-slate-400">({durationHours} hrs × {formatPrice(currentRate.hourly, currentRegion)}/hr)</span>
           </div>
 
           <div className="flex items-baseline justify-between">
             <div>
-              <span className="text-2xl font-black text-white">${totalFare.toFixed(2)}</span>
+              <span className="text-2xl font-black text-white">{formatPrice(totalFare, currentRegion, 2)}</span>
               <span className="text-xs text-slate-400 font-normal"> (Total Estimated)</span>
             </div>
             <div className="text-right">
               <span className="inline-block px-2.5 py-1 rounded-full bg-[#84CC16]/20 border border-[#84CC16]/40 text-[#84CC16] text-[10px] font-extrabold">
-                Extra: +${extraHourRate}/hr
+                Extra: +{formatPrice(extraHourRate, currentRegion)}/hr
               </span>
             </div>
           </div>
@@ -382,14 +381,16 @@ export const BookingReviewScreen: React.FC<BookingReviewScreenProps> = ({
             <span>Extra hours charged automatically if trip extends beyond {durationHours} hours.</span>
           </div>
         </div>
+      </div>
 
-        {/* 5. Continue / Confirm Button */}
+      {/* FIXED Bottom Action Bar - Always Fixed at Bottom of Frame */}
+      <div className="bg-white/95 backdrop-blur-md border-t border-slate-200 p-3 px-4 flex-shrink-0 shadow-lg z-30">
         <button
           type="button"
           onClick={handleProceed}
-          className="w-full py-4 rounded-2xl bg-[#84CC16] hover:bg-lime-400 text-[#121212] font-black text-sm uppercase tracking-wider flex items-center justify-center gap-2 shadow-xl transition-transform active:scale-[0.98] mt-2"
+          className="w-full py-3.5 rounded-2xl bg-[#84CC16] hover:bg-lime-400 text-[#121212] font-black text-xs sm:text-sm uppercase tracking-wider flex items-center justify-center gap-2 shadow-lg transition-transform active:scale-[0.98] cursor-pointer"
         >
-          <span>Continue</span>
+          <span>Continue to Advance Payment</span>
           <ChevronRight className="w-4 h-4 stroke-[3]" />
         </button>
       </div>
