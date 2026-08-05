@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import confetti from 'canvas-confetti';
 import html2canvas from 'html2canvas';
+import { Share } from '@capacitor/share';
 import { 
   CheckCircle2, 
   MapPin, 
@@ -12,7 +13,6 @@ import {
   ChevronLeft,
   Car,
   CreditCard,
-  Download,
   Loader2
 } from 'lucide-react';
 import { Booking } from '../types';
@@ -54,13 +54,13 @@ export const BookingConfirmationView: React.FC<BookingConfirmationViewProps> = (
   const advancePaid = Math.round(grandTotal * 0.30 * 100) / 100;
   const remainingBalance = Math.round((grandTotal - advancePaid) * 100) / 100;
 
-  // Direct 1-Click Page Screenshot Capture & Share Handler (No Popups!)
-  const handleDirectShareScreenshot = async () => {
+  // Direct Native Stock iOS & Android Share Sheet Image Handler (Zero Downloads, Zero Popups!)
+  const handleNativeSharePageImage = async () => {
     if (!pageRef.current || isSharing) return;
     setIsSharing(true);
 
     try {
-      // 1. Capture exact screenshot of the Booking Confirmed page
+      // 1. Capture exact screenshot image of the Booking Confirmed page in memory
       const canvas = await html2canvas(pageRef.current, {
         scale: 2,
         useCORS: true,
@@ -68,35 +68,34 @@ export const BookingConfirmationView: React.FC<BookingConfirmationViewProps> = (
         logging: false,
       });
 
-      // 2. Convert to PNG Blob / Image Data URL
       const dataUrl = canvas.toDataURL('image/png');
-      
-      // 3. Trigger immediate PNG Screenshot file download
-      const downloadLink = document.createElement('a');
-      downloadLink.href = dataUrl;
-      downloadLink.download = `RIDINGO-Booking-${booking.bookingNumber || 'Confirmed'}.png`;
-      downloadLink.click();
 
-      // 4. Try native OS Share sheet with screenshot file if supported by browser/device
-      canvas.toBlob(async (blob) => {
-        if (!blob) return;
-        const file = new File([blob], `RIDINGO-Booking-${booking.bookingNumber || 'Confirmed'}.png`, { type: 'image/png' });
-        
-        if (navigator.canShare && navigator.canShare({ files: [file] })) {
-          try {
-            await navigator.share({
-              title: `RIDINGO Booking #${booking.bookingNumber}`,
-              text: `RIDINGO Booking Confirmed #${booking.bookingNumber} - ${booking.pickupLocation} to ${booking.destinationLocation}`,
-              files: [file],
-            });
-          } catch {
-            // User cancelled native share sheet
-          }
-        }
-      }, 'image/png');
-    } catch (err) {
-      console.error("Direct screenshot share error:", err);
-      alert("Screenshot captured! Check your downloads for your booking pass image.");
+      // Convert dataUrl to a File Blob
+      const res = await fetch(dataUrl);
+      const blob = await res.blob();
+      const file = new File([blob], `RIDINGO-Booking-${booking.bookingNumber || 'Confirmed'}.png`, { type: 'image/png' });
+
+      // 2. Open Native iOS & Android Stock Share Sheet with the page image attached
+      if (navigator.canShare && navigator.canShare({ files: [file] })) {
+        await navigator.share({
+          title: `RIDINGO Booking #${booking.bookingNumber}`,
+          text: `RIDINGO Booking Confirmed #${booking.bookingNumber}: ${booking.pickupLocation} ➔ ${booking.destinationLocation} (${booking.date}, ${booking.time})`,
+          files: [file],
+        });
+      } else {
+        // Fallback to Capacitor Share Plugin for native mobile builds
+        await Share.share({
+          title: `RIDINGO Booking #${booking.bookingNumber}`,
+          text: `RIDINGO Booking Confirmed #${booking.bookingNumber}: ${booking.pickupLocation} ➔ ${booking.destinationLocation}`,
+          url: dataUrl,
+          dialogTitle: 'Share Booking Confirmation',
+        });
+      }
+    } catch (err: any) {
+      // User closed or cancelled native share sheet
+      if (err?.name !== 'AbortError') {
+        console.log("Native share result:", err);
+      }
     } finally {
       setIsSharing(false);
     }
@@ -122,7 +121,7 @@ export const BookingConfirmationView: React.FC<BookingConfirmationViewProps> = (
         <div className="w-12" />
       </div>
 
-      {/* Middle Scrollable Content (Targeted by html2canvas for page screenshot) */}
+      {/* Middle Scrollable Content (Captured as Image for Native Mobile Share) */}
       <div ref={pageRef} className="flex-1 overflow-y-auto p-4 space-y-4 scrollbar-none bg-[#FAFAFA]">
         {/* Celebration Card */}
         <div className="glass-card rounded-[36px] p-6 text-center space-y-3 bg-gradient-to-b from-white via-white to-slate-50 border border-slate-200/80 shadow-2xl relative overflow-hidden">
@@ -274,7 +273,7 @@ export const BookingConfirmationView: React.FC<BookingConfirmationViewProps> = (
         </div>
       </div>
 
-      {/* FIXED Bottom Action Bar - Always Fixed in Frame */}
+      {/* FIXED Bottom Action Bar */}
       <div className="bg-white/95 backdrop-blur-md border-t border-slate-200 p-3 px-4 flex-shrink-0 shadow-lg z-30 space-y-2">
         <button
           type="button"
@@ -286,10 +285,10 @@ export const BookingConfirmationView: React.FC<BookingConfirmationViewProps> = (
         </button>
 
         <div className="grid grid-cols-2 gap-2">
-          {/* Direct 1-Click Screenshot Share Button */}
+          {/* Direct Native Stock Mobile Share Sheet Button */}
           <button
             type="button"
-            onClick={handleDirectShareScreenshot}
+            onClick={handleNativeSharePageImage}
             disabled={isSharing}
             className="py-2.5 rounded-2xl bg-white border border-slate-200 text-slate-800 font-bold text-xs flex items-center justify-center gap-1.5 hover:bg-slate-50 transition-colors shadow-sm cursor-pointer disabled:opacity-50"
           >
@@ -298,7 +297,7 @@ export const BookingConfirmationView: React.FC<BookingConfirmationViewProps> = (
             ) : (
               <Share2 className="w-4 h-4 text-[#4D7C0F]" />
             )}
-            <span>{isSharing ? 'Capturing...' : 'Share Screenshot'}</span>
+            <span>{isSharing ? 'Opening Share...' : 'Share Booking'}</span>
           </button>
 
           <button
