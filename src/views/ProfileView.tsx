@@ -22,6 +22,7 @@ interface ProfileViewProps {
   onOpenWallet: () => void;
   onOpenSupport?: () => void;
   onOpenLanguage?: () => void;
+  onOpenAuth?: (mode?: 'login' | 'signup') => void;
   currentLanguage?: LanguageCode;
   currentRegion?: RegionCode;
 }
@@ -30,6 +31,7 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
   onOpenWallet,
   onOpenSupport,
   onOpenLanguage,
+  onOpenAuth,
   currentLanguage = 'en-us',
   currentRegion = 'in',
 }) => {
@@ -190,14 +192,14 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
 
         <button
           type="button"
-          onClick={() => alert("Logged out safely.")}
+          onClick={() => onOpenAuth ? onOpenAuth('login') : alert("Logged out safely.")}
           className="w-full p-3 rounded-xl hover:bg-rose-50 flex items-center justify-between text-rose-600 transition-colors mt-1 cursor-pointer"
         >
           <div className="flex items-center gap-3">
             <div className="w-8 h-8 rounded-lg bg-rose-100 text-rose-600 flex items-center justify-center">
               <LogOut className="w-4 h-4" />
             </div>
-            <span className="font-black">{t.logout}</span>
+            <span className="font-black">Sign In / Switch Account</span>
           </div>
         </button>
       </div>

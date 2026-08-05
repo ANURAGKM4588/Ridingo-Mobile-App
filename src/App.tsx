@@ -24,6 +24,7 @@ import { SupportChatView } from './views/SupportChatView';
 import { LanguageRegionSettingsView } from './views/LanguageRegionSettingsView';
 import { NotificationsView } from './views/NotificationsView';
 import { DriverProfileModal } from './views/DriverProfileModal';
+import { AuthView } from './views/AuthView';
 import { LanguageCode } from './data/translations';
 import { RegionCode } from './data/currencies';
 
@@ -54,6 +55,10 @@ export function App() {
   // Driver Profile Modal State
   const [driverModalProfile, setDriverModalProfile] = useState<DriverProfile | null>(null);
   const [isDriverModalOpen, setIsDriverModalOpen] = useState<boolean>(false);
+
+  // Auth View Modal State
+  const [isAuthOpen, setIsAuthOpen] = useState<boolean>(false);
+  const [authInitialMode, setAuthInitialMode] = useState<'login' | 'signup'>('login');
 
   // Handlers
   const handleSelectService = (service: ServiceItem) => {
@@ -209,6 +214,10 @@ export function App() {
                       onOpenWallet={() => setIsPaymentSettingsOpen(true)}
                       onOpenSupport={() => setIsSupportChatOpen(true)}
                       onOpenLanguage={() => setIsLanguageSettingsOpen(true)}
+                      onOpenAuth={(mode = 'login') => {
+                        setAuthInitialMode(mode);
+                        setIsAuthOpen(true);
+                      }}
                       currentLanguage={currentLanguage}
                       currentRegion={currentRegion}
                     />
@@ -295,6 +304,19 @@ export function App() {
               </div>
             </div>
           </div>
+        )}
+
+        {/* Auth View Modal (Login & Sign Up) */}
+        {isAuthOpen && (
+          <AuthView
+            onClose={() => setIsAuthOpen(false)}
+            initialMode={authInitialMode}
+            onSuccess={(userData) => {
+              setIsAuthOpen(false);
+              alert(`Successfully authenticated as ${userData.name}!`);
+            }}
+            currentLanguage={currentLanguage}
+          />
         )}
       </div>
     </div>
