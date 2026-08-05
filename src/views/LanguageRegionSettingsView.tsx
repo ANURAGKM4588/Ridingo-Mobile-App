@@ -65,24 +65,30 @@ export const LanguageRegionSettingsView: React.FC<LanguageRegionSettingsViewProp
   };
 
   return (
-    <div className="w-full h-[calc(100vh-3.5rem)] sm:h-[82vh] flex flex-col bg-[#FAFAFA] -mx-4 -mt-3.5 animate-fade-in overflow-hidden">
-      {/* Fixed Sticky Header */}
+    <div className="w-full h-full flex flex-col bg-[#FAFAFA] animate-fade-in overflow-hidden">
+      {/* Fixed Centered Header */}
       <div className="bg-white py-3 px-4 border-b border-slate-200 flex items-center justify-between shadow-xs flex-shrink-0 z-30">
-        <button
-          type="button"
-          onClick={onBack}
-          className="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-700 hover:bg-slate-200 transition-colors cursor-pointer"
-        >
-          <ChevronLeft className="w-5 h-5" />
-        </button>
-        <h2 className="font-extrabold text-sm text-slate-900 tracking-tight">Language & Region</h2>
-        <button
-          type="button"
-          onClick={handleSave}
-          className="text-xs font-black text-[#4D7C0F] hover:underline cursor-pointer"
-        >
-          Save
-        </button>
+        <div className="w-12 flex items-center justify-start">
+          <button
+            type="button"
+            onClick={onBack}
+            className="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-700 hover:bg-slate-200 transition-colors cursor-pointer"
+          >
+            <ChevronLeft className="w-5 h-5" />
+          </button>
+        </div>
+        <h2 className="font-extrabold text-sm text-slate-900 tracking-tight text-center flex-1 truncate px-2">
+          Language & Region
+        </h2>
+        <div className="w-12 flex items-center justify-end">
+          <button
+            type="button"
+            onClick={handleSave}
+            className="text-xs font-bold text-[#4D7C0F] hover:underline cursor-pointer whitespace-nowrap"
+          >
+            Save
+          </button>
+        </div>
       </div>
 
       {/* Middle Scrollable Body */}

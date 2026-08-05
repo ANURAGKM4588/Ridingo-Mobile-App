@@ -216,21 +216,23 @@ export const InvoicePaymentScreen: React.FC<InvoicePaymentScreenProps> = ({
   };
 
   return (
-    <div className="w-full h-[calc(100vh-3.5rem)] sm:h-[82vh] flex flex-col bg-[#FAFAFA] -mx-4 -mt-3.5 animate-fade-in overflow-hidden">
-      {/* Fixed Sticky Header */}
+    <div className="w-full h-full flex flex-col bg-[#FAFAFA] animate-fade-in overflow-hidden">
+      {/* Fixed Centered Header */}
       <div className="bg-white py-3 px-4 border-b border-slate-200 flex items-center justify-between shadow-xs flex-shrink-0 z-30">
-        <button
-          type="button"
-          onClick={onBack}
-          className="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-700 hover:bg-slate-200 transition-colors cursor-pointer"
-        >
-          <ChevronLeft className="w-5 h-5" />
-        </button>
-        <div className="text-center">
+        <div className="w-12 flex items-center justify-start">
+          <button
+            type="button"
+            onClick={onBack}
+            className="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-700 hover:bg-slate-200 transition-colors cursor-pointer"
+          >
+            <ChevronLeft className="w-5 h-5" />
+          </button>
+        </div>
+        <div className="text-center flex-1 truncate px-2">
           <h2 className="text-sm font-black text-slate-900 uppercase tracking-wider">Advance Payment</h2>
           <p className="text-[10px] text-slate-500 font-bold">Step 3 of 3 • Razorpay Secured</p>
         </div>
-        <div className="w-8" />
+        <div className="w-12" />
       </div>
 
       {/* Middle Scrollable Body */}

@@ -98,124 +98,123 @@ export function App() {
         )}
 
         {/* Main Content Area based on Active Tab or Views */}
-        <main className={`flex-1 overflow-y-auto px-4 scrollbar-none relative ${
-          activeTab === 'home' && !isReviewOpen && !isInvoiceOpen && !isConfirmationOpen && !isPaymentSettingsOpen && !isSupportChatOpen && !isLanguageSettingsOpen
-            ? 'pt-3.5'
-            : 'pt-[calc(env(safe-area-inset-top,0px)+0.75rem)]'
-        } ${
-          isReviewOpen || isInvoiceOpen || isConfirmationOpen || isPaymentSettingsOpen || isSupportChatOpen || isLanguageSettingsOpen ? 'pb-[#max(env(safe-area-inset-bottom),1rem)]' : 'pb-24'
-        }`}>
-          {isLanguageSettingsOpen ? (
-            <LanguageRegionSettingsView
-              onBack={() => setIsLanguageSettingsOpen(false)}
-              currentLanguage={currentLanguage}
-              onLanguageChange={(lang) => setCurrentLanguage(lang)}
-              currentRegion={currentRegion}
-              onRegionChange={(reg) => setCurrentRegion(reg)}
-            />
-          ) : isSupportChatOpen ? (
-            <SupportChatView onBack={() => setIsSupportChatOpen(false)} />
-          ) : isPaymentSettingsOpen ? (
-            <PaymentSettingsView onBack={() => setIsPaymentSettingsOpen(false)} />
-          ) : isReviewOpen && bookingDraft ? (
-            <BookingReviewScreen
-              draft={bookingDraft}
-              onBack={() => setIsReviewOpen(false)}
-              onConfirm={() => {
-                setIsReviewOpen(false);
-                setIsInvoiceOpen(true);
-              }}
-              currentRegion={currentRegion}
-            />
-          ) : isInvoiceOpen && bookingDraft ? (
-            <InvoicePaymentScreen
-              bookingDraft={bookingDraft}
-              onBack={() => {
-                setIsInvoiceOpen(false);
-                setIsReviewOpen(true);
-              }}
-              onConfirmPayment={(finalBooking) => {
-                setIsInvoiceOpen(false);
-                handleBookingConfirmed(finalBooking);
-              }}
-              onCloseToBookings={(pendingBooking) => {
-                setIsInvoiceOpen(false);
-                setBookings([pendingBooking, ...bookings]);
-                setActiveBooking(pendingBooking);
-                setActiveTab('bookings');
-              }}
-              currentRegion={currentRegion}
-            />
-          ) : isConfirmationOpen && confirmedBooking ? (
-            <BookingConfirmationView
-              booking={confirmedBooking}
-              onTrackDriver={() => {
-                setIsConfirmationOpen(false);
-                setActiveTab('activity');
-              }}
-              onClose={() => setIsConfirmationOpen(false)}
-              currentRegion={currentRegion}
-            />
-          ) : (
-            <>
-              {activeTab === 'home' && (
-                <HomeView
-                  onSelectService={handleSelectService}
-                  onSelectVehicle={setSelectedVehicle}
-                  selectedVehicle={selectedVehicle}
-                  onStartBooking={handleStartBooking}
-                  onOpenDriverProfile={handleOpenDriverProfile}
-                  recentBookings={bookings}
-                  recentBooking={bookings[0]}
-                  onViewAllBookings={() => setActiveTab('bookings')}
-                  onRepeatBooking={(b) => {
-                    setSelectedVehicle(b.vehicle);
-                    setIsBookingFlowOpen(true);
-                  }}
+        {(() => {
+          const isFullView = isReviewOpen || isInvoiceOpen || isConfirmationOpen || isPaymentSettingsOpen || isSupportChatOpen || isLanguageSettingsOpen;
+          return (
+            <main className={`flex-1 relative flex flex-col min-h-0 w-full ${isFullView ? 'p-0 overflow-hidden' : 'px-4 pt-3.5 pb-24 overflow-y-auto scrollbar-none'}`}>
+              {isLanguageSettingsOpen ? (
+                <LanguageRegionSettingsView
+                  onBack={() => setIsLanguageSettingsOpen(false)}
                   currentLanguage={currentLanguage}
+                  onLanguageChange={(lang) => setCurrentLanguage(lang)}
                   currentRegion={currentRegion}
+                  onRegionChange={(reg) => setCurrentRegion(reg)}
                 />
-              )}
-
-              {activeTab === 'bookings' && (
-                <BookingsView
-                  bookings={bookings}
-                  onRepeatBooking={(b) => {
-                    setSelectedVehicle(b.vehicle);
-                    setIsBookingFlowOpen(true);
+              ) : isSupportChatOpen ? (
+                <SupportChatView onBack={() => setIsSupportChatOpen(false)} />
+              ) : isPaymentSettingsOpen ? (
+                <PaymentSettingsView onBack={() => setIsPaymentSettingsOpen(false)} />
+              ) : isReviewOpen && bookingDraft ? (
+                <BookingReviewScreen
+                  draft={bookingDraft}
+                  onBack={() => setIsReviewOpen(false)}
+                  onConfirm={() => {
+                    setIsReviewOpen(false);
+                    setIsInvoiceOpen(true);
                   }}
-                  onOpenDriverProfile={handleOpenDriverProfile}
                   currentRegion={currentRegion}
                 />
-              )}
-
-              {activeTab === 'activity' && (
-                <LiveTrackingView
-                  booking={activeBooking}
-                  onOpenDriverProfile={handleOpenDriverProfile}
-                  onCancelRide={() => {
-                    if (confirm("Are you sure you want to cancel this chauffeur booking?")) {
-                      setActiveBooking(null);
-                      alert("Booking cancelled.");
-                    }
+              ) : isInvoiceOpen && bookingDraft ? (
+                <InvoicePaymentScreen
+                  bookingDraft={bookingDraft}
+                  onBack={() => {
+                    setIsInvoiceOpen(false);
+                    setIsReviewOpen(true);
                   }}
-                />
-              )}
-
-              {activeTab === 'wallet' && <WalletView currentRegion={currentRegion} />}
-
-              {activeTab === 'profile' && (
-                <ProfileView
-                  onOpenWallet={() => setIsPaymentSettingsOpen(true)}
-                  onOpenSupport={() => setIsSupportChatOpen(true)}
-                  onOpenLanguage={() => setIsLanguageSettingsOpen(true)}
-                  currentLanguage={currentLanguage}
+                  onConfirmPayment={(finalBooking) => {
+                    setIsInvoiceOpen(false);
+                    handleBookingConfirmed(finalBooking);
+                  }}
+                  onCloseToBookings={(pendingBooking) => {
+                    setIsInvoiceOpen(false);
+                    setBookings([pendingBooking, ...bookings]);
+                    setActiveBooking(pendingBooking);
+                    setActiveTab('bookings');
+                  }}
                   currentRegion={currentRegion}
                 />
+              ) : isConfirmationOpen && confirmedBooking ? (
+                <BookingConfirmationView
+                  booking={confirmedBooking}
+                  onTrackDriver={() => {
+                    setIsConfirmationOpen(false);
+                    setActiveTab('activity');
+                  }}
+                  onClose={() => setIsConfirmationOpen(false)}
+                  currentRegion={currentRegion}
+                />
+              ) : (
+                <>
+                  {activeTab === 'home' && (
+                    <HomeView
+                      onSelectService={handleSelectService}
+                      onSelectVehicle={setSelectedVehicle}
+                      selectedVehicle={selectedVehicle}
+                      onStartBooking={handleStartBooking}
+                      onOpenDriverProfile={handleOpenDriverProfile}
+                      recentBookings={bookings}
+                      recentBooking={bookings[0]}
+                      onViewAllBookings={() => setActiveTab('bookings')}
+                      onRepeatBooking={(b) => {
+                        setSelectedVehicle(b.vehicle);
+                        setIsBookingFlowOpen(true);
+                      }}
+                      currentLanguage={currentLanguage}
+                      currentRegion={currentRegion}
+                    />
+                  )}
+
+                  {activeTab === 'bookings' && (
+                    <BookingsView
+                      bookings={bookings}
+                      onRepeatBooking={(b) => {
+                        setSelectedVehicle(b.vehicle);
+                        setIsBookingFlowOpen(true);
+                      }}
+                      onOpenDriverProfile={handleOpenDriverProfile}
+                      currentRegion={currentRegion}
+                    />
+                  )}
+
+                  {activeTab === 'activity' && (
+                    <LiveTrackingView
+                      booking={activeBooking}
+                      onOpenDriverProfile={handleOpenDriverProfile}
+                      onCancelRide={() => {
+                        if (confirm("Are you sure you want to cancel this chauffeur booking?")) {
+                          setActiveBooking(null);
+                          alert("Booking cancelled.");
+                        }
+                      }}
+                    />
+                  )}
+
+                  {activeTab === 'wallet' && <WalletView currentRegion={currentRegion} />}
+
+                  {activeTab === 'profile' && (
+                    <ProfileView
+                      onOpenWallet={() => setIsPaymentSettingsOpen(true)}
+                      onOpenSupport={() => setIsSupportChatOpen(true)}
+                      onOpenLanguage={() => setIsLanguageSettingsOpen(true)}
+                      currentLanguage={currentLanguage}
+                      currentRegion={currentRegion}
+                    />
+                  )}
+                </>
               )}
-            </>
-          )}
-        </main>
+            </main>
+          );
+        })()}
 
         {/* Floating Bottom Navigation - Hidden during review, payment, dispatch, support chat, settings & confirmation screens */}
         {!isReviewOpen && !isInvoiceOpen && !isConfirmationOpen && !isBookingFlowOpen && !isPaymentSettingsOpen && !isSupportChatOpen && !isLanguageSettingsOpen && (

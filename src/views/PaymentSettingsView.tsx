@@ -70,18 +70,30 @@ export const PaymentSettingsView: React.FC<PaymentSettingsViewProps> = ({ onBack
   };
 
   return (
-    <div className="w-full max-w-xl mx-auto space-y-4 animate-fade-in pb-4">
-      {/* Settings Navigation Top Bar */}
-      <div className="sticky -top-3 z-30 bg-white -mx-3.5 -mt-3 pt-3 pb-3 px-4 border-b border-slate-200 flex items-center justify-between shadow-xs">
-        <button
-          type="button"
-          onClick={onBack}
-          className="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-700 hover:bg-slate-200 transition-colors cursor-pointer"
-        >
-          <ChevronLeft className="w-5 h-5" />
-        </button>
-        <h2 className="font-extrabold text-sm text-slate-900 tracking-tight">Payment Settings</h2>
-        <div className="w-8" />
+    <div className="w-full h-full flex flex-col bg-[#FAFAFA] animate-fade-in overflow-hidden">
+      {/* Fixed Centered Header */}
+      <div className="bg-white py-3 px-4 border-b border-slate-200 flex items-center justify-between shadow-xs flex-shrink-0 z-30">
+        <div className="w-12 flex items-center justify-start">
+          <button
+            type="button"
+            onClick={onBack}
+            className="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-700 hover:bg-slate-200 transition-colors cursor-pointer"
+          >
+            <ChevronLeft className="w-5 h-5" />
+          </button>
+        </div>
+        <h2 className="font-extrabold text-sm text-slate-900 tracking-tight text-center flex-1 truncate px-2">
+          Payment Settings
+        </h2>
+        <div className="w-12 flex items-center justify-end">
+          <button
+            type="button"
+            onClick={onBack}
+            className="text-xs font-bold text-[#4D7C0F] hover:underline cursor-pointer whitespace-nowrap"
+          >
+            Done
+          </button>
+        </div>
       </div>
 
       {/* Primary / Default Booking Payment Selection */}

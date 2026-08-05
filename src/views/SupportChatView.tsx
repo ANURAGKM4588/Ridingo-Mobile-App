@@ -85,7 +85,7 @@ export const SupportChatView: React.FC<SupportChatViewProps> = ({ onBack }) => {
   };
 
   return (
-    <div className="w-full h-[calc(100vh-3.5rem)] sm:h-[82vh] flex flex-col bg-[#FAFAFA] -mx-4 -mt-3.5 animate-fade-in overflow-hidden">
+    <div className="w-full h-full flex flex-col bg-[#FAFAFA] animate-fade-in overflow-hidden">
       {/* Top Support Header */}
       <div className="bg-white border-b border-slate-200 py-3 px-3.5 flex items-center justify-between shadow-xs z-10 flex-shrink-0 gap-2">
         <div className="flex items-center gap-2 min-w-0">
