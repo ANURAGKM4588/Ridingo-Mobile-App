@@ -217,52 +217,40 @@ export const AuthView: React.FC<AuthViewProps> = ({
       return;
     }
 
-    // 1. Attempt Supabase Auth server verification
-    if (email && enteredCode.length === 6) {
-      try {
-        const { data, error } = await supabase.auth.verifyOtp({
-          email: email.trim(),
-          token: enteredCode,
-          type: 'email',
-        });
+    // Verification: allow any 6-digit code or fallback directly
+    setOtpError(null);
+    const constructedName = [firstName, lastName].filter(Boolean).join(' ') || (authMode === 'login' ? 'Alexander Vance' : 'New User');
+    onSuccess({
+      name: constructedName,
+      email: email || 'alexander.vance@executive.com',
+      phone: `${selectedCountry.code} ${phoneNumber || '555-0192'}`,
+    });
+  };
 
-        if (!error && data?.user) {
-          setOtpError(null);
-          const constructedName = [firstName, lastName].filter(Boolean).join(' ') || (authMode === 'login' ? 'Alexander Vance' : 'New User');
-          onSuccess({
-            name: constructedName,
-            email: email,
-            phone: `${selectedCountry.code} ${phoneNumber || '555-0192'}`,
-          });
-          return;
-        }
-      } catch (err) {
-        console.log('Supabase verifyOtp note:', err);
-      }
-    }
-
-    // 2. Fallback to dynamic random 6-digit OTP code matching
-    if (enteredCode === generatedOtp) {
-      setOtpError(null);
-      const constructedName = [firstName, lastName].filter(Boolean).join(' ') || (authMode === 'login' ? 'Alexander Vance' : 'New User');
-      onSuccess({
-        name: constructedName,
-        email: email || 'alexander.vance@executive.com',
-        phone: `${selectedCountry.code} ${phoneNumber || '555-0192'}`,
-      });
-    } else {
-      // Wrong OTP: Show red warning, clear inputs & auto-focus first box
-      setOtpError(`Invalid 6-digit OTP code entered. Please check your Gmail inbox (${email}) and try again.`);
-      setOtpValues(['', '', '', '', '', '']);
-      setTimeout(() => {
-        const firstInput = document.getElementById('otp-input-0');
-        firstInput?.focus();
-      }, 100);
-    }
+  const handleSkip = () => {
+    const constructedName = [firstName, lastName].filter(Boolean).join(' ') || 'Alexander Vance';
+    onSuccess({
+      name: constructedName,
+      email: email || 'alexander.vance@executive.com',
+      phone: phoneNumber ? `${selectedCountry.code} ${phoneNumber}` : '+1 (555) 019-2834',
+    });
   };
 
   return (
-    <div className="absolute inset-0 z-50 bg-white flex flex-col justify-between overflow-y-auto animate-fade-in pt-[max(env(safe-area-inset-top),48px)] pb-[max(env(safe-area-inset-bottom),16px)]">
+    <div className="absolute inset-0 z-50 bg-white flex flex-col justify-between overflow-y-auto animate-fade-in pt-[max(env(safe-area-inset-top),20px)] pb-[max(env(safe-area-inset-bottom),16px)]">
+
+      {/* Top Header Bar with Skip Button */}
+      <div className="w-full px-6 pt-3 flex items-center justify-between max-w-md mx-auto">
+        <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">RIDINGO App</span>
+        <button
+          type="button"
+          onClick={handleSkip}
+          className="px-4 py-1.5 rounded-full bg-[#fcd502] hover:bg-amber-400 text-slate-950 font-black text-xs flex items-center gap-1.5 shadow-md active:scale-95 transition-all cursor-pointer border border-amber-300"
+        >
+          <span>Skip Login</span>
+          <ArrowRight className="w-3.5 h-3.5 stroke-[3]" />
+        </button>
+      </div>
 
       {/* Main Body Content */}
       <div className="flex-1 px-6 py-4 max-w-md mx-auto w-full flex flex-col justify-center space-y-5">
@@ -569,6 +557,15 @@ export const AuthView: React.FC<AuthViewProps> = ({
             >
               <CheckCircle2 className="w-4 h-4 stroke-[2.5]" />
               <span>Verify & Continue</span>
+            </button>
+
+            {/* Skip OTP Button */}
+            <button
+              type="button"
+              onClick={handleSkip}
+              className="w-full py-3 px-6 rounded-2xl bg-[#fcd502] hover:bg-amber-400 text-slate-950 font-extrabold text-xs flex items-center justify-center gap-2 transition-all cursor-pointer border border-amber-300 shadow-sm"
+            >
+              <span>⚡ Skip OTP Verification & Enter App</span>
             </button>
           </form>
         )}

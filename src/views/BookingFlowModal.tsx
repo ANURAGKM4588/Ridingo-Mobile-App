@@ -16,10 +16,16 @@ import {
   VolumeX,
   Award,
   User,
-  Globe
+  Globe,
+  ArrowUpDown
 } from 'lucide-react';
 import { ServiceItem, VehicleOption, DriverPreferences, Booking } from '../types';
 import { MOCK_SERVICES, MOCK_VEHICLES, FEATURED_DRIVER } from '../data/mockData';
+import { LocationAutocomplete } from '../components/LocationAutocomplete';
+import type { LocationSuggestion } from '../components/LocationAutocomplete';
+import { LeafletMap } from '../components/LeafletMap';
+import type { LatLng } from '../components/LeafletMap';
+import { fetchRoute } from '../lib/routing';
 
 interface BookingFlowModalProps {
   isOpen: boolean;
@@ -45,11 +51,32 @@ export const BookingFlowModal: React.FC<BookingFlowModalProps> = ({
   const [selectedVehicle, setSelectedVehicle] = useState<VehicleOption>(
     initialVehicle || MOCK_VEHICLES[0]
   );
-  const [pickup, setPickup] = useState('742 Evergreen Terrace, Beverly Hills');
-  const [destination, setDestination] = useState('Financial District & Grand Hyatt');
+  const [pickup, setPickup] = useState('');
+  const [pickupLatLng, setPickupLatLng] = useState<LatLng | undefined>(undefined);
+  const [destination, setDestination] = useState('');
+  const [destinationLatLng, setDestinationLatLng] = useState<LatLng | undefined>(undefined);
+  const [routeGeometry, setRouteGeometry] = useState<[number, number][] | undefined>(undefined);
   const [date, setDate] = useState('Today');
   const [time, setTime] = useState('2:30 PM');
   const [durationHours, setDurationHours] = useState(4);
+
+  const handleSwapLocations = () => {
+    const tempPickup = pickup;
+    const tempPickupLatLng = pickupLatLng;
+    setPickup(destination);
+    setPickupLatLng(destinationLatLng);
+    setDestination(tempPickup);
+    setDestinationLatLng(tempPickupLatLng);
+  };
+
+  // Fetch OSRM route when coordinates update
+  React.useEffect(() => {
+    if (pickupLatLng && destinationLatLng) {
+      fetchRoute(pickupLatLng, destinationLatLng).then(r => {
+        if (r?.geometry) setRouteGeometry(r.geometry);
+      });
+    }
+  }, [pickupLatLng?.lat, pickupLatLng?.lng, destinationLatLng?.lat, destinationLatLng?.lng]);
 
   // Driver Preferences
   const [preferences, setPreferences] = useState<DriverPreferences>({
@@ -242,30 +269,27 @@ export const BookingFlowModal: React.FC<BookingFlowModalProps> = ({
           {/* STEP 3: Pickup Location */}
           {step === 3 && (
             <div className="space-y-4">
-              <label className="block text-xs font-extrabold uppercase tracking-wider text-slate-600">Enter Pickup Address</label>
-              <div className="flex items-center bg-white rounded-2xl p-4 border border-slate-300 shadow-sm">
-                <MapPin className="w-5 h-5 text-[#fcd502] mr-3" />
-                <input
-                  type="text"
-                  value={pickup}
-                  onChange={(e) => setPickup(e.target.value)}
-                  className="w-full text-base font-bold text-slate-900 bg-transparent focus:outline-none"
-                  placeholder="Street, City, Zip"
-                />
-              </div>
+              <LocationAutocomplete
+                label="Pickup Address"
+                placeholder="Your pickup location"
+                value={pickup}
+                onChange={(val, suggestion?: LocationSuggestion) => {
+                  setPickup(val);
+                  if (suggestion) setPickupLatLng({ lat: suggestion.lat, lng: suggestion.lng });
+                }}
+                icon="pickup"
+              />
 
-              {/* Map Preview Graphic */}
-              <div className="w-full h-44 rounded-2xl overflow-hidden bg-slate-200 relative border border-slate-300">
-                <img
-                  src="https://images.unsplash.com/photo-1524661135-423995f22d0b?auto=format&fit=crop&w=800&q=80"
-                  alt="Pickup Map preview"
-                  className="w-full h-full object-cover opacity-80"
+              {/* Live Mini Map showing selected pickup */}
+              <div className="w-full h-44 rounded-2xl overflow-hidden bg-slate-900 border border-slate-200 shadow-sm">
+                <LeafletMap
+                  center={pickupLatLng ?? { lat: 12.9716, lng: 77.5946 }}
+                  zoom={14}
+                  className="w-full h-full"
+                  pickup={pickupLatLng}
+                  pickupLabel={pickup}
+                  darkMode={true}
                 />
-                <div className="absolute inset-0 bg-black/20 flex items-center justify-center">
-                  <div className="px-4 py-2 rounded-full bg-[#121212] text-white text-xs font-bold flex items-center gap-2 shadow-xl border border-white/20">
-                    <MapPin className="w-4 h-4 text-[#fcd502]" /> Pin Position Verified
-                  </div>
-                </div>
               </div>
             </div>
           )}
@@ -273,15 +297,29 @@ export const BookingFlowModal: React.FC<BookingFlowModalProps> = ({
           {/* STEP 4: Destination */}
           {step === 4 && (
             <div className="space-y-4">
-              <label className="block text-xs font-extrabold uppercase tracking-wider text-slate-600">Enter Destination Address</label>
-              <div className="flex items-center bg-white rounded-2xl p-4 border border-slate-300 shadow-sm">
-                <MapPin className="w-5 h-5 text-black mr-3" />
-                <input
-                  type="text"
-                  value={destination}
-                  onChange={(e) => setDestination(e.target.value)}
-                  className="w-full text-base font-bold text-slate-900 bg-transparent focus:outline-none"
-                  placeholder="Dropoff location or Multiple Stops"
+              <LocationAutocomplete
+                label="Destination Address"
+                placeholder="Your destination"
+                value={destination}
+                onChange={(val, suggestion?: LocationSuggestion) => {
+                  setDestination(val);
+                  if (suggestion) setDestinationLatLng({ lat: suggestion.lat, lng: suggestion.lng });
+                }}
+                icon="destination"
+              />
+
+              {/* Live Map with Route Line */}
+              <div className="w-full h-44 rounded-2xl overflow-hidden bg-slate-900 border border-slate-200 shadow-sm">
+                <LeafletMap
+                  center={destinationLatLng ?? pickupLatLng ?? { lat: 12.9716, lng: 77.5946 }}
+                  zoom={13}
+                  className="w-full h-full"
+                  pickup={pickupLatLng}
+                  destination={destinationLatLng}
+                  pickupLabel={pickup}
+                  destinationLabel={destination}
+                  routeGeometry={routeGeometry}
+                  darkMode={true}
                 />
               </div>
 

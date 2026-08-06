@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   ChevronLeft,
   ShieldCheck,
@@ -26,6 +26,8 @@ import {
 } from 'lucide-react';
 import { Booking } from '../types';
 import { RegionCode, formatPrice } from '../data/currencies';
+import { bridgeSend, bridgeListen } from '../lib/bridge';
+import type { BookingRequestPayload } from '../lib/bridge';
 
 interface InvoicePaymentScreenProps {
   bookingDraft: any;
@@ -86,10 +88,9 @@ export const InvoicePaymentScreen: React.FC<InvoicePaymentScreenProps> = ({
     }
   };
 
-  // 1. Open Razorpay Gateway Interface
+  // 1. Direct Pay & Dispatch Trigger
   const handleOpenRazorpay = () => {
-    setRazorpayStep('select');
-    setIsRazorpayOpen(true);
+    startDriverDispatchSequence();
   };
 
   // 2. Execute Razorpay Payment
@@ -175,14 +176,53 @@ export const InvoicePaymentScreen: React.FC<InvoicePaymentScreenProps> = ({
     setIsDriverDispatching(true);
     setDispatchStep(1);
 
+    // Broadcast to Driver App via BroadcastChannel
+    const requestPayload: BookingRequestPayload = {
+      requestId: `REQ-${Math.floor(1000 + Math.random() * 9000)}`,
+      bookingNumber: newBooking.bookingNumber,
+      customerName: 'Alexander Vance',
+      customerRating: 4.98,
+      pickup: newBooking.pickupLocation,
+      destination: newBooking.destinationLocation,
+      serviceType: newBooking.serviceTitle,
+      duration: `${duration} Hours`,
+      totalFare: grandTotal,
+      driverPayout: Math.round(grandTotal * 0.80 * 100) / 100,
+      paymentMethod: selectedPayment.toUpperCase(),
+      flightNumber: newBooking.flightNumber,
+      airlineName: newBooking.airlineName,
+      vehicleName: newBooking.vehicle?.name,
+      timestamp: Date.now(),
+    };
+    bridgeSend('BOOKING_REQUEST', requestPayload, 'user-app');
+
     setTimeout(() => {
-      setDispatchStep(2); // 🚘 Marcus Vance reviewing request on Driver App
+      setDispatchStep(2);
     }, 2000);
   };
+
+  // Listen for driver response from Driver App tab
+  useEffect(() => {
+    const cleanup = bridgeListen((msg) => {
+      if (msg.sentFrom !== 'driver-app') return;
+      if (msg.type === 'BOOKING_ACCEPTED' && isDriverDispatching) {
+        setDispatchStep(3);
+        setTimeout(() => {
+          setIsDriverDispatching(false);
+          if (createdBooking) onConfirmPayment({ ...createdBooking, status: 'upcoming' });
+        }, 1000);
+      }
+      if (msg.type === 'BOOKING_DECLINED' && isDriverDispatching) {
+        setDispatchStep(1); // back to searching
+      }
+    });
+    return cleanup;
+  }, [isDriverDispatching, createdBooking]);
 
   // 4. Cancel Request Action
   const handleCancelTripRequest = () => {
     if (confirm("Are you sure you want to cancel this trip request? Your 30% advance deposit will be immediately refunded.")) {
+      if (createdBooking) bridgeSend('BOOKING_CANCELLED', { requestId: createdBooking.bookingNumber }, 'user-app');
       setIsDriverDispatching(false);
       alert(`Trip request #${createdBooking?.bookingNumber || ''} cancelled. $${advanceAmount.toFixed(2)} advance deposit refunded.`);
       onBack();
@@ -230,7 +270,7 @@ export const InvoicePaymentScreen: React.FC<InvoicePaymentScreenProps> = ({
         </div>
         <div className="text-center flex-1 truncate px-2">
           <h2 className="text-sm font-black text-slate-900 uppercase tracking-wider">Advance Payment</h2>
-          <p className="text-[10px] text-slate-500 font-bold">Step 3 of 3 • Razorpay Secured</p>
+          <p className="text-[10px] text-slate-500 font-bold">Step 3 of 3 • 256-bit SSL Secured</p>
         </div>
         <div className="w-12" />
       </div>
@@ -247,7 +287,7 @@ export const InvoicePaymentScreen: React.FC<InvoicePaymentScreenProps> = ({
           </div>
 
           <div>
-            <span className="text-[11px] text-slate-400 font-medium block">Payable Now via Razorpay:</span>
+            <span className="text-[11px] text-slate-400 font-medium block">Payable Deposit Now:</span>
             <div className="flex items-baseline gap-2 mt-0.5">
               <span className="text-3xl font-black text-[#fcd502]">${advanceAmount.toFixed(2)}</span>
               <span className="text-xs text-slate-300 font-bold">(30% Deposit)</span>
@@ -354,125 +394,6 @@ export const InvoicePaymentScreen: React.FC<InvoicePaymentScreenProps> = ({
               {discountMsg}
             </p>
           )}
-        </div>
-
-        {/* 4. PAYMENT METHOD OPTIONS FOR RAZORPAY */}
-        <div className="bg-white rounded-3xl p-5 border border-slate-200 shadow-md space-y-3">
-          <div className="flex items-center justify-between border-b border-slate-100 pb-2.5">
-            <h3 className="font-extrabold text-xs text-slate-900 uppercase tracking-wider">
-              Pay 30% Advance Deposit Via
-            </h3>
-            <span className="text-[10px] text-[#0C2340] font-black flex items-center gap-1">
-              <ShieldCheck className="w-3.5 h-3.5 text-blue-600" /> Razorpay Verified
-            </span>
-          </div>
-
-          <div className="space-y-2">
-            {/* Apple Pay */}
-            <button
-              type="button"
-              onClick={() => setSelectedPayment('apple_pay')}
-              className={`w-full p-3.5 rounded-2xl border flex items-center justify-between transition-all cursor-pointer ${selectedPayment === 'apple_pay'
-                  ? 'border-[#fcd502] bg-lime-500/10 shadow-md ring-1 ring-[#fcd502]'
-                  : 'border-slate-200/80 hover:bg-slate-50'
-                }`}
-            >
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-black flex items-center justify-center text-white font-black text-sm shadow-sm">
-                  <span className="tracking-tighter">Pay</span>
-                </div>
-                <div className="text-left">
-                  <div className="flex items-center gap-1.5">
-                    <span className="font-extrabold text-xs text-slate-900">Apple Pay</span>
-                    <span className="px-1.5 py-0.2 bg-black text-white text-[8px] font-black rounded uppercase">Fast 1-Tap</span>
-                  </div>
-                  <span className="text-[10px] text-slate-500 font-medium">Default Wallet • Touch / Face ID</span>
-                </div>
-              </div>
-              <div className={`w-5 h-5 rounded-full border flex items-center justify-center ${selectedPayment === 'apple_pay' ? 'border-[#fcd502] bg-[#fcd502] text-[#121212]' : 'border-slate-300'
-                }`}>
-                {selectedPayment === 'apple_pay' && <Check className="w-3.5 h-3.5 stroke-[3]" />}
-              </div>
-            </button>
-
-            {/* Google Pay */}
-            <button
-              type="button"
-              onClick={() => setSelectedPayment('gpay')}
-              className={`w-full p-3.5 rounded-2xl border flex items-center justify-between transition-all cursor-pointer ${selectedPayment === 'gpay'
-                  ? 'border-[#fcd502] bg-lime-500/10 shadow-md ring-1 ring-[#fcd502]'
-                  : 'border-slate-200/80 hover:bg-slate-50'
-                }`}
-            >
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-white border border-slate-200 flex items-center justify-center shadow-sm">
-                  <span className="font-black text-xs tracking-tight">
-                    <span className="text-blue-600">G</span>
-                    <span className="text-slate-700">Pay</span>
-                  </span>
-                </div>
-                <div className="text-left">
-                  <span className="font-extrabold text-xs text-slate-900 block">Google Pay</span>
-                  <span className="text-[10px] text-slate-500 font-medium">Linked bank account or cards</span>
-                </div>
-              </div>
-              <div className={`w-5 h-5 rounded-full border flex items-center justify-center ${selectedPayment === 'gpay' ? 'border-[#fcd502] bg-[#fcd502] text-[#121212]' : 'border-slate-300'
-                }`}>
-                {selectedPayment === 'gpay' && <Check className="w-3.5 h-3.5 stroke-[3]" />}
-              </div>
-            </button>
-
-            {/* Credit / Debit Cards */}
-            <button
-              type="button"
-              onClick={() => setSelectedPayment('card')}
-              className={`w-full p-3.5 rounded-2xl border flex items-center justify-between transition-all cursor-pointer ${selectedPayment === 'card'
-                  ? 'border-[#fcd502] bg-lime-500/10 shadow-md ring-1 ring-[#fcd502]'
-                  : 'border-slate-200/80 hover:bg-slate-50'
-                }`}
-            >
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-slate-900 flex items-center justify-center text-white shadow-sm">
-                  <CreditCard className="w-5 h-5 text-[#fcd502]" />
-                </div>
-                <div className="text-left">
-                  <div className="flex items-center gap-1.5">
-                    <span className="font-extrabold text-xs text-slate-900">Visa / Mastercard</span>
-                    <span className="px-1.5 py-0.2 bg-blue-100 text-blue-800 text-[8px] font-black rounded uppercase">•••• 4242</span>
-                  </div>
-                  <span className="text-[10px] text-slate-500 font-medium">Razorpay 256-Bit SSL Secured</span>
-                </div>
-              </div>
-              <div className={`w-5 h-5 rounded-full border flex items-center justify-center ${selectedPayment === 'card' ? 'border-[#fcd502] bg-[#fcd502] text-[#121212]' : 'border-slate-300'
-                }`}>
-                {selectedPayment === 'card' && <Check className="w-3.5 h-3.5 stroke-[3]" />}
-              </div>
-            </button>
-
-            {/* UPI / QR Code Instant */}
-            <button
-              type="button"
-              onClick={() => setSelectedPayment('upi')}
-              className={`w-full p-3.5 rounded-2xl border flex items-center justify-between transition-all cursor-pointer ${selectedPayment === 'upi'
-                  ? 'border-[#fcd502] bg-lime-500/10 shadow-md ring-1 ring-[#fcd502]'
-                  : 'border-slate-200/80 hover:bg-slate-50'
-                }`}
-            >
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-purple-600 flex items-center justify-center text-white shadow-sm">
-                  <QrCode className="w-5 h-5" />
-                </div>
-                <div className="text-left">
-                  <span className="font-extrabold text-xs text-slate-900 block">UPI / QR Code</span>
-                  <span className="text-[10px] text-slate-500 font-medium">GPay, PhonePe, Paytm, BHIM UPI</span>
-                </div>
-              </div>
-              <div className={`w-5 h-5 rounded-full border flex items-center justify-center ${selectedPayment === 'upi' ? 'border-[#fcd502] bg-[#fcd502] text-[#121212]' : 'border-slate-300'
-                }`}>
-                {selectedPayment === 'upi' && <Check className="w-3.5 h-3.5 stroke-[3]" />}
-              </div>
-            </button>
-          </div>
         </div>
 
       </div>

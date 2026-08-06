@@ -1,18 +1,27 @@
-import React, { useState, useEffect } from 'react';
-import { 
-  Phone, 
-  MessageSquare, 
-  ShieldAlert, 
-  Star, 
-  Car, 
-  Clock, 
+import React, { useState, useEffect, useRef } from 'react';
+import {
+  Phone,
+  MessageSquare,
+  ShieldAlert,
+  Star,
+  Car,
+  Clock,
   CheckCircle2,
   ChevronDown,
   Navigation,
-  MapPin
+  MapPin,
+  Wifi,
+  WifiOff,
+  Radio,
 } from 'lucide-react';
 import type { DriverProfile, Booking } from '../types';
 import { FEATURED_DRIVER } from '../data/mockData';
+import { LeafletMap } from '../components/LeafletMap';
+import type { LatLng } from '../components/LeafletMap';
+import { bridgeListen } from '../lib/bridge';
+import type { DriverLocationPayload } from '../lib/bridge';
+import { startTraccarPolling, isTraccarConfigured } from '../lib/traccar';
+import { fetchRoute } from '../lib/routing';
 
 interface LiveTrackingViewProps {
   booking?: Booking | null;
@@ -20,68 +29,146 @@ interface LiveTrackingViewProps {
   onCancelRide?: () => void;
 }
 
+// Default coordinates: Connaught Place, New Delhi & DEL Airport
+const DEFAULT_PICKUP: LatLng = { lat: 28.6315, lng: 77.2167 };
+const DEFAULT_DEST: LatLng = { lat: 28.5562, lng: 77.1000 };
+
 export const LiveTrackingView: React.FC<LiveTrackingViewProps> = ({
   booking,
   onOpenDriverProfile,
   onCancelRide,
 }) => {
   const driver = booking?.driver || FEATURED_DRIVER;
-  const [_driverLocation, setDriverLocation] = useState({ lat: 34.0736, lng: -118.4004 });
-  const [etaMins] = useState(11);
+
+  const [driverLocation, setDriverLocation] = useState<LatLng | undefined>(undefined);
+  const [driverHeading, setDriverHeading] = useState<number | undefined>(45);
+  const [isLiveTracking, setIsLiveTracking] = useState(false);
+  const [trackingSource, setTrackingSource] = useState<'traccar' | 'bridge' | 'simulated'>('simulated');
+  const [lastSeen, setLastSeen] = useState<Date | null>(null);
+  const [etaMins, setEtaMins] = useState(11);
   const [isSOSActive, setIsSOSActive] = useState(false);
   const [showDetailsSheet, setShowDetailsSheet] = useState(false);
+  const [routeGeometry, setRouteGeometry] = useState<[number, number][] | undefined>(undefined);
+  const etaTimerRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
-  // Simulated live movement animation
+  // Pickup and destination LatLng
+  const pickupLatLng: LatLng = (booking as any)?.pickupLatLng || DEFAULT_PICKUP;
+  const destLatLng: LatLng = (booking as any)?.destinationLatLng || DEFAULT_DEST;
+
+  // Fetch OSRM route line
   useEffect(() => {
-    const interval = setInterval(() => {
-      setDriverLocation((prev) => ({
-        lat: prev.lat + (Math.random() - 0.5) * 0.0004,
-        lng: prev.lng + (Math.random() - 0.5) * 0.0004,
-      }));
+    fetchRoute(pickupLatLng, destLatLng).then(r => {
+      if (r?.geometry) setRouteGeometry(r.geometry);
+    });
+  }, [pickupLatLng.lat, pickupLatLng.lng, destLatLng.lat, destLatLng.lng]);
+
+  // 1. Traccar Polling (if configured)
+  useEffect(() => {
+    if (!isTraccarConfigured()) return;
+    const cleanup = startTraccarPolling((pos) => {
+      setDriverLocation({ lat: pos.lat, lng: pos.lng });
+      setDriverHeading(pos.heading);
+      setIsLiveTracking(true);
+      setTrackingSource('traccar');
+      setLastSeen(new Date());
     }, 3000);
-    return () => clearInterval(interval);
+    return cleanup;
   }, []);
 
-  return (
-    <div className="relative w-full h-[calc(100vh-2rem)] min-h-[620px] rounded-[32px] overflow-hidden shadow-2xl border border-slate-200/80 bg-slate-900 animate-fade-in">
-      {/* Interactive Vector Map Overlay */}
-      <div className="absolute inset-0 z-0 animate-drop-up stagger-1">
-        <iframe
-          title="Live Chauffeur Tracking Map"
-          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d13221.144815417646!2d-118.41164998782352!3d34.06965022067711!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x80c2bc04d6d147ab%3A0xd6c7c379fd081ed1!2sBeverly%20Hills%2C%20CA!5e0!3m2!1sen!2sus!4v1700000000000!5m2!1sen!2sus"
-          className="w-full h-full border-0 pointer-events-auto"
-          style={{ filter: 'invert(100%) hue-rotate(180deg) brightness(85%) contrast(125%) saturate(120%)' }}
-          loading="lazy"
-        />
+  // 2. BroadcastChannel bridge listener (real local GPS from Driver App)
+  useEffect(() => {
+    const cleanup = bridgeListen((msg) => {
+      if (msg.sentFrom !== 'driver-app') return;
 
-        {/* Live Animated Driver Pulse Marker on Map */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 flex flex-col items-center pointer-events-none">
-          <div className="relative flex items-center justify-center">
-            <span className="animate-ping absolute inline-flex h-12 w-12 rounded-full bg-[#fcd502] opacity-75"></span>
-            <div className="w-10 h-10 rounded-2xl bg-[#121212] text-[#fcd502] flex items-center justify-center border-2 border-white shadow-2xl">
-              <Car className="w-5 h-5 text-[#fcd502]" />
-            </div>
-          </div>
-          <div className="mt-1.5 px-3 py-1 rounded-full bg-[#121212]/90 text-white text-[10px] font-black backdrop-blur-md shadow-lg border border-white/20 whitespace-nowrap flex items-center gap-1.5">
-            <span className="w-1.5 h-1.5 rounded-full bg-[#fcd502] animate-pulse" />
-            <span>{driver.name.split(' ')[0]} • En Route</span>
-          </div>
-        </div>
+      if (msg.type === 'DRIVER_LOCATION') {
+        const loc = msg.payload as DriverLocationPayload;
+        setDriverLocation({ lat: loc.lat, lng: loc.lng });
+        if (loc.heading !== undefined) setDriverHeading(loc.heading);
+        setIsLiveTracking(true);
+        setTrackingSource('bridge');
+        setLastSeen(new Date());
+      }
+
+      if (msg.type === 'TRIP_STARTED') {
+        setIsLiveTracking(true);
+        if (etaTimerRef.current) clearInterval(etaTimerRef.current);
+        etaTimerRef.current = setInterval(() => {
+          setEtaMins(prev => Math.max(0, prev - 1));
+        }, 60_000);
+      }
+
+      if (msg.type === 'TRIP_COMPLETED') {
+        setIsLiveTracking(false);
+        if (etaTimerRef.current) clearInterval(etaTimerRef.current);
+        setEtaMins(0);
+      }
+    });
+    return () => {
+      cleanup();
+      if (etaTimerRef.current) clearInterval(etaTimerRef.current);
+    };
+  }, []);
+
+  // Fallback: smooth movement simulation along pickup path when no active GPS feed
+  useEffect(() => {
+    if (isLiveTracking) return;
+    let step = 0;
+    const startLat = pickupLatLng.lat - 0.005;
+    const startLng = pickupLatLng.lng - 0.005;
+    const interval = setInterval(() => {
+      step++;
+      setDriverLocation({
+        lat: startLat + step * 0.0003,
+        lng: startLng + step * 0.0003,
+      });
+      setDriverHeading(45);
+    }, 2500);
+    return () => clearInterval(interval);
+  }, [isLiveTracking, pickupLatLng.lat, pickupLatLng.lng]);
+
+  const mapCenter = driverLocation ?? pickupLatLng;
+
+  return (
+    <div className="relative w-full h-full min-h-[540px] overflow-hidden bg-slate-900 animate-fade-in">
+
+      {/* ── LEAFLET MAP (full background) ── */}
+      <div className="absolute inset-0 z-0">
+        <LeafletMap
+          center={mapCenter}
+          zoom={14}
+          className="w-full h-full"
+          driverLocation={driverLocation}
+          driverHeading={driverHeading}
+          pickup={pickupLatLng}
+          destination={destLatLng}
+          pickupLabel={booking?.pickupLocation || 'Pickup'}
+          destinationLabel={booking?.destinationLocation || 'Destination'}
+          routeGeometry={routeGeometry}
+          darkMode={true}
+        />
       </div>
 
-      {/* Top Floating Action Bar */}
-      <div className="absolute top-[max(env(safe-area-inset-top,54px),54px)] left-3.5 right-3.5 z-20 flex items-center justify-between pointer-events-auto animate-drop-up stagger-2">
-        <div className="px-3 py-1.5 rounded-full bg-white/90 backdrop-blur-md border border-slate-200 shadow-md flex items-center gap-1.5 text-[10px] font-extrabold text-slate-800">
-          <span className="w-2 h-2 rounded-full bg-[#fcd502] animate-pulse"></span>
-          <span>Live Tracking Active</span>
+      {/* ── TOP STATUS BAR ── */}
+      <div className="absolute top-3 left-3.5 right-3.5 z-20 flex items-center justify-between pointer-events-auto">
+        {/* Live / Simulated indicator */}
+        <div className={`px-3 py-1.5 rounded-full backdrop-blur-md border shadow-md flex items-center gap-1.5 text-[10px] font-extrabold ${
+          isLiveTracking
+            ? 'bg-emerald-900/80 border-emerald-700 text-emerald-300'
+            : 'bg-white/90 border-slate-200 text-slate-800'
+        }`}>
+          {isLiveTracking ? (
+            <><Wifi className="w-3 h-3" /><span>{trackingSource === 'traccar' ? 'Traccar GPS Live' : 'Bridge GPS Live'}</span><span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" /></>
+          ) : (
+            <><WifiOff className="w-3 h-3 text-slate-400" /><span>Simulated GPS Tracking</span></>
+          )}
         </div>
 
-        {/* Emergency SOS Button */}
+        {/* SOS Button */}
         <button
           type="button"
           onClick={() => {
             setIsSOSActive(!isSOSActive);
-            if (!isSOSActive) alert("Emergency SOS broadcasted to RIDINGO Safety Team!");
+            if (!isSOSActive) alert('Emergency SOS broadcasted to RIDINGO Safety Team!');
           }}
           className={`px-3 py-1.5 rounded-full font-black text-[10px] flex items-center gap-1 shadow-md transition-all cursor-pointer ${
             isSOSActive
@@ -94,18 +181,26 @@ export const LiveTrackingView: React.FC<LiveTrackingViewProps> = ({
         </button>
       </div>
 
-      {/* Bottom Minimal & User-Friendly Floating Card */}
-      <div className="absolute bottom-28 left-3.5 right-3.5 z-20 pointer-events-auto animate-drop-up stagger-3">
+      {/* ── BOTTOM FLOATING DRIVER CARD ── */}
+      <div className="absolute bottom-28 left-3.5 right-3.5 z-20 pointer-events-auto">
         <div className="bg-white rounded-[28px] p-4 shadow-2xl border border-slate-200/90 space-y-3">
-          {/* Arrival Status & ETA */}
+
+          {/* ETA & Status */}
           <div className="flex items-center justify-between border-b border-slate-100 pb-3">
             <div>
-              <span className="text-[10px] font-extrabold uppercase tracking-widest text-[#a18200]">Estimated Arrival</span>
+              <span className="text-[10px] font-extrabold uppercase tracking-widest text-[#a18200]">
+                {isLiveTracking ? 'Driver En Route' : 'Estimated Arrival'}
+              </span>
               <h3 className="text-xl font-black text-slate-900 flex items-center gap-1.5 mt-0.5">
-                <Clock className="w-4.5 h-4.5 text-[#fcd502] fill-[#fcd502]/25 stroke-[2]" /> {etaMins} Mins
+                <Clock className="w-4 h-4 text-[#fcd502] fill-[#fcd502]/25 stroke-[2]" />
+                {etaMins > 0 ? `${etaMins} Mins` : 'Arriving Now'}
               </h3>
+              {lastSeen && (
+                <p className="text-[10px] text-emerald-600 font-bold mt-0.5">
+                  GPS updated {Math.round((Date.now() - lastSeen.getTime()) / 1000)}s ago
+                </p>
+              )}
             </div>
-
             <div className="text-right">
               <span className="px-3 py-1 rounded-full bg-[#121212] text-[#fcd502] text-[10px] font-black uppercase tracking-wider shadow-sm">
                 {booking ? booking.vehicle.name : 'Executive Sedan'}
@@ -114,7 +209,7 @@ export const LiveTrackingView: React.FC<LiveTrackingViewProps> = ({
             </div>
           </div>
 
-          {/* Chauffeur Profile Card */}
+          {/* Driver Profile */}
           <div className="flex items-center justify-between gap-3">
             <div
               onClick={() => onOpenDriverProfile(driver)}
@@ -126,11 +221,8 @@ export const LiveTrackingView: React.FC<LiveTrackingViewProps> = ({
                   alt={driver.name}
                   className="w-11 h-11 rounded-2xl object-cover border border-slate-100 shadow-md group-hover:scale-105 transition-transform"
                 />
-                <span className="absolute -bottom-1 -right-1 w-4 h-4 rounded-full bg-[#fcd502] text-[#121212] flex items-center justify-center text-[8px] font-black shadow-sm">
-                  ✓
-                </span>
+                <span className="absolute -bottom-1 -right-1 w-4 h-4 rounded-full bg-[#fcd502] text-[#121212] flex items-center justify-center text-[8px] font-black shadow-sm">✓</span>
               </div>
-
               <div className="min-w-0 flex-1">
                 <h4 className="font-extrabold text-sm text-slate-900 group-hover:text-[#a18200] transition-colors truncate leading-snug">
                   {driver.name}
@@ -145,7 +237,7 @@ export const LiveTrackingView: React.FC<LiveTrackingViewProps> = ({
               </div>
             </div>
 
-            {/* Non-Overlapping Compact Call & Chat Action Buttons */}
+            {/* Call & Chat */}
             <div className="flex items-center gap-1.5 flex-shrink-0">
               <a
                 href={`tel:${driver.phone}`}
@@ -165,12 +257,11 @@ export const LiveTrackingView: React.FC<LiveTrackingViewProps> = ({
             </div>
           </div>
 
-          {/* Minimal Collapsible Trip Details Toggle */}
+          {/* Trip Details Toggle */}
           <div className="pt-2 border-t border-slate-100 flex items-center justify-between text-[11px] font-extrabold text-slate-700">
             <span className="flex items-center gap-1 text-[#a18200]">
               <CheckCircle2 className="w-3.5 h-3.5 text-[#fcd502] fill-[#fcd502]/25 stroke-[2]" /> Suit Uniform Driver
             </span>
-
             <button
               type="button"
               onClick={() => setShowDetailsSheet(!showDetailsSheet)}
@@ -191,7 +282,6 @@ export const LiveTrackingView: React.FC<LiveTrackingViewProps> = ({
                   <p className="font-extrabold text-slate-800 truncate">{booking?.pickupLocation || '742 Evergreen Terrace, Beverly Hills'}</p>
                 </div>
               </div>
-
               <div className="flex items-start gap-2">
                 <MapPin className="w-3.5 h-3.5 text-rose-500 mt-0.5 flex-shrink-0" />
                 <div className="min-w-0">
@@ -199,7 +289,6 @@ export const LiveTrackingView: React.FC<LiveTrackingViewProps> = ({
                   <p className="font-extrabold text-slate-800 truncate">{booking?.destinationLocation || 'LAX Airport Executive Terminal'}</p>
                 </div>
               </div>
-
               {onCancelRide && (
                 <button
                   type="button"
