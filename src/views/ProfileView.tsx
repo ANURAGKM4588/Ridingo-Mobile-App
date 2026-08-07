@@ -57,10 +57,15 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
   const firstName = userName ? userName.trim().split(' ')[0] : 'Alexander';
 
   return (
-    <div className="w-full h-full overflow-y-auto bg-[#FAFAFA] animate-fade-in p-4 pt-[max(env(safe-area-inset-top,72px),72px)] pb-36 space-y-4 scrollbar-none">
-      {/* Premium Profile Header Card */}
-      <div className="rounded-[32px] p-5 text-slate-900 bg-gradient-to-b from-white via-white to-slate-50 border border-slate-200/90 shadow-lg relative overflow-hidden animate-drop-up stagger-1">
-        <div className="absolute top-0 right-0 w-32 h-32 bg-[#fcd502]/10 rounded-full blur-2xl pointer-events-none" />
+    <div className="flex flex-col h-full w-full bg-[#FAFAFA] overflow-hidden">
+      {/* ── Solid White Camera Notch & Dynamic Island Mask (No text/content) ── */}
+      <div className="shrink-0 sticky top-0 z-50 w-full pt-[max(env(safe-area-inset-top),44px)] bg-white pointer-events-none" />
+
+      {/* ── Scrollable Profile Content ── */}
+      <div className="flex-1 overflow-y-auto px-4 py-4 pb-36 space-y-4 scrollbar-none animate-fade-in">
+        {/* Premium Profile Header Card */}
+        <div className="rounded-[32px] p-5 text-slate-900 bg-gradient-to-b from-white via-white to-slate-50 border border-slate-200/90 shadow-lg relative overflow-hidden animate-drop-up stagger-1">
+          <div className="absolute top-0 right-0 w-32 h-32 bg-[#fcd502]/10 rounded-full blur-2xl pointer-events-none" />
 
         <div className="flex items-center gap-4 relative z-10">
           <div className="relative flex-shrink-0">
@@ -248,6 +253,7 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
           </div>
         </div>
       )}
+      </div>
     </div>
   );
 };

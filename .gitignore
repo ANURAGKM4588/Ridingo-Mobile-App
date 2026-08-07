@@ -25,3 +25,12 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Android Gradle caches
+android/.gradle/
+android/.gradle-cache/
+android/.gradle-user-home/
+android/app/build/
+android/build/
+*.log
+
