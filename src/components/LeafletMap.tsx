@@ -1,4 +1,4 @@
-﻿/**
+/**
  * LeafletMap — Interactive map with Leaflet.js + OpenStreetMap + OSRM route display
  * 100% free, no API key required.
  */
@@ -27,27 +27,36 @@ export interface LeafletMapProps {
   pickupLabel?: string;
   destinationLabel?: string;
   darkMode?: boolean;
+  isNavigationMode?: boolean;
   /** OSRM geometry: array of [lng, lat] pairs */
   routeGeometry?: [number, number][];
   onMapReady?: (map: L.Map) => void;
 }
 
-const makeDriverIcon = (heading?: number) => L.divIcon({
+const makeDriverIcon = (heading?: number, isNavMode?: boolean) => L.divIcon({
   className: '',
-  html: `<div style="
-    width:42px;height:42px;border-radius:50%;
-    background:#fcd502;display:flex;align-items:center;
-    justify-content:center;border:3px solid #fff;
-    box-shadow:0 4px 18px rgba(252,213,2,0.65);
-    transform:rotate(${heading ?? 0}deg);
-    transition:transform 0.5s ease;
-  ">
-    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="#121212">
-      <path d="M18.92 6.01C18.72 5.42 18.16 5 17.5 5h-11c-.66 0-1.21.42-1.42 1.01L3 12v8c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-1h12v1c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-8l-2.08-5.99zM6.5 16c-.83 0-1.5-.67-1.5-1.5S5.67 13 6.5 13s1.5.67 1.5 1.5S7.33 16 6.5 16zm11 0c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zM5 11l1.5-4.5h11L19 11H5z"/>
-    </svg>
+  html: `<div style="position:relative;display:flex;align-items:center;justify-content:center;">
+    ${isNavMode ? `<div style="
+      position:absolute;width:64px;height:64px;border-radius:50%;
+      background:rgba(252,213,2,0.25);border:2px solid rgba(252,213,2,0.6);
+      animation:ping 2s cubic-bezier(0,0,0.2,1) infinite;
+    "></div>` : ''}
+    <div style="
+      width:44px;height:44px;border-radius:50%;
+      background:#fcd502;display:flex;align-items:center;
+      justify-content:center;border:3px solid #fff;
+      box-shadow:0 4px 22px rgba(252,213,2,0.8);
+      transform:rotate(${heading ?? 0}deg);
+      transition:transform 0.5s ease;
+      position:relative;z-index:2;
+    ">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="#121212">
+        <path d="M18.92 6.01C18.72 5.42 18.16 5 17.5 5h-11c-.66 0-1.21.42-1.42 1.01L3 12v8c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-1h12v1c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-8l-2.08-5.99zM6.5 16c-.83 0-1.5-.67-1.5-1.5S5.67 13 6.5 13s1.5.67 1.5 1.5S7.33 16 6.5 16zm11 0c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zM5 11l1.5-4.5h11L19 11H5z"/>
+      </svg>
+    </div>
   </div>`,
-  iconSize: [42, 42],
-  iconAnchor: [21, 21],
+  iconSize: [44, 44],
+  iconAnchor: [22, 22],
 });
 
 const pickupIcon = L.divIcon({
@@ -86,6 +95,7 @@ export const LeafletMap: React.FC<LeafletMapProps> = ({
   pickupLabel = 'Pickup',
   destinationLabel = 'Destination',
   darkMode = true,
+  isNavigationMode = false,
   routeGeometry,
   onMapReady,
 }) => {
@@ -104,7 +114,7 @@ export const LeafletMap: React.FC<LeafletMapProps> = ({
 
     const map = L.map(containerRef.current, {
       center: [center.lat, center.lng],
-      zoom,
+      zoom: isNavigationMode ? 17 : zoom,
       zoomControl: false,
       attributionControl: true,
     });
@@ -121,6 +131,30 @@ export const LeafletMap: React.FC<LeafletMapProps> = ({
 
     return () => { map.remove(); mapRef.current = null; };
   }, []);
+
+  // ── Driver marker with heading rotation & Google Maps Navigation Auto-Follow ──
+  useEffect(() => {
+    const map = mapRef.current; if (!map || !driverLocation) return;
+    headingRef.current = driverHeading;
+
+    if (!driverMarkerRef.current) {
+      driverMarkerRef.current = L.marker(
+        [driverLocation.lat, driverLocation.lng],
+        { icon: makeDriverIcon(driverHeading, isNavigationMode), zIndexOffset: 1000 }
+      )
+        .bindTooltip('🚗 Your Chauffeur', { permanent: false })
+        .addTo(map);
+    } else {
+      driverMarkerRef.current.setLatLng([driverLocation.lat, driverLocation.lng]);
+      driverMarkerRef.current.setIcon(makeDriverIcon(driverHeading, isNavigationMode));
+    }
+
+    if (isNavigationMode) {
+      map.setView([driverLocation.lat, driverLocation.lng], 17, { animate: true });
+    } else {
+      map.panTo([driverLocation.lat, driverLocation.lng], { animate: true, duration: 0.8 });
+    }
+  }, [driverLocation?.lat, driverLocation?.lng, driverHeading, isNavigationMode]);
 
   // ── Pickup marker ──
   useEffect(() => {

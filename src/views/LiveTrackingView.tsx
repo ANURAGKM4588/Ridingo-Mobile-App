@@ -161,71 +161,102 @@ export const LiveTrackingView: React.FC<LiveTrackingViewProps> = ({
   return (
     <div className="relative w-full h-full min-h-screen flex flex-col overflow-hidden bg-slate-900 animate-fade-in">
 
-      {/* ── SOLID WHITE CAMERA NOTCH & DYNAMIC ISLAND TOP MASK ── */}
-      <div className="shrink-0 sticky top-0 z-30 w-full px-4 pt-[max(env(safe-area-inset-top),44px)] pb-3 bg-white/95 backdrop-blur-md border-b border-slate-200/80 shadow-2xs flex items-center justify-between pointer-events-auto">
-        
-        {/* Dynamic Status Pill */}
-        <div className={`px-3 py-1 rounded-full backdrop-blur-md border flex items-center gap-1.5 text-[10px] font-black shadow-2xs ${
-          trackingStatus === 'idle'
-            ? 'bg-slate-100 border-slate-200 text-slate-700'
-            : trackingStatus === 'pending'
-            ? 'bg-amber-50 border-amber-300 text-amber-900'
-            : trackingStatus === 'accepted'
-            ? 'bg-blue-50 border-blue-300 text-blue-900'
-            : 'bg-emerald-50 border-emerald-300 text-emerald-900'
-        }`}>
-          {trackingStatus === 'idle' && (
-            <>
-              <Clock className="w-3 h-3 text-slate-400" />
-              <span>Chauffeur Service Ready</span>
-            </>
-          )}
+      {/* ── GOOGLE MAPS NAVIGATION TURN-BY-TURN GUIDANCE BANNER (Active in Tracking Mode) ── */}
+      {trackingStatus === 'tracking' ? (
+        <div className="shrink-0 sticky top-0 z-40 w-full px-4 pt-[max(env(safe-area-inset-top),44px)] pb-3 bg-gradient-to-r from-emerald-950 via-slate-900 to-zinc-900 border-b border-emerald-500/30 shadow-2xl text-white pointer-events-auto flex items-center justify-between animate-drop-up">
+          <div className="flex items-center gap-3 min-w-0">
+            <div className="w-10 h-10 rounded-2xl bg-[#fcd502] text-[#121212] flex items-center justify-center font-black text-xl shadow-lg flex-shrink-0 animate-pulse-subtle">
+              ⬆
+            </div>
+            <div className="min-w-0">
+              <span className="text-[10px] font-black text-[#fcd502] uppercase tracking-widest block truncate">
+                In 200m • Head North-East on Grand Ave
+              </span>
+              <h4 className="text-xs sm:text-sm font-black text-white flex items-center gap-2 mt-0.5 truncate">
+                <span>{etaMins > 0 ? `${etaMins} Mins` : 'Arriving Now'}</span>
+                <span className="text-slate-400">•</span>
+                <span className="text-emerald-400 font-mono text-[11px]">48 km/h</span>
+              </h4>
+            </div>
+          </div>
 
-          {trackingStatus === 'pending' && (
-            <>
-              <Loader2 className="w-3 h-3 text-amber-600 animate-spin" />
-              <span>Matching Chauffeur...</span>
-              <span className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse" />
-            </>
-          )}
-
-          {trackingStatus === 'accepted' && (
-            <>
-              <CheckCircle2 className="w-3 h-3 text-blue-600" />
-              <span>Chauffeur Confirmed</span>
-            </>
-          )}
-
-          {trackingStatus === 'tracking' && (
-            <>
-              <Wifi className="w-3 h-3 text-emerald-600" />
-              <span>{trackingSource === 'traccar' ? 'Traccar GPS Live' : 'Driver GPS Live'}</span>
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-            </>
-          )}
+          <div className="flex items-center gap-1.5 flex-shrink-0">
+            {booking && (
+              <button
+                type="button"
+                onClick={() => {
+                  setIsSOSActive(!isSOSActive);
+                  if (!isSOSActive) alert('Emergency SOS broadcasted to RIDINGO Safety Desk!');
+                }}
+                className={`px-2.5 py-1 rounded-full font-black text-[10px] flex items-center gap-1 shadow-xs transition-all cursor-pointer ${
+                  isSOSActive
+                    ? 'bg-rose-600 text-white animate-bounce'
+                    : 'bg-rose-50/20 text-rose-300 border border-rose-500/40'
+                }`}
+              >
+                <ShieldAlert className="w-3.5 h-3.5" />
+                <span>{isSOSActive ? 'SOS SENT' : 'SOS'}</span>
+              </button>
+            )}
+          </div>
         </div>
+      ) : (
+        /* ── SOLID WHITE CAMERA NOTCH & DYNAMIC ISLAND TOP MASK ── */
+        <div className="shrink-0 sticky top-0 z-30 w-full px-4 pt-[max(env(safe-area-inset-top),44px)] pb-3 bg-white/95 backdrop-blur-md border-b border-slate-200/80 shadow-2xs flex items-center justify-between pointer-events-auto">
+          
+          {/* Dynamic Status Pill */}
+          <div className={`px-3 py-1 rounded-full backdrop-blur-md border flex items-center gap-1.5 text-[10px] font-black shadow-2xs ${
+            trackingStatus === 'idle'
+              ? 'bg-slate-100 border-slate-200 text-slate-700'
+              : trackingStatus === 'pending'
+              ? 'bg-amber-50 border-amber-300 text-amber-900'
+              : 'bg-blue-50 border-blue-300 text-blue-900'
+          }`}>
+            {trackingStatus === 'idle' && (
+              <>
+                <Clock className="w-3 h-3 text-slate-400" />
+                <span>Chauffeur Service Ready</span>
+              </>
+            )}
 
-        {/* SOS Emergency Button or Demo Switcher */}
-        <div className="flex items-center gap-1.5">
-          {booking && (
-            <button
-              type="button"
-              onClick={() => {
-                setIsSOSActive(!isSOSActive);
-                if (!isSOSActive) alert('Emergency SOS broadcasted to RIDINGO Safety Desk!');
-              }}
-              className={`px-2.5 py-1 rounded-full font-black text-[10px] flex items-center gap-1 shadow-xs transition-all cursor-pointer ${
-                isSOSActive
-                  ? 'bg-rose-600 text-white animate-bounce'
-                  : 'bg-rose-50 text-rose-600 hover:bg-rose-100 border border-rose-200'
-              }`}
-            >
-              <ShieldAlert className="w-3.5 h-3.5" />
-              <span>{isSOSActive ? 'SOS SENT' : 'SOS'}</span>
-            </button>
-          )}
+            {trackingStatus === 'pending' && (
+              <>
+                <Loader2 className="w-3 h-3 text-amber-600 animate-spin" />
+                <span>Matching Chauffeur...</span>
+                <span className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse" />
+              </>
+            )}
+
+            {trackingStatus === 'accepted' && (
+              <>
+                <CheckCircle2 className="w-3 h-3 text-blue-600" />
+                <span>Chauffeur Confirmed</span>
+              </>
+            )}
+          </div>
+
+          {/* SOS Emergency Button */}
+          <div className="flex items-center gap-1.5">
+            {booking && (
+              <button
+                type="button"
+                onClick={() => {
+                  setIsSOSActive(!isSOSActive);
+                  if (!isSOSActive) alert('Emergency SOS broadcasted to RIDINGO Safety Desk!');
+                }}
+                className={`px-2.5 py-1 rounded-full font-black text-[10px] flex items-center gap-1 shadow-xs transition-all cursor-pointer ${
+                  isSOSActive
+                    ? 'bg-rose-600 text-white animate-bounce'
+                    : 'bg-rose-50 text-rose-600 hover:bg-rose-100 border border-rose-200'
+                }`}
+              >
+                <ShieldAlert className="w-3.5 h-3.5" />
+                <span>{isSOSActive ? 'SOS SENT' : 'SOS'}</span>
+              </button>
+            )}
+          </div>
         </div>
-      </div>
+      )}
 
       {/* ── LEAFLET MAP (Middle Background) ── */}
       <div className="absolute inset-0 z-0">
@@ -241,6 +272,7 @@ export const LiveTrackingView: React.FC<LiveTrackingViewProps> = ({
           destinationLabel={booking?.destinationLocation || 'Destination'}
           routeGeometry={routeGeometry}
           darkMode={true}
+          isNavigationMode={trackingStatus === 'tracking'}
         />
       </div>
 
