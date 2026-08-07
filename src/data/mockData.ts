@@ -223,20 +223,20 @@ export const MOCK_BOOKINGS: Booking[] = [
     bookingNumber: 'RDG-2026-8831',
     serviceId: 'hourly-driver',
     serviceTitle: 'Hourly Driver (4 Hours)',
-    pickupLocation: '742 Evergreen Terrace, Beverly Hills',
-    destinationLocation: 'Financial District & Grand Hyatt',
+    pickupLocation: 'Cochin International Airport (COK), Nedumbassery',
+    destinationLocation: 'Marine Drive & MG Road, Ernakulam, Kerala',
     date: 'Today, 2:30 PM',
     time: '2:30 PM',
     durationHours: 4,
     vehicle: MOCK_VEHICLES[0], // Sedan
     driver: FEATURED_DRIVER,
     driverPreferences: {
-      language: 'English',
+      language: 'Malayalam, English',
       uniformRequired: true,
       nonSmokingRequired: true,
       seniorDriverOnly: true,
       femaleDriverPreferred: false,
-      specialInstructions: 'Please pull car around front driveway'
+      specialInstructions: 'Please pull car around VIP arrival exit'
     },
     status: 'in-progress',
     priceTotal: 68.00,
@@ -245,7 +245,7 @@ export const MOCK_BOOKINGS: Booking[] = [
       safetyInsurance: 3.50,
       serviceFee: 4.50
     },
-    paymentMethod: 'Apple Pay',
+    paymentMethod: 'UPI / Razorpay',
     createdDate: '2026-08-04'
   },
   {
@@ -253,14 +253,14 @@ export const MOCK_BOOKINGS: Booking[] = [
     bookingNumber: 'RDG-2026-7712',
     serviceId: 'airport-pickup',
     serviceTitle: 'Airport Pickup Chauffeur',
-    pickupLocation: 'Terminal 4, LAX International Airport',
-    destinationLocation: 'Bel Air Estates Residence',
+    pickupLocation: 'Terminal 1, Cochin International Airport (COK)',
+    destinationLocation: 'Fort Kochi Heritage Beach, Kerala',
     date: 'Tomorrow, 08:15 AM',
     time: '08:15 AM',
     durationHours: 2,
     vehicle: MOCK_VEHICLES[1], // SUV
     driverPreferences: {
-      language: 'English',
+      language: 'Malayalam, English',
       uniformRequired: true,
       nonSmokingRequired: true,
       seniorDriverOnly: false,
@@ -281,8 +281,8 @@ export const MOCK_BOOKINGS: Booking[] = [
     bookingNumber: 'RDG-2026-6490',
     serviceId: 'night-party',
     serviceTitle: 'Night Party Designated Driver',
-    pickupLocation: 'SoHo House Downtown',
-    destinationLocation: '742 Evergreen Terrace',
+    pickupLocation: 'Lulu Mall, Edapally, Kochi, Kerala',
+    destinationLocation: 'Infopark Phase 1, Kakkanad, Kochi',
     date: 'Aug 02, 2026',
     time: '11:45 PM',
     durationHours: 3,
