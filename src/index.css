@@ -133,3 +133,35 @@
 .stagger-4 { animation-delay: 0.26s; }
 .stagger-5 { animation-delay: 0.33s; }
 .stagger-6 { animation-delay: 0.40s; }
+
+/* Smooth Bottom-to-Top Sheet & Modal Slide-Up Animations */
+@keyframes slide-up-bottom {
+  0% {
+    opacity: 0;
+    transform: translateY(100%);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-slide-up-bottom {
+  animation: slide-up-bottom 0.45s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes sheet-spring-up {
+  0% {
+    transform: translateY(100%);
+  }
+  70% {
+    transform: translateY(-3px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+.animate-sheet-spring-up {
+  animation: sheet-spring-up 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+}

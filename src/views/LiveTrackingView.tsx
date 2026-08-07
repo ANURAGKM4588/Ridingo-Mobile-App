@@ -181,9 +181,9 @@ export const LiveTrackingView: React.FC<LiveTrackingViewProps> = ({
         />
       </div>
 
-      {/* ── FULL FRAME BOTTOM SHEET CARD (Flat uncurved bottom edges, rounded-t-[32px]) ── */}
-      <div className="absolute bottom-0 left-0 right-0 w-full z-20 pointer-events-auto">
-        <div className="w-full bg-white rounded-t-[32px] rounded-b-none px-5 pt-4 pb-28 sm:pb-32 shadow-[0_-15px_40px_rgba(0,0,0,0.14)] border-t border-slate-200/90 space-y-3">
+      {/* ── FULL FRAME BOTTOM SHEET CARD (Smooth bottom-to-top animation, Flat uncurved bottom edges) ── */}
+      <div className="absolute bottom-0 left-0 right-0 w-full z-20 pointer-events-auto animate-slide-up-bottom">
+        <div className="w-full bg-white rounded-t-[32px] rounded-b-none px-5 pt-4 pb-28 sm:pb-32 shadow-[0_-15px_40px_rgba(0,0,0,0.14)] border-t border-slate-200/90 space-y-3 transition-transform duration-500">
 
           {/* Drag Handle Indicator */}
           <div className="w-10 h-1 rounded-full bg-slate-300 mx-auto -mt-1 mb-2" />

@@ -16,8 +16,8 @@ export const DriverProfileModal: React.FC<DriverProfileModalProps> = ({
   if (!isOpen || !driver) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/65 backdrop-blur-md animate-fade-in pt-[max(env(safe-area-inset-top,44px),12px)] pb-[max(env(safe-area-inset-bottom,16px),12px)]">
-      <div className="bg-white text-[#0F172A] w-full max-w-lg rounded-[36px] overflow-hidden shadow-2xl border border-white flex flex-col h-full max-h-[92vh]">
+    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 bg-black/75 backdrop-blur-sm animate-fade-in">
+      <div className="bg-white text-[#0F172A] w-full max-w-lg rounded-t-[36px] sm:rounded-[36px] overflow-hidden shadow-2xl border border-slate-200 flex flex-col h-auto max-h-[88vh] animate-slide-up-bottom pb-[max(env(safe-area-inset-bottom,20px),20px)] sm:pb-6">
         {/* Header banner */}
         <div className="relative h-32 bg-gradient-to-r from-slate-900 via-zinc-900 to-[#121212] p-6 text-white flex items-start justify-between">
           <div className="flex items-center gap-2">
