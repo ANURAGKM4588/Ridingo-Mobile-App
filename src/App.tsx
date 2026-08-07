@@ -87,6 +87,27 @@ export function App() {
     setIsConfirmationOpen(true);
   };
 
+  const handleRepeatBooking = (historicBooking: Booking) => {
+    // Create direct repeat booking with all historic location and trip data
+    const repeated: Booking = {
+      ...historicBooking,
+      id: `repeat-${Date.now()}`,
+      bookingNumber: `RDG-${Math.floor(100000 + Math.random() * 900000)}`,
+      status: 'upcoming',
+      date: historicBooking.date || 'Today',
+      time: historicBooking.time || '14:30',
+    };
+
+    // Directly open Booking Confirmation Page with historic locations and details
+    setConfirmedBooking(repeated);
+    setActiveBooking(repeated);
+    setBookings((prev) => [repeated, ...prev.filter((b) => b.id !== repeated.id)]);
+    setIsBookingFlowOpen(false);
+    setIsReviewOpen(false);
+    setIsInvoiceOpen(false);
+    setIsConfirmationOpen(true);
+  };
+
   const handleOpenDriverProfile = (driver: DriverProfile) => {
     setDriverModalProfile(driver);
     setIsDriverModalOpen(true);
@@ -181,10 +202,7 @@ export function App() {
                       recentBookings={bookings}
                       recentBooking={bookings[0]}
                       onViewAllBookings={() => setActiveTab('bookings')}
-                      onRepeatBooking={(b) => {
-                        setSelectedVehicle(b.vehicle);
-                        setIsBookingFlowOpen(true);
-                      }}
+                      onRepeatBooking={handleRepeatBooking}
                       currentLanguage={currentLanguage}
                       currentRegion={currentRegion}
                     />
@@ -193,10 +211,7 @@ export function App() {
                   {activeTab === 'bookings' && (
                     <BookingsView
                       bookings={bookings}
-                      onRepeatBooking={(b) => {
-                        setSelectedVehicle(b.vehicle);
-                        setIsBookingFlowOpen(true);
-                      }}
+                      onRepeatBooking={handleRepeatBooking}
                       onOpenDriverProfile={handleOpenDriverProfile}
                       currentRegion={currentRegion}
                     />
