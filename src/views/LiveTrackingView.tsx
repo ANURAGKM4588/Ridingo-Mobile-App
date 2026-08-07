@@ -129,9 +129,42 @@ export const LiveTrackingView: React.FC<LiveTrackingViewProps> = ({
   const mapCenter = driverLocation ?? pickupLatLng;
 
   return (
-    <div className="relative w-full h-full min-h-[540px] overflow-hidden bg-slate-900 animate-fade-in">
+    <div className="relative w-full h-full min-h-screen flex flex-col overflow-hidden bg-slate-900 animate-fade-in">
 
-      {/* ── LEAFLET MAP (full background) ── */}
+      {/* ── SOLID WHITE CAMERA NOTCH & DYNAMIC ISLAND TOP MASK ── */}
+      <div className="shrink-0 sticky top-0 z-30 w-full px-4 pt-[max(env(safe-area-inset-top),44px)] pb-3 bg-white/95 backdrop-blur-md border-b border-slate-200/80 shadow-2xs flex items-center justify-between pointer-events-auto">
+        {/* Live / Simulated indicator */}
+        <div className={`px-3 py-1 rounded-full backdrop-blur-md border flex items-center gap-1.5 text-[10px] font-extrabold shadow-2xs ${
+          isLiveTracking
+            ? 'bg-emerald-50 border-emerald-300 text-emerald-800'
+            : 'bg-slate-100 border-slate-200 text-slate-800'
+        }`}>
+          {isLiveTracking ? (
+            <><Wifi className="w-3 h-3 text-emerald-600" /><span>{trackingSource === 'traccar' ? 'Traccar GPS Live' : 'Driver GPS Live'}</span><span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" /></>
+          ) : (
+            <><WifiOff className="w-3 h-3 text-slate-400" /><span>GPS Telemetry Active</span></>
+          )}
+        </div>
+
+        {/* SOS Emergency Button */}
+        <button
+          type="button"
+          onClick={() => {
+            setIsSOSActive(!isSOSActive);
+            if (!isSOSActive) alert('Emergency SOS broadcasted to RIDINGO Safety Team!');
+          }}
+          className={`px-3 py-1 rounded-full font-black text-[10px] flex items-center gap-1 shadow-xs transition-all cursor-pointer ${
+            isSOSActive
+              ? 'bg-rose-600 text-white animate-bounce'
+              : 'bg-rose-50 text-rose-600 hover:bg-rose-100 border border-rose-200'
+          }`}
+        >
+          <ShieldAlert className="w-3.5 h-3.5" />
+          <span>{isSOSActive ? 'SOS SENT' : 'SOS'}</span>
+        </button>
+      </div>
+
+      {/* ── LEAFLET MAP (middle background) ── */}
       <div className="absolute inset-0 z-0">
         <LeafletMap
           center={mapCenter}
@@ -148,47 +181,17 @@ export const LiveTrackingView: React.FC<LiveTrackingViewProps> = ({
         />
       </div>
 
-      {/* ── TOP STATUS BAR ── */}
-      <div className="absolute top-3 left-3.5 right-3.5 z-20 flex items-center justify-between pointer-events-auto">
-        {/* Live / Simulated indicator */}
-        <div className={`px-3 py-1.5 rounded-full backdrop-blur-md border shadow-md flex items-center gap-1.5 text-[10px] font-extrabold ${
-          isLiveTracking
-            ? 'bg-emerald-900/80 border-emerald-700 text-emerald-300'
-            : 'bg-white/90 border-slate-200 text-slate-800'
-        }`}>
-          {isLiveTracking ? (
-            <><Wifi className="w-3 h-3" /><span>{trackingSource === 'traccar' ? 'Traccar GPS Live' : 'Bridge GPS Live'}</span><span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" /></>
-          ) : (
-            <><WifiOff className="w-3 h-3 text-slate-400" /><span>Simulated GPS Tracking</span></>
-          )}
-        </div>
+      {/* ── FULL FRAME BOTTOM SHEET CARD (Flat uncurved bottom edges, rounded-t-[32px]) ── */}
+      <div className="absolute bottom-0 left-0 right-0 w-full z-20 pointer-events-auto">
+        <div className="w-full bg-white rounded-t-[32px] rounded-b-none px-5 pt-4 pb-28 sm:pb-32 shadow-[0_-15px_40px_rgba(0,0,0,0.14)] border-t border-slate-200/90 space-y-3">
 
-        {/* SOS Button */}
-        <button
-          type="button"
-          onClick={() => {
-            setIsSOSActive(!isSOSActive);
-            if (!isSOSActive) alert('Emergency SOS broadcasted to RIDINGO Safety Team!');
-          }}
-          className={`px-3 py-1.5 rounded-full font-black text-[10px] flex items-center gap-1 shadow-md transition-all cursor-pointer ${
-            isSOSActive
-              ? 'bg-rose-600 text-white animate-bounce'
-              : 'bg-white/90 text-rose-600 hover:bg-rose-50 border border-rose-200'
-          }`}
-        >
-          <ShieldAlert className="w-3.5 h-3.5" />
-          <span>{isSOSActive ? 'SOS BROADCASTED' : 'SOS'}</span>
-        </button>
-      </div>
+          {/* Drag Handle Indicator */}
+          <div className="w-10 h-1 rounded-full bg-slate-300 mx-auto -mt-1 mb-2" />
 
-      {/* ── BOTTOM FLOATING DRIVER CARD ── */}
-      <div className="absolute bottom-28 left-3.5 right-3.5 z-20 pointer-events-auto">
-        <div className="bg-white rounded-[28px] p-4 shadow-2xl border border-slate-200/90 space-y-3">
-
-          {/* ETA & Status */}
-          <div className="flex items-center justify-between border-b border-slate-100 pb-3">
+          {/* ETA & Confirmed Chauffeur Row */}
+          <div className="flex items-center justify-between border-b border-slate-100 pb-2.5">
             <div>
-              <span className="text-[10px] font-extrabold uppercase tracking-widest text-[#a18200]">
+              <span className="text-[10px] font-black uppercase tracking-widest text-[#a18200]">
                 {isLiveTracking ? 'Driver En Route' : 'Estimated Arrival'}
               </span>
               <h3 className="text-xl font-black text-slate-900 flex items-center gap-1.5 mt-0.5">
@@ -202,7 +205,7 @@ export const LiveTrackingView: React.FC<LiveTrackingViewProps> = ({
               )}
             </div>
             <div className="text-right">
-              <span className="px-3 py-1 rounded-full bg-[#121212] text-[#fcd502] text-[10px] font-black uppercase tracking-wider shadow-sm">
+              <span className="px-3 py-1 rounded-full bg-[#121212] text-[#fcd502] text-[10px] font-black uppercase tracking-wider shadow-xs">
                 {booking ? booking.vehicle.name : 'Executive Sedan'}
               </span>
               <p className="text-[10px] text-slate-400 font-bold mt-1">Confirmed Chauffeur</p>
@@ -221,10 +224,10 @@ export const LiveTrackingView: React.FC<LiveTrackingViewProps> = ({
                   alt={driver.name}
                   className="w-11 h-11 rounded-2xl object-cover border border-slate-100 shadow-md group-hover:scale-105 transition-transform"
                 />
-                <span className="absolute -bottom-1 -right-1 w-4 h-4 rounded-full bg-[#fcd502] text-[#121212] flex items-center justify-center text-[8px] font-black shadow-sm">✓</span>
+                <span className="absolute -bottom-1 -right-1 w-4 h-4 rounded-full bg-[#fcd502] text-[#121212] flex items-center justify-center text-[8px] font-black shadow-xs">✓</span>
               </div>
               <div className="min-w-0 flex-1">
-                <h4 className="font-extrabold text-sm text-slate-900 group-hover:text-[#a18200] transition-colors truncate leading-snug">
+                <h4 className="font-black text-sm text-slate-900 group-hover:text-[#a18200] transition-colors truncate leading-snug">
                   {driver.name}
                 </h4>
                 <div className="flex items-center gap-1 text-[11px] text-slate-500 font-bold mt-0.5 whitespace-nowrap truncate">
@@ -237,7 +240,7 @@ export const LiveTrackingView: React.FC<LiveTrackingViewProps> = ({
               </div>
             </div>
 
-            {/* Call & Chat */}
+            {/* Direct Call & Instant Chat */}
             <div className="flex items-center gap-1.5 flex-shrink-0">
               <a
                 href={`tel:${driver.phone}`}
@@ -249,7 +252,7 @@ export const LiveTrackingView: React.FC<LiveTrackingViewProps> = ({
               <button
                 type="button"
                 onClick={() => alert(`Opening encrypted instant chat with ${driver.name}`)}
-                className="w-9 h-9 rounded-xl bg-slate-100 text-slate-800 hover:bg-slate-200 flex items-center justify-center border border-slate-200 shadow-xs transition-all active:scale-95 cursor-pointer"
+                className="w-9 h-9 rounded-xl bg-slate-100 text-slate-800 hover:bg-slate-200 flex items-center justify-center border border-slate-200 shadow-2xs transition-all active:scale-95 cursor-pointer"
                 title="Chat Driver"
               >
                 <MessageSquare className="w-4 h-4 text-slate-700 fill-slate-700/20 stroke-[2]" />
@@ -260,7 +263,7 @@ export const LiveTrackingView: React.FC<LiveTrackingViewProps> = ({
           {/* Trip Details Toggle */}
           <div className="pt-2 border-t border-slate-100 flex items-center justify-between text-[11px] font-extrabold text-slate-700">
             <span className="flex items-center gap-1 text-[#a18200]">
-              <CheckCircle2 className="w-3.5 h-3.5 text-[#fcd502] fill-[#fcd502]/25 stroke-[2]" /> Suit Uniform Driver
+              <CheckCircle2 className="w-3.5 h-3.5 text-[#fcd502] fill-[#fcd502]/25 stroke-[2]" /> Suit Uniform Attire
             </span>
             <button
               type="button"
@@ -293,7 +296,7 @@ export const LiveTrackingView: React.FC<LiveTrackingViewProps> = ({
                 <button
                   type="button"
                   onClick={onCancelRide}
-                  className="w-full py-2 mt-1 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-600 font-black text-xs transition-colors cursor-pointer"
+                  className="w-full py-2.5 mt-1 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-600 font-black text-xs transition-colors cursor-pointer"
                 >
                   Cancel Ride
                 </button>

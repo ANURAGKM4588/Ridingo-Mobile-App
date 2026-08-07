@@ -144,7 +144,7 @@ export function App() {
 
         {/* Main Content Area based on Active Tab or Views */}
         {(() => {
-          const isFullView = isReviewOpen || isInvoiceOpen || isConfirmationOpen || isPaymentSettingsOpen || isSupportChatOpen || isLanguageSettingsOpen || activeTab === 'wallet' || activeTab === 'bookings' || activeTab === 'profile';
+          const isFullView = isReviewOpen || isInvoiceOpen || isConfirmationOpen || isPaymentSettingsOpen || isSupportChatOpen || isLanguageSettingsOpen || activeTab === 'wallet' || activeTab === 'bookings' || activeTab === 'profile' || activeTab === 'activity';
           // Home tab uses pt-0 — greeting handles its own top spacing.
           // Other tabs use pt-3.5 for standard content padding.
           const topPad = activeTab === 'home' ? 'pt-0' : 'pt-3.5';
