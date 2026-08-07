@@ -15,7 +15,6 @@ import { WalletView } from './views/WalletView';
 import { ProfileView } from './views/ProfileView';
 
 // Modals & Sub-screens
-import { BookingFlowModal } from './views/BookingFlowModal';
 import { BookingConfirmationView } from './views/BookingConfirmationView';
 import { BookingReviewScreen } from './views/BookingReviewScreen';
 import { InvoicePaymentScreen } from './views/InvoicePaymentScreen';
@@ -43,8 +42,6 @@ export function App() {
   });
 
   // View / Modal Flags
-  const [isBookingFlowOpen, setIsBookingFlowOpen] = useState<boolean>(false);
-  const [selectedServiceForFlow, setSelectedServiceForFlow] = useState<ServiceItem | null>(null);
   const [isConfirmationOpen, setIsConfirmationOpen] = useState<boolean>(false);
   const [confirmedBooking, setConfirmedBooking] = useState<Booking | null>(null);
   const [isNotificationsOpen, setIsNotificationsOpen] = useState<boolean>(false);
@@ -68,8 +65,21 @@ export function App() {
 
   // Handlers
   const handleSelectService = (service: ServiceItem) => {
-    setSelectedServiceForFlow(service);
-    setIsBookingFlowOpen(true);
+    const isAirport = service.title?.toLowerCase().includes('airport') || service.category === 'special';
+    const draftData = {
+      pickup: isAirport ? 'Airport Pickup Terminal' : '742 Evergreen Terrace, Beverly Hills',
+      destination: isAirport ? 'LAX Airport Terminal 4' : 'Financial District & Grand Hyatt',
+      date: new Date().toISOString().split('T')[0],
+      time: '14:30',
+      durationHours: 4,
+      vehicleId: selectedVehicle?.id || 'sedan',
+      serviceType: service.title || 'Hourly Driver',
+      tripCause: service.subtitle || 'Executive Chauffeur Transit',
+      flightNumber: isAirport ? 'AI-202' : undefined,
+      airlineName: isAirport ? 'Air India' : undefined,
+    };
+    setBookingDraft(draftData);
+    setIsReviewOpen(true);
   };
 
   const handleStartBooking = (params: any) => {
@@ -81,7 +91,6 @@ export function App() {
     setBookings([newBooking, ...bookings]);
     setActiveBooking(newBooking);
     setConfirmedBooking(newBooking);
-    setIsBookingFlowOpen(false);
     setIsReviewOpen(false);
     setIsInvoiceOpen(false);
     setIsConfirmationOpen(true);
@@ -107,7 +116,6 @@ export function App() {
     if (historicBooking.vehicle) {
       setSelectedVehicle(historicBooking.vehicle);
     }
-    setIsBookingFlowOpen(false);
     setIsConfirmationOpen(false);
     setIsInvoiceOpen(false);
     setIsReviewOpen(true);
@@ -264,18 +272,9 @@ export function App() {
         })()}
 
         {/* Floating Bottom Navigation - Hidden during review, payment, dispatch, support chat, settings & confirmation screens */}
-        {!isReviewOpen && !isInvoiceOpen && !isConfirmationOpen && !isBookingFlowOpen && !isPaymentSettingsOpen && !isSupportChatOpen && !isLanguageSettingsOpen && (
+        {!isReviewOpen && !isInvoiceOpen && !isConfirmationOpen && !isPaymentSettingsOpen && !isSupportChatOpen && !isLanguageSettingsOpen && (
           <FloatingNav activeTab={activeTab} onTabChange={setActiveTab} currentLanguage={currentLanguage} />
         )}
-
-        {/* 8-Step Interactive Booking Flow Wizard Modal */}
-        <BookingFlowModal
-          isOpen={isBookingFlowOpen}
-          onClose={() => setIsBookingFlowOpen(false)}
-          initialService={selectedServiceForFlow}
-          initialVehicle={selectedVehicle}
-          onBookingConfirmed={handleBookingConfirmed}
-        />
 
         {/* Driver Profile Modal */}
         <DriverProfileModal
