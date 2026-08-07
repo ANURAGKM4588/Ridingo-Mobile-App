@@ -132,7 +132,9 @@ export const LeafletMap: React.FC<LeafletMapProps> = ({
     return () => { map.remove(); mapRef.current = null; };
   }, []);
 
-  // ── Driver marker with heading rotation & Google Maps Navigation Auto-Follow ──
+  // ── Driver marker with heading rotation (Allows free manual zoom & pan) ──
+  const isInitialLocationSetRef = useRef(false);
+
   useEffect(() => {
     const map = mapRef.current; if (!map || !driverLocation) return;
     headingRef.current = driverHeading;
@@ -149,10 +151,10 @@ export const LeafletMap: React.FC<LeafletMapProps> = ({
       driverMarkerRef.current.setIcon(makeDriverIcon(driverHeading, isNavigationMode));
     }
 
-    if (isNavigationMode) {
-      map.setView([driverLocation.lat, driverLocation.lng], 17, { animate: true });
-    } else {
-      map.panTo([driverLocation.lat, driverLocation.lng], { animate: true, duration: 0.8 });
+    // Center map only on initial load or if user hasn't interacted
+    if (!isInitialLocationSetRef.current) {
+      isInitialLocationSetRef.current = true;
+      map.setView([driverLocation.lat, driverLocation.lng], isNavigationMode ? 16 : 14, { animate: true });
     }
   }, [driverLocation?.lat, driverLocation?.lng, driverHeading, isNavigationMode]);
 
