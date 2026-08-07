@@ -85,16 +85,6 @@ export const InvoiceBillModal: React.FC<InvoiceBillModalProps> = ({
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/80 backdrop-blur-md animate-fade-in overflow-y-auto">
       <div className="relative w-full max-w-sm sm:max-w-md my-auto py-2">
-        {/* Top Floating Close Button */}
-        <button
-          type="button"
-          onClick={onClose}
-          className="absolute -top-1 -right-1 sm:-top-2 sm:-right-2 z-30 w-8 h-8 rounded-full bg-slate-900 text-white hover:bg-black border border-slate-700 flex items-center justify-center shadow-2xl cursor-pointer transition-transform hover:scale-105"
-          aria-label="Close Modal"
-        >
-          <X className="w-4 h-4 stroke-[2.5]" />
-        </button>
-
         {/* ═══════════════════════════════════════════════════════════════
             PURE BILL RECEIPT CARD (Only this card is downloaded)
            ═══════════════════════════════════════════════════════════════ */}
