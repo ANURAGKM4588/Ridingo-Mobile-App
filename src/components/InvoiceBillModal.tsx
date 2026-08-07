@@ -1,6 +1,5 @@
 import React, { useRef, useState } from 'react';
 import html2canvas from 'html2canvas';
-import confetti from 'canvas-confetti';
 import { 
   FileText, 
   Download, 
@@ -56,12 +55,6 @@ export const InvoiceBillModal: React.FC<InvoiceBillModalProps> = ({
     setIsDownloading(true);
 
     try {
-      confetti({
-        particleCount: 80,
-        spread: 70,
-        origin: { y: 0.55 },
-        colors: ['#fcd502', '#121212', '#00E676', '#3B82F6']
-      });
 
       const canvas = await html2canvas(billReceiptRef.current, {
         scale: 3, // Ultra-sharp 3x retina resolution for print & save
