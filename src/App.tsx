@@ -238,6 +238,7 @@ export function App() {
                     <LiveTrackingView
                       booking={activeBooking}
                       onOpenDriverProfile={handleOpenDriverProfile}
+                      onNavigateToBook={() => setActiveTab('home')}
                       onCancelRide={() => {
                         if (confirm("Are you sure you want to cancel this chauffeur booking?")) {
                           setActiveBooking(null);
