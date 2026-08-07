@@ -41,9 +41,9 @@ interface LiveTrackingViewProps {
   currentRegion?: RegionCode;
 }
 
-// Default coordinates: Connaught Place, New Delhi & DEL Airport
-const DEFAULT_PICKUP: LatLng = { lat: 28.6315, lng: 77.2167 };
-const DEFAULT_DEST: LatLng = { lat: 28.5562, lng: 77.1000 };
+// Default coordinates: Cochin International Airport (COK) & Marine Drive, Kochi, Kerala, India
+const DEFAULT_PICKUP: LatLng = { lat: 10.1518, lng: 76.3930 };
+const DEFAULT_DEST: LatLng = { lat: 9.9657, lng: 76.2421 };
 
 export const LiveTrackingView: React.FC<LiveTrackingViewProps> = ({
   booking,
@@ -63,7 +63,7 @@ export const LiveTrackingView: React.FC<LiveTrackingViewProps> = ({
   const [driverLocation, setDriverLocation] = useState<LatLng | undefined>(undefined);
   const [driverHeading, setDriverHeading] = useState<number | undefined>(45);
   const [isLiveTracking, setIsLiveTracking] = useState(false);
-  const [trackingSource, setTrackingSource] = useState<'traccar' | 'bridge' | 'simulated'>('simulated');
+  const [trackingSource, setTrackingSource] = useState<'traccar' | 'bridge' | 'device-gps' | 'simulated'>('simulated');
   const [lastSeen, setLastSeen] = useState<Date | null>(null);
   const [etaMins, setEtaMins] = useState(11);
   const [isSOSActive, setIsSOSActive] = useState(false);
@@ -80,9 +80,37 @@ export const LiveTrackingView: React.FC<LiveTrackingViewProps> = ({
     }
   }, [booking]);
 
-  // Pickup and destination LatLng
+  // Pickup and destination LatLng (Defaults to Kerala)
   const pickupLatLng: LatLng = (booking as any)?.pickupLatLng || DEFAULT_PICKUP;
   const destLatLng: LatLng = (booking as any)?.destinationLatLng || DEFAULT_DEST;
+
+  // 0. Real Device Geolocation API (Live GPS Tracking in Kerala)
+  useEffect(() => {
+    if (!navigator.geolocation) return;
+
+    const watchId = navigator.geolocation.watchPosition(
+      (pos) => {
+        const lat = pos.coords.latitude;
+        const lng = pos.coords.longitude;
+        const heading = pos.coords.heading || 45;
+
+        // If tracking is active, update map position with live real-time device coordinates
+        if (trackingStatus === 'tracking') {
+          setDriverLocation({ lat, lng });
+          setDriverHeading(heading);
+          setIsLiveTracking(true);
+          setTrackingSource('device-gps');
+          setLastSeen(new Date());
+        }
+      },
+      (err) => {
+        console.warn('Live GPS notice:', err.message);
+      },
+      { enableHighAccuracy: true, timeout: 15000, maximumAge: 2000 }
+    );
+
+    return () => navigator.geolocation.clearWatch(watchId);
+  }, [trackingStatus]);
 
   // Fetch OSRM route line
   useEffect(() => {
