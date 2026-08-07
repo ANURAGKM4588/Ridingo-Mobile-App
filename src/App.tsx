@@ -88,24 +88,29 @@ export function App() {
   };
 
   const handleRepeatBooking = (historicBooking: Booking) => {
-    // Create direct repeat booking with all historic location and trip data
-    const repeated: Booking = {
-      ...historicBooking,
-      id: `repeat-${Date.now()}`,
-      bookingNumber: `RDG-${Math.floor(100000 + Math.random() * 900000)}`,
-      status: 'upcoming',
-      date: historicBooking.date || 'Today',
+    // Populate draft with historic booking location and all details
+    const draftData = {
+      pickup: historicBooking.pickupLocation,
+      destination: historicBooking.destinationLocation,
+      date: historicBooking.date || new Date().toISOString().split('T')[0],
       time: historicBooking.time || '14:30',
+      durationHours: historicBooking.durationHours || 4,
+      vehicleId: historicBooking.vehicle?.id || 'sedan',
+      flightNumber: historicBooking.flightNumber || '',
+      airlineName: historicBooking.airlineName || '',
+      serviceType: historicBooking.serviceType || 'Hourly',
+      tripCause: historicBooking.tripCause || 'Repeat Chauffeur Service',
     };
 
-    // Directly open Booking Confirmation Page with historic locations and details
-    setConfirmedBooking(repeated);
-    setActiveBooking(repeated);
-    setBookings((prev) => [repeated, ...prev.filter((b) => b.id !== repeated.id)]);
+    // Open Details Confirmation / Review Page directly without popup modal
+    setBookingDraft(draftData);
+    if (historicBooking.vehicle) {
+      setSelectedVehicle(historicBooking.vehicle);
+    }
     setIsBookingFlowOpen(false);
-    setIsReviewOpen(false);
+    setIsConfirmationOpen(false);
     setIsInvoiceOpen(false);
-    setIsConfirmationOpen(true);
+    setIsReviewOpen(true);
   };
 
   const handleOpenDriverProfile = (driver: DriverProfile) => {
