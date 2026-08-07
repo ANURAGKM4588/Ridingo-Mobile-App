@@ -24,8 +24,6 @@ import { LanguageRegionSettingsView } from './views/LanguageRegionSettingsView';
 import { NotificationsView } from './views/NotificationsView';
 import { DriverProfileModal } from './views/DriverProfileModal';
 import { AuthView } from './views/AuthView';
-import { PermissionsModal } from './components/PermissionsModal';
-import { PermissionType, requestPermission } from './lib/permissions';
 import { LanguageCode } from './data/translations';
 import { RegionCode } from './data/currencies';
 
@@ -47,9 +45,6 @@ export function App() {
   const [isConfirmationOpen, setIsConfirmationOpen] = useState<boolean>(false);
   const [confirmedBooking, setConfirmedBooking] = useState<Booking | null>(null);
   const [isNotificationsOpen, setIsNotificationsOpen] = useState<boolean>(false);
-  
-  // Permission Modal State
-  const [activePermissionPrompt, setActivePermissionPrompt] = useState<PermissionType | null>(null);
   
   // Booking Review & Invoice Screen State
   const [isReviewOpen, setIsReviewOpen] = useState<boolean>(false);
@@ -279,30 +274,8 @@ export function App() {
 
         {/* Floating Bottom Navigation - Hidden during review, payment, dispatch, support chat, settings & confirmation screens */}
         {!isReviewOpen && !isInvoiceOpen && !isConfirmationOpen && !isPaymentSettingsOpen && !isSupportChatOpen && !isLanguageSettingsOpen && (
-          <FloatingNav 
-            activeTab={activeTab} 
-            onTabChange={(tab) => {
-              if (tab === 'activity') {
-                setActivePermissionPrompt('location');
-              }
-              setActiveTab(tab);
-            }} 
-            currentLanguage={currentLanguage} 
-          />
+          <FloatingNav activeTab={activeTab} onTabChange={setActiveTab} currentLanguage={currentLanguage} />
         )}
-
-        {/* Native Permissions Dialog Modal (Location, Camera, Phone) */}
-        <PermissionsModal
-          type={activePermissionPrompt}
-          isOpen={activePermissionPrompt !== null}
-          onAllow={async () => {
-            if (activePermissionPrompt) {
-              await requestPermission(activePermissionPrompt);
-            }
-            setActivePermissionPrompt(null);
-          }}
-          onDeny={() => setActivePermissionPrompt(null)}
-        />
 
         {/* Driver Profile Modal */}
         <DriverProfileModal

@@ -66,5 +66,15 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<true/>
+
+	<!-- OS Native Device Permission Strings -->
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>RIDINGO needs your location to display real-time chauffeur tracking and estimate arrival times in Kerala.</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>RIDINGO needs your location to track live chauffeur telemetry while the app is in use.</string>
+	<key>NSCameraUsageDescription</key>
+	<string>RIDINGO requires camera access to take profile photos and scan identity documents.</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>RIDINGO requires microphone access for voice communication with your chauffeur.</string>
 </dict>
 </plist>

@@ -167,22 +167,51 @@ export const LiveTrackingView: React.FC<LiveTrackingViewProps> = ({
     };
   }, []);
 
-  // Simulated movement along route
+  // Real-time Demo Vehicle Tracking Motion along Route in Kerala
   useEffect(() => {
-    if (isLiveTracking || trackingStatus !== 'tracking') return;
-    let step = 0;
-    const startLat = pickupLatLng.lat - 0.005;
-    const startLng = pickupLatLng.lng - 0.005;
-    const interval = setInterval(() => {
-      step++;
-      setDriverLocation({
-        lat: startLat + step * 0.0003,
-        lng: startLng + step * 0.0003,
-      });
-      setDriverHeading(45);
-    }, 2500);
-    return () => clearInterval(interval);
-  }, [isLiveTracking, trackingStatus, pickupLatLng.lat, pickupLatLng.lng]);
+    if (trackingStatus !== 'tracking') return;
+
+    let index = 0;
+    // Immediately place vehicle at pickup point
+    if (routeGeometry && routeGeometry.length > 0) {
+      setDriverLocation({ lat: routeGeometry[0][1], lng: routeGeometry[0][0] });
+    } else {
+      setDriverLocation(pickupLatLng);
+    }
+
+    const updateInterval = setInterval(() => {
+      if (routeGeometry && routeGeometry.length > 0) {
+        index = (index + 1) % routeGeometry.length;
+        const point = routeGeometry[index];
+        const nextPoint = routeGeometry[(index + 1) % routeGeometry.length];
+        const lat = point[1];
+        const lng = point[0];
+
+        // Calculate smooth heading angle
+        let heading = 45;
+        if (nextPoint) {
+          const dy = nextPoint[1] - point[1];
+          const dx = nextPoint[0] - point[0];
+          heading = Math.round((Math.atan2(dx, dy) * 180) / Math.PI);
+        }
+
+        setDriverLocation({ lat, lng });
+        setDriverHeading(heading);
+        setLastSeen(new Date());
+      } else {
+        index++;
+        const delta = (index * 0.0004);
+        setDriverLocation({
+          lat: pickupLatLng.lat - delta,
+          lng: pickupLatLng.lng - delta * 0.8,
+        });
+        setDriverHeading(215);
+        setLastSeen(new Date());
+      }
+    }, 1200);
+
+    return () => clearInterval(updateInterval);
+  }, [trackingStatus, routeGeometry, pickupLatLng.lat, pickupLatLng.lng]);
 
   const mapCenter = driverLocation ?? pickupLatLng;
 
