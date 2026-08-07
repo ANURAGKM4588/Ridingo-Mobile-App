@@ -208,6 +208,10 @@ export function App() {
                       recentBooking={bookings[0]}
                       onViewAllBookings={() => setActiveTab('bookings')}
                       onRepeatBooking={handleRepeatBooking}
+                      onNavigateTab={(tab) => setActiveTab(tab)}
+                      onOpenWallet={() => setIsPaymentSettingsOpen(true)}
+                      onOpenSupport={() => setIsSupportChatOpen(true)}
+                      onOpenLanguage={() => setIsLanguageSettingsOpen(true)}
                       currentLanguage={currentLanguage}
                       currentRegion={currentRegion}
                     />
