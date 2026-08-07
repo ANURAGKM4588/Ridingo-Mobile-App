@@ -8,6 +8,7 @@ import {
   Clock,
   CheckCircle2,
   ChevronDown,
+  ChevronUp,
   Navigation,
   MapPin,
   Wifi,
@@ -57,6 +58,7 @@ export const LiveTrackingView: React.FC<LiveTrackingViewProps> = ({
   const [trackingStatus, setTrackingStatus] = useState<TrackingStatus>(
     booking ? 'accepted' : 'idle'
   );
+  const [isSheetMinimized, setIsSheetMinimized] = useState(false);
 
   const [driverLocation, setDriverLocation] = useState<LatLng | undefined>(undefined);
   const [driverHeading, setDriverHeading] = useState<number | undefined>(45);
@@ -435,6 +437,7 @@ export const LiveTrackingView: React.FC<LiveTrackingViewProps> = ({
               onClick={() => {
                 setTrackingStatus('tracking');
                 setIsLiveTracking(true);
+                setIsSheetMinimized(true); // Smoothly slide down sheet so user sees full map view!
               }}
               className="w-full py-3.5 rounded-2xl bg-[#fcd502] hover:bg-[#fde047] text-[#121212] font-black text-xs shadow-xl shadow-[#fcd502]/30 flex items-center justify-center gap-2 transition-all cursor-pointer active:scale-[0.99]"
             >
@@ -447,14 +450,36 @@ export const LiveTrackingView: React.FC<LiveTrackingViewProps> = ({
 
       {/* ═══════════════════════════════════════════════════════════════
           LIFECYCLE STATE 4: LIVE TRACKING ACTIVE
-          • Real-time Telemetry & Live Countdown ETA
-          • Active Map Position Tracking
-          • Trip Details Expandable Toggle & Cancel Button
+          • Smooth downward slide animation when minimized to view map only
+          • Re-expandable floating sheet toggle handle
          ═══════════════════════════════════════════════════════════════ */}
       {trackingStatus === 'tracking' && booking && (
-        <div className="absolute bottom-0 left-0 right-0 w-full z-20 pointer-events-auto animate-slide-up-bottom">
-          <div className="w-full bg-white rounded-t-[32px] rounded-b-none px-5 pt-4 pb-28 sm:pb-32 shadow-[0_-15px_40px_rgba(0,0,0,0.14)] border-t border-slate-200/90 space-y-3 text-slate-900 transition-transform duration-500">
-            <div className="w-10 h-1 rounded-full bg-slate-300 mx-auto -mt-1 mb-2" />
+        <div className={`absolute bottom-0 left-0 right-0 w-full z-20 pointer-events-auto transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+          isSheetMinimized ? 'translate-y-[calc(100%-62px)]' : 'translate-y-0'
+        }`}>
+          <div className="w-full bg-white rounded-t-[32px] rounded-b-none px-5 pt-2 pb-28 sm:pb-32 shadow-[0_-15px_40px_rgba(0,0,0,0.14)] border-t border-slate-200/90 space-y-3 text-slate-900">
+            
+            {/* Drag Handle & Smooth Sheet Collapse / Expand Toggle */}
+            <button
+              type="button"
+              onClick={() => setIsSheetMinimized(!isSheetMinimized)}
+              className="w-full flex flex-col items-center justify-center pt-1 pb-1 cursor-pointer group"
+            >
+              <div className="w-10 h-1.2 rounded-full bg-slate-300 group-hover:bg-slate-400 transition-colors mb-1" />
+              <span className="text-[10px] font-black uppercase tracking-wider text-[#a18200] flex items-center gap-1">
+                {isSheetMinimized ? (
+                  <>
+                    <ChevronUp className="w-3.5 h-3.5 text-[#a18200] animate-bounce" />
+                    <span>Tap to Expand Driver Details</span>
+                  </>
+                ) : (
+                  <>
+                    <ChevronDown className="w-3.5 h-3.5 text-slate-400" />
+                    <span>Minimize to Full Map View</span>
+                  </>
+                )}
+              </span>
+            </button>
 
             {/* ETA & Live Status Row */}
             <div className="flex items-center justify-between border-b border-slate-100 pb-2.5">
