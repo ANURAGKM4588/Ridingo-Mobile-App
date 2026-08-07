@@ -14,6 +14,7 @@ import {
 } from 'lucide-react';
 import { Booking } from '../types';
 import { RegionCode, formatPrice } from '../data/currencies';
+import { InvoiceBillModal } from '../components/InvoiceBillModal';
 
 interface BookingsViewProps {
   bookings: Booking[];
@@ -29,6 +30,8 @@ export const BookingsView: React.FC<BookingsViewProps> = ({
   currentRegion = 'in',
 }) => {
   const [activeFilter, setActiveFilter] = useState<'all' | 'upcoming' | 'completed' | 'cancelled'>('all');
+  const [selectedInvoiceBooking, setSelectedInvoiceBooking] = useState<Booking | null>(null);
+  const [isInvoiceModalOpen, setIsInvoiceModalOpen] = useState(false);
 
   const filtered = bookings.filter((b) => {
     if (activeFilter === 'all') return true;
@@ -183,7 +186,10 @@ export const BookingsView: React.FC<BookingsViewProps> = ({
                 <div className="flex items-center gap-2">
                   <button
                     type="button"
-                    onClick={() => alert(`Downloading official TAX PDF invoice for #${b.bookingNumber}`)}
+                    onClick={() => {
+                      setSelectedInvoiceBooking(b);
+                      setIsInvoiceModalOpen(true);
+                    }}
                     className="px-3 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs flex items-center gap-1 transition-colors cursor-pointer"
                   >
                     <FileText className="w-3.5 h-3.5 fill-slate-700/20 stroke-[2]" />
@@ -204,6 +210,17 @@ export const BookingsView: React.FC<BookingsViewProps> = ({
           ))
         )}
       </div>
+
+      {/* ── Bill UI Style Invoice Modal with Download & Cancel Buttons ── */}
+      <InvoiceBillModal
+        booking={selectedInvoiceBooking}
+        isOpen={isInvoiceModalOpen}
+        onClose={() => {
+          setIsInvoiceModalOpen(false);
+          setSelectedInvoiceBooking(null);
+        }}
+        currentRegion={currentRegion}
+      />
     </div>
   );
 };
