@@ -195,7 +195,8 @@ export const DriverAppView: React.FC<DriverAppViewProps> = ({ onSwitchToCustomer
   return (
     <div className="w-full h-full flex flex-col bg-[#FAFAFA] text-slate-900 animate-fade-in overflow-hidden font-sans">
       {/* Top Driver Bar matching User App Header */}
-      <div className="bg-white pt-[max(env(safe-area-inset-top),20px)] pb-3 px-4 border-b border-slate-100/80 flex items-center justify-between flex-shrink-0 z-30 shadow-2xs">
+      <div className="bg-white pt-[max(env(safe-area-inset-top),44px)] pb-3 px-4 border-b border-slate-100/80 flex items-center justify-between flex-shrink-0 z-30 shadow-2xs">
+
 
 
         <div className="flex items-center gap-2.5">

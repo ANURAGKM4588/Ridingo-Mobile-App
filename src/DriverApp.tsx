@@ -513,7 +513,8 @@ export function DriverApp() {
           <div className="w-full h-full flex flex-col bg-[#FAFAFA] text-slate-900 overflow-hidden relative">
 
             {/* Clean Professional Header Bar matching User App Header */}
-            <header className="shrink-0 sticky top-0 z-50 w-full px-4 sm:px-5 pt-[max(env(safe-area-inset-top),20px)] pb-3 bg-white border-b border-slate-100/80 shadow-2xs">
+            <header className="shrink-0 sticky top-0 z-50 w-full px-4 sm:px-5 pt-[max(env(safe-area-inset-top),44px)] pb-3 bg-white border-b border-slate-100/80 shadow-2xs">
+
 
               <div className="flex items-center justify-between gap-3 max-w-md mx-auto">
                 <div className="flex items-center gap-2">
