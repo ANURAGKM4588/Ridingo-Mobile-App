@@ -902,18 +902,7 @@ export function DriverApp() {
                         />
                       </div>
 
-                      {/* Turn-by-Turn Navigation Panel for Driver */}
-                      {showNavPanel && (
-                        <NavigationPanel
-                          route={activeRoute}
-                          isLoading={isLoadingRoute}
-                          pickup={activeTrip.pickup}
-                          destination={activeTrip.destination}
-                          currentStepIndex={currentNavStepIndex}
-                          onClose={() => setShowNavPanel(false)}
-                          onNextStep={() => setCurrentNavStepIndex((prev) => (activeRoute ? Math.min(prev + 1, activeRoute.steps.length - 1) : prev))}
-                        />
-                      )}
+
 
                       {/* Route Timeline with Dedicated Pickup Navigation Button */}
                       <div className="bg-slate-50 p-3.5 rounded-2xl border border-slate-100 space-y-3 text-xs">
