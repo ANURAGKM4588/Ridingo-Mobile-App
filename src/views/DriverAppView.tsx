@@ -194,11 +194,9 @@ export const DriverAppView: React.FC<DriverAppViewProps> = ({ onSwitchToCustomer
 
   return (
     <div className="w-full h-full flex flex-col bg-[#FAFAFA] text-slate-900 animate-fade-in overflow-hidden font-sans">
-      {/* Mobile Control Center Status Bar with Dynamic Island Notch */}
-      <MobileControlCenterStatusBar theme="dark" />
+      {/* Top Driver Bar matching User App Header */}
+      <div className="bg-white pt-[max(env(safe-area-inset-top),20px)] pb-3 px-4 border-b border-slate-100/80 flex items-center justify-between flex-shrink-0 z-30 shadow-2xs">
 
-      {/* Top Driver Bar */}
-      <div className="bg-white pt-2 pb-3 px-4 border-b border-slate-200 flex items-center justify-between flex-shrink-0 z-30 shadow-xs">
 
         <div className="flex items-center gap-2.5">
           <div className="w-9 h-9 rounded-xl bg-[#fcd502] text-slate-950 flex items-center justify-center font-black text-sm shadow-md">
@@ -303,7 +301,8 @@ export const DriverAppView: React.FC<DriverAppViewProps> = ({ onSwitchToCustomer
             <div className="bg-white p-4.5 rounded-3xl border border-slate-200/90 shadow-xs space-y-3">
               <div className="flex items-center justify-between">
                 <div>
-                  <h1 className="text-[26px] sm:text-[28px] font-medium text-slate-900 leading-[1.15] tracking-tight">
+                  <h1 className="text-[26px] sm:text-[28px] font-bold text-slate-900 leading-[1.15] tracking-tight">
+
                     <span className="block">Good</span>
                     <span className="block">afternoon, Marcus 💪</span>
                   </h1>

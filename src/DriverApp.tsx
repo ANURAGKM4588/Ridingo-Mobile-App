@@ -344,8 +344,6 @@ export function DriverApp() {
       {/* Ultra-Modern iPhone 16 Pro Mobile Container with Frame Bezel */}
       <div className="w-full max-w-[420px] h-full md:h-[90vh] md:max-h-[880px] md:rounded-[48px] bg-[#FAFAFA] text-[#0F172A] flex flex-col relative shadow-[0_25px_60px_-15px_rgba(0,0,0,0.8)] border-x md:border-[8px] border-slate-900 overflow-hidden ring-1 ring-slate-800/90">
 
-        {/* Sticky Mobile Status Bar with Dynamic Island */}
-        <MobileControlCenterStatusBar theme="dark" />
 
 
         {/* AUTHENTICATION & LOGIN SCREEN */}
@@ -489,8 +487,9 @@ export function DriverApp() {
           /* MAIN ULTRA-MODERN DRIVER APP PORTAL */
           <div className="w-full h-full flex flex-col bg-[#FAFAFA] text-slate-900 overflow-hidden relative">
 
-            {/* Clean Professional Header Bar */}
-            <header className="shrink-0 sticky top-0 z-40 w-full px-4 sm:px-5 pt-2 pb-3 bg-white/95 backdrop-blur-md border-b border-slate-200/80 shadow-2xs">
+            {/* Clean Professional Header Bar matching User App Header */}
+            <header className="shrink-0 sticky top-0 z-50 w-full px-4 sm:px-5 pt-[max(env(safe-area-inset-top),20px)] pb-3 bg-white border-b border-slate-100/80 shadow-2xs">
+
               <div className="flex items-center justify-between gap-3 max-w-md mx-auto">
                 <div className="flex items-center gap-2">
                   <img
@@ -564,7 +563,8 @@ export function DriverApp() {
                   <div className="bg-white p-4.5 rounded-3xl border border-slate-200/90 shadow-xs space-y-3">
                     <div className="flex items-center justify-between">
                       <div>
-                        <h1 className="text-[26px] sm:text-[28px] font-medium text-slate-900 leading-[1.15] tracking-tight">
+                        <h1 className="text-[26px] sm:text-[28px] font-bold text-slate-900 leading-[1.15] tracking-tight">
+
                           <span className="block">Good</span>
                           <span className="block">afternoon, {driverName.split(' ')[0]} 💪</span>
                         </h1>
