@@ -345,7 +345,8 @@ export function DriverApp() {
       <div className="w-full max-w-[420px] h-full md:h-[90vh] md:max-h-[880px] md:rounded-[48px] bg-[#FAFAFA] text-[#0F172A] flex flex-col relative shadow-[0_25px_60px_-15px_rgba(0,0,0,0.8)] border-x md:border-[8px] border-slate-900 overflow-hidden ring-1 ring-slate-800/90">
 
         {/* Sticky Mobile Status Bar with Dynamic Island */}
-        <MobileControlCenterStatusBar />
+        <MobileControlCenterStatusBar theme="dark" />
+
 
         {/* AUTHENTICATION & LOGIN SCREEN */}
         {!isAuthenticated ? (

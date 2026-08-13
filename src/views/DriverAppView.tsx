@@ -25,9 +25,13 @@ import {
   RotateCcw,
   Star,
   Bell,
-  X
+  X,
 } from 'lucide-react';
+
 import { bridgeListen, bridgeSend } from '../lib/bridge';
+import { MobileControlCenterStatusBar } from '../components/MobileControlCenterStatusBar';
+
+
 
 interface DriverAppViewProps {
   onSwitchToCustomerApp: () => void;
@@ -190,8 +194,12 @@ export const DriverAppView: React.FC<DriverAppViewProps> = ({ onSwitchToCustomer
 
   return (
     <div className="w-full h-full flex flex-col bg-[#FAFAFA] text-slate-900 animate-fade-in overflow-hidden font-sans">
+      {/* Mobile Control Center Status Bar with Dynamic Island Notch */}
+      <MobileControlCenterStatusBar theme="dark" />
+
       {/* Top Driver Bar */}
       <div className="bg-white pt-2 pb-3 px-4 border-b border-slate-200 flex items-center justify-between flex-shrink-0 z-30 shadow-xs">
+
         <div className="flex items-center gap-2.5">
           <div className="w-9 h-9 rounded-xl bg-[#fcd502] text-slate-950 flex items-center justify-center font-black text-sm shadow-md">
             RD
