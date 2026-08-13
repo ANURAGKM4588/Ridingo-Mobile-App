@@ -1,0 +1,98 @@
+name: Build User App iOS IPA
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+  workflow_dispatch:
+
+jobs:
+  build-user-ios:
+    name: Build User App iOS IPA File
+    runs-on: macos-14
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'npm'
+
+      - name: Install Dependencies
+        run: npm ci || npm install
+
+      - name: Configure User App Bundle ID & Display Name
+        run: |
+          node -e "
+            const fs = require('fs');
+            // Update capacitor.config.ts for User App
+            let cap = fs.readFileSync('capacitor.config.ts', 'utf8');
+            cap = cap.replace(/appId:\s*['\"\`].*?['\"\`]/, \"appId: 'com.ridingo.app'\");
+            cap = cap.replace(/appName:\s*['\"\`].*?['\"\`]/, \"appName: 'RIDINGO'\");
+            fs.writeFileSync('capacitor.config.ts', cap);
+
+            // Update Info.plist display name
+            let plist = fs.readFileSync('ios/App/App/Info.plist', 'utf8');
+            plist = plist.replace(/<key>CFBundleDisplayName<\/key>\s*<string>.*?<\/string>/, '<key>CFBundleDisplayName</key>\n\t<string>RIDINGO</string>');
+            fs.writeFileSync('ios/App/App/Info.plist', plist);
+          "
+
+      - name: Build Web App
+        run: npm run build
+
+      - name: Inject User Mode Flag into index.html
+        run: |
+          node -e "
+            const fs = require('fs');
+            let html = fs.readFileSync('dist/index.html', 'utf8');
+            html = html.replace('<head>', '<head><script>localStorage.setItem(\"ridingo_mode\", \"user\");</script>');
+            fs.writeFileSync('dist/index.html', html);
+          "
+
+      - name: Sync Capacitor iOS
+        run: npx cap sync ios
+
+      - name: Set Xcode Bundle Identifier to com.ridingo.app
+        run: |
+          node -e "
+            const fs = require('fs');
+            const p = 'ios/App/App.xcodeproj/project.pbxproj';
+            if (fs.existsSync(p)) {
+              let content = fs.readFileSync(p, 'utf8');
+              content = content.replace(/PRODUCT_BUNDLE_IDENTIFIER = com\.ridingo\.driver;/g, 'PRODUCT_BUNDLE_IDENTIFIER = com.ridingo.app;');
+              fs.writeFileSync(p, content);
+            }
+          "
+
+      - name: Fix Package.swift Windows Path Backslashes
+        run: node -e "const fs = require('fs'); const p = 'ios/App/CapApp-SPM/Package.swift'; if (fs.existsSync(p)) { fs.writeFileSync(p, fs.readFileSync(p, 'utf8').replace(/\\\\/g, '/')); }"
+
+      - name: Build Xcode User iOS App
+        run: |
+          cd ios/App
+          xcodebuild -project App.xcodeproj \
+                     -scheme App \
+                     -sdk iphoneos \
+                     -configuration Release \
+                     -derivedDataPath build \
+                     CODE_SIGN_IDENTITY="" \
+                     CODE_SIGNING_REQUIRED=NO \
+                     CODE_SIGNING_ALLOWED=NO \
+                     clean build
+
+      - name: Package into Standalone User .ipa File
+        run: |
+          cd ios/App/build/Build/Products/Release-iphoneos
+          mkdir -p Payload
+          cp -r App.app Payload/
+          zip -r Ridingo-UserApp.ipa Payload
+
+      - name: Upload Separate User App IPA File
+        uses: actions/upload-artifact@v4
+        with:
+          name: Ridingo-UserApp-IPA
+          path: ios/App/build/Build/Products/Release-iphoneos/Ridingo-UserApp.ipa
