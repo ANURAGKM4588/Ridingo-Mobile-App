@@ -348,81 +348,102 @@ export function DriverApp() {
 
         {/* AUTHENTICATION & LOGIN SCREEN */}
         {!isAuthenticated ? (
-          <div className="w-full h-full overflow-y-auto bg-white p-6 flex flex-col justify-between pt-3 pb-5 space-y-6">
-            <div className="space-y-6 my-auto max-w-sm mx-auto w-full">
-              <div className="flex items-center justify-between w-full pb-1">
-                <span className="text-[11px] font-black text-slate-400 uppercase tracking-wider">Driver Portal</span>
-                <button
-                  type="button"
-                  onClick={() => setIsAuthenticated(true)}
-                  className="px-4 py-1.5 rounded-full bg-[#fcd502] hover:bg-amber-400 text-slate-950 font-black text-xs flex items-center gap-1.5 shadow-md active:scale-95 transition-all cursor-pointer border border-amber-300"
-                >
-                  <span>Skip Login</span>
-                  <ArrowRight className="w-3.5 h-3.5 stroke-[3]" />
-                </button>
-              </div>
+          <div className="w-full h-full overflow-y-auto bg-white flex flex-col justify-between pt-3 pb-0 animate-fade-in">
+            {/* Top Header Bar with Skip Button */}
+            <div className="w-full px-6 pt-3 flex items-center justify-between max-w-md mx-auto">
+              <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">DRIVER PORTAL</span>
+              <button
+                type="button"
+                onClick={() => setIsAuthenticated(true)}
+                className="px-4 py-1.5 rounded-full bg-[#fcd502] hover:bg-amber-400 text-slate-950 font-black text-xs flex items-center gap-1.5 shadow-md active:scale-95 transition-all cursor-pointer border border-amber-300"
+              >
+                <span>Skip Login</span>
+                <ArrowRight className="w-3.5 h-3.5 stroke-[3]" />
+              </button>
+            </div>
 
-              <div className="text-center space-y-3">
+            {/* Main Body Content */}
+            <div className="flex-1 px-6 py-4 max-w-md mx-auto w-full flex flex-col justify-center space-y-5">
+              
+              {/* Modern Hero Brand Logo Placement */}
+              <div className="text-center">
                 <img
                   src={ridingoLogo}
                   alt="RIDINGO Driver"
-                  className="h-16 w-auto object-contain mx-auto drop-shadow-xs"
+                  className="h-16 sm:h-20 w-auto object-contain mx-auto drop-shadow-xs py-1"
                 />
-                <div className="inline-flex items-center gap-1.5 bg-[#fcd502]/20 border border-[#fcd502]/60 px-3.5 py-1 rounded-full text-[#a18200] font-bold text-xs uppercase tracking-widest">
-                  <ShieldCheck className="w-4 h-4 text-[#a18200]" />
-                  <span>Driver Partner Portal</span>
-                </div>
-                <h1 className="text-2xl font-bold text-slate-900 tracking-tight pt-1">Driver Partner Sign In</h1>
-                <p className="text-xs text-slate-500 font-medium leading-relaxed">Enter your registered credentials to start accepting rides</p>
+              </div>
+
+              {/* Title & Subtitle */}
+              <div className="text-center space-y-1">
+                <h1 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
+                  Driver Partner Sign In
+                </h1>
+                <p className="text-xs text-slate-500 font-medium max-w-xs mx-auto">
+                  Enter your registered credentials to start accepting rides
+                </p>
               </div>
 
               {!isOtpStep ? (
                 <form onSubmit={handleSendOtp} className="space-y-4">
+                  {/* Email Address Field */}
                   <div className="space-y-1">
-                    <label className="text-[11px] font-semibold text-slate-500 uppercase tracking-wider block">Email Address</label>
+                    <label className="text-[11px] font-extrabold uppercase tracking-wider text-slate-600">
+                      Email Address <span className="text-rose-500">*</span>
+                    </label>
                     <div className="relative">
-                      <Mail className="w-4 h-4 text-slate-400 absolute left-3.5 top-3.5" />
+                      <div className="absolute inset-y-0 left-3.5 flex items-center pointer-events-none text-slate-400">
+                        <Mail className="w-4 h-4" />
+                      </div>
                       <input
                         type="email"
                         required
                         value={driverEmail}
                         onChange={(e) => setDriverEmail(e.target.value)}
                         placeholder="marcus.vance@ridingo.com"
-                        className="w-full py-3 pl-10 pr-4 bg-slate-50 border border-slate-200 rounded-2xl text-xs font-bold text-slate-900 placeholder:font-normal placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#fcd502] focus:bg-white transition-all"
+                        className="w-full pl-10 pr-4 py-3 rounded-2xl bg-slate-50 border border-slate-200 text-slate-900 font-bold placeholder:text-slate-400 placeholder:font-normal text-xs focus:outline-none focus:ring-2 focus:ring-[#fcd502] transition-all"
                       />
                     </div>
                   </div>
 
+                  {/* Mobile Number Field */}
                   <div className="space-y-1">
-                    <label className="text-[11px] font-semibold text-slate-500 uppercase tracking-wider block">Mobile Number</label>
+                    <label className="text-[11px] font-extrabold uppercase tracking-wider text-slate-600">
+                      Mobile Number <span className="text-rose-500">*</span>
+                    </label>
                     <div className="relative">
-                      <Phone className="w-4 h-4 text-slate-400 absolute left-3.5 top-3.5" />
+                      <div className="absolute inset-y-0 left-3.5 flex items-center pointer-events-none text-slate-400">
+                        <Phone className="w-4 h-4" />
+                      </div>
                       <input
                         type="tel"
                         required
                         value={driverPhone}
                         onChange={(e) => setDriverPhone(e.target.value)}
                         placeholder="+1 (555) 019-2834"
-                        className="w-full py-3 pl-10 pr-4 bg-slate-50 border border-slate-200 rounded-2xl text-xs font-bold text-slate-900 placeholder:font-normal placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#fcd502] focus:bg-white transition-all"
+                        className="w-full pl-10 pr-4 py-3 rounded-2xl bg-slate-50 border border-slate-200 text-slate-900 font-bold placeholder:text-slate-400 placeholder:font-normal text-xs focus:outline-none focus:ring-2 focus:ring-[#fcd502] transition-all"
                       />
                     </div>
                   </div>
 
-                  <button
-                    type="submit"
-                    className="w-full py-3.5 rounded-2xl bg-[#fcd502] hover:bg-amber-400 text-slate-950 font-black text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow-md transition-transform active:scale-95 cursor-pointer"
-                  >
-                    <span>Sign In (Skip OTP)</span>
-                    <ArrowRight className="w-4 h-4 stroke-[3]" />
-                  </button>
+                  {/* Main Action Button */}
+                  <div className="pt-2 space-y-2.5">
+                    <button
+                      type="submit"
+                      className="w-full py-3.5 px-6 rounded-2xl bg-[#121212] hover:bg-black text-[#fcd502] font-black text-sm flex items-center justify-center gap-2 shadow-lg active:scale-[0.98] transition-all cursor-pointer"
+                    >
+                      <span>Sign In (Skip OTP)</span>
+                      <ArrowRight className="w-4 h-4 stroke-[2.5]" />
+                    </button>
 
-                  <button
-                    type="button"
-                    onClick={() => setIsAuthenticated(true)}
-                    className="w-full py-3 rounded-2xl bg-slate-100 hover:bg-slate-200 text-slate-800 font-extrabold text-xs flex items-center justify-center gap-2 transition-all cursor-pointer border border-slate-200"
-                  >
-                    <span>⚡ Skip Login & Enter Driver App</span>
-                  </button>
+                    <button
+                      type="button"
+                      onClick={() => setIsAuthenticated(true)}
+                      className="w-full py-3 px-6 rounded-2xl bg-[#fcd502] hover:bg-amber-400 text-slate-950 font-extrabold text-xs flex items-center justify-center gap-2 transition-all cursor-pointer border border-amber-300 shadow-sm"
+                    >
+                      <span>⚡ Skip Login & Enter Driver App</span>
+                    </button>
+                  </div>
                 </form>
               ) : (
                 /* Demo Mode OTP verification step */
@@ -462,9 +483,9 @@ export function DriverApp() {
 
                   <button
                     type="submit"
-                    className="w-full py-3.5 rounded-2xl bg-[#121212] hover:bg-slate-800 text-white font-black text-xs uppercase tracking-wider shadow-lg transition-transform active:scale-95 cursor-pointer"
+                    className="w-full py-3.5 px-6 rounded-2xl bg-[#121212] hover:bg-black text-[#fcd502] font-black text-sm flex items-center justify-center gap-2 shadow-lg active:scale-[0.98] transition-all cursor-pointer"
                   >
-                    Verify & Enter Driver App
+                    <span>Verify & Enter Driver App</span>
                   </button>
 
                   <button
@@ -478,12 +499,16 @@ export function DriverApp() {
               )}
             </div>
 
-            <div className="text-center text-[10px] text-slate-400 font-medium space-y-1">
-              <p>RIDINGO Chauffeur Partner Network v2.5</p>
-              <p>256-bit Encrypted Security & Verified Background Checks</p>
+            {/* Footer Security Badge */}
+            <div className="p-4 text-center bg-slate-50 border-t border-slate-100">
+              <div className="flex items-center justify-center gap-1.5 text-[11px] text-slate-500 font-bold">
+                <ShieldCheck className="w-3.5 h-3.5 text-[#fcd502]" />
+                <span>256-Bit Encrypted Secure Driver Authentication</span>
+              </div>
             </div>
           </div>
         ) : (
+
           /* MAIN ULTRA-MODERN DRIVER APP PORTAL */
           <div className="w-full h-full flex flex-col bg-[#FAFAFA] text-slate-900 overflow-hidden relative">
 
