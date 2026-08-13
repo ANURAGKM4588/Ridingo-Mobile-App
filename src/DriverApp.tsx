@@ -26,7 +26,9 @@ import {
   Flame,
   Radio,
   Bell,
+  ExternalLink,
   X
+
 } from 'lucide-react';
 import ridingoLogo from './assets/ridingo-logo.png';
 import { MobileControlCenterStatusBar } from './components/MobileControlCenterStatusBar';
@@ -282,7 +284,62 @@ export function DriverApp() {
     }
   };
 
+  // External Map App Navigation & System Intent Chooser
+  const [showMapChooserModal, setShowMapChooserModal] = useState(false);
+  const [navTargetLocation, setNavTargetLocation] = useState<{ address: string; lat?: number; lng?: number }>({ address: '' });
+
+  const handleTriggerNavigation = (address: string, lat?: number, lng?: number) => {
+    setNavTargetLocation({ address, lat, lng });
+    const encodedAddress = encodeURIComponent(address);
+    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+    const isAndroid = /Android/i.test(navigator.userAgent);
+
+    if (isAndroid) {
+      const geoUrl = lat && lng ? `geo:${lat},${lng}?q=${lat},${lng}(${encodedAddress})` : `geo:0,0?q=${encodedAddress}`;
+      window.location.href = geoUrl;
+      setTimeout(() => {
+        setShowMapChooserModal(true);
+      }, 800);
+    } else if (isIOS) {
+      const appleUrl = lat && lng ? `maps://?daddr=${lat},${lng}&dirflg=d` : `maps://?daddr=${encodedAddress}&dirflg=d`;
+      window.location.href = appleUrl;
+      setTimeout(() => {
+        setShowMapChooserModal(true);
+      }, 800);
+    } else {
+      setShowMapChooserModal(true);
+    }
+  };
+
+  const openGoogleMapsApp = () => {
+    const encodedAddress = encodeURIComponent(navTargetLocation.address);
+    const url = navTargetLocation.lat && navTargetLocation.lng
+      ? `https://www.google.com/maps/dir/?api=1&destination=${navTargetLocation.lat},${navTargetLocation.lng}`
+      : `https://www.google.com/maps/dir/?api=1&destination=${encodedAddress}`;
+    window.open(url, '_blank');
+    setShowMapChooserModal(false);
+  };
+
+  const openAppleMapsApp = () => {
+    const encodedAddress = encodeURIComponent(navTargetLocation.address);
+    const url = navTargetLocation.lat && navTargetLocation.lng
+      ? `maps://?daddr=${navTargetLocation.lat},${navTargetLocation.lng}&dirflg=d`
+      : `maps://?daddr=${encodedAddress}&dirflg=d`;
+    window.location.href = url;
+    setShowMapChooserModal(false);
+  };
+
+  const openWazeApp = () => {
+    const encodedAddress = encodeURIComponent(navTargetLocation.address);
+    const url = navTargetLocation.lat && navTargetLocation.lng
+      ? `https://waze.com/ul?ll=${navTargetLocation.lat},${navTargetLocation.lng}&navigate=yes`
+      : `https://waze.com/ul?q=${encodedAddress}&navigate=yes`;
+    window.open(url, '_blank');
+    setShowMapChooserModal(false);
+  };
+
   // ── GPS Location Tracking ──
+
   const startLocationTracking = (bookingNumber: string) => {
     if (!navigator.geolocation) return;
     // Clear any existing watcher
@@ -820,11 +877,11 @@ export function DriverApp() {
                         </button>
                         <button
                           type="button"
-                          onClick={() => setShowNavPanel(!showNavPanel)}
-                          className="py-2.5 px-3 rounded-xl bg-slate-50 border border-slate-200 hover:bg-slate-100 text-slate-900 text-xs font-bold flex items-center justify-center gap-1.5 cursor-pointer shadow-xs"
+                          onClick={() => handleTriggerNavigation(activeTrip.pickup, pickupLatLng?.lat, pickupLatLng?.lng)}
+                          className="py-2.5 px-3 rounded-xl bg-[#121212] hover:bg-black text-[#fcd502] text-xs font-black flex items-center justify-center gap-1.5 cursor-pointer shadow-md active:scale-95 transition-transform"
                         >
-                          <Navigation className="w-3.5 h-3.5 text-blue-600" />
-                          <span>{showNavPanel ? 'Hide Nav' : 'Show Nav'}</span>
+                          <Navigation className="w-3.5 h-3.5 text-[#fcd502]" />
+                          <span>Navigate</span>
                         </button>
                       </div>
 
@@ -858,7 +915,7 @@ export function DriverApp() {
                         />
                       )}
 
-                      {/* Route Timeline */}
+                      {/* Route Timeline with Dedicated Pickup Navigation Button */}
                       <div className="bg-slate-50 p-3.5 rounded-2xl border border-slate-100 space-y-3 text-xs">
                         <div className="flex items-start gap-3">
                           <div className="flex flex-col items-center pt-1">
@@ -867,17 +924,38 @@ export function DriverApp() {
                             <div className="w-3 h-3 rounded-full bg-amber-500" />
                           </div>
                           <div className="flex-1 space-y-3">
-                            <div>
-                              <span className="text-[10px] font-bold text-slate-400 uppercase block">Pickup Location</span>
-                              <span className="font-bold text-slate-900 block">{activeTrip.pickup}</span>
+                            <div className="flex items-center justify-between gap-2">
+                              <div>
+                                <span className="text-[10px] font-bold text-slate-400 uppercase block">User Pickup Location</span>
+                                <span className="font-bold text-slate-900 block">{activeTrip.pickup}</span>
+                              </div>
+                              <button
+                                type="button"
+                                onClick={() => handleTriggerNavigation(activeTrip.pickup, pickupLatLng?.lat, pickupLatLng?.lng)}
+                                className="px-2.5 py-1 rounded-full bg-emerald-500 hover:bg-emerald-600 text-white font-extrabold text-[10px] flex items-center gap-1 shadow-2xs active:scale-95 transition-transform cursor-pointer shrink-0"
+                              >
+                                <Navigation className="w-3 h-3" />
+                                <span>Navigate ↗</span>
+                              </button>
                             </div>
-                            <div>
-                              <span className="text-[10px] font-bold text-slate-400 uppercase block">Destination</span>
-                              <span className="font-bold text-slate-900 block">{activeTrip.destination}</span>
+                            <div className="flex items-center justify-between gap-2">
+                              <div>
+                                <span className="text-[10px] font-bold text-slate-400 uppercase block">Destination Location</span>
+                                <span className="font-bold text-slate-900 block">{activeTrip.destination}</span>
+                              </div>
+                              <button
+                                type="button"
+                                onClick={() => handleTriggerNavigation(activeTrip.destination, destLatLng?.lat, destLatLng?.lng)}
+                                className="px-2.5 py-1 rounded-full bg-slate-200 hover:bg-slate-300 text-slate-800 font-extrabold text-[10px] flex items-center gap-1 shadow-2xs active:scale-95 transition-transform cursor-pointer shrink-0"
+                              >
+                                <ExternalLink className="w-3 h-3" />
+                                <span>Dropoff ↗</span>
+                              </button>
                             </div>
                           </div>
                         </div>
                       </div>
+
 
                       {/* Primary Step Action Button */}
                       <div className="pt-1">
@@ -1431,10 +1509,98 @@ export function DriverApp() {
                 </div>
               </div>
             )}
+            {/* Map App Chooser Sheet / Modal */}
+            {showMapChooserModal && (
+              <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-end sm:items-center justify-center p-0 sm:p-4 animate-fade-in">
+                <div className="w-full max-w-sm bg-white rounded-t-3xl sm:rounded-3xl p-5 space-y-4 shadow-2xl animate-slide-up-bottom border border-slate-200">
+                  <div className="flex items-center justify-between border-b border-slate-100 pb-3">
+                    <div className="flex items-center gap-2">
+                      <div className="w-9 h-9 rounded-2xl bg-[#fcd502]/20 text-[#a18200] flex items-center justify-center">
+                        <Navigation className="w-5 h-5 stroke-[2.5]" />
+                      </div>
+                      <div>
+                        <h3 className="font-black text-base text-slate-900">Choose Navigation App</h3>
+                        <p className="text-[10px] text-slate-500 font-bold truncate max-w-[200px]">{navTargetLocation.address}</p>
+                      </div>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => setShowMapChooserModal(false)}
+                      className="w-8 h-8 rounded-full bg-slate-100 text-slate-500 flex items-center justify-center hover:bg-slate-200 cursor-pointer"
+                    >
+                      <X className="w-4 h-4" />
+                    </button>
+                  </div>
 
+                  <div className="space-y-2 pt-1">
+                    {/* Google Maps Option */}
+                    <button
+                      type="button"
+                      onClick={openGoogleMapsApp}
+                      className="w-full p-3.5 rounded-2xl bg-slate-50 border border-slate-200 hover:bg-slate-100 flex items-center justify-between transition-all cursor-pointer group"
+                    >
+                      <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 rounded-xl bg-white border border-slate-200 flex items-center justify-center shadow-2xs">
+                          <span className="text-lg">🗺️</span>
+                        </div>
+                        <div className="text-left">
+                          <span className="font-black text-slate-900 text-xs block">Google Maps</span>
+                          <span className="text-[10px] text-slate-500 font-semibold">Turn-by-turn directions & traffic</span>
+                        </div>
+                      </div>
+                      <ExternalLink className="w-4 h-4 text-slate-400 group-hover:text-slate-900" />
+                    </button>
+
+                    {/* Apple Maps / iOS System Option */}
+                    <button
+                      type="button"
+                      onClick={openAppleMapsApp}
+                      className="w-full p-3.5 rounded-2xl bg-slate-50 border border-slate-200 hover:bg-slate-100 flex items-center justify-between transition-all cursor-pointer group"
+                    >
+                      <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 rounded-xl bg-white border border-slate-200 flex items-center justify-center shadow-2xs">
+                          <span className="text-lg">🍎</span>
+                        </div>
+                        <div className="text-left">
+                          <span className="font-black text-slate-900 text-xs block">Apple Maps / Mobile System App</span>
+                          <span className="text-[10px] text-slate-500 font-semibold">Triggers device default app picker</span>
+                        </div>
+                      </div>
+                      <ExternalLink className="w-4 h-4 text-slate-400 group-hover:text-slate-900" />
+                    </button>
+
+                    {/* Waze Option */}
+                    <button
+                      type="button"
+                      onClick={openWazeApp}
+                      className="w-full p-3.5 rounded-2xl bg-slate-50 border border-slate-200 hover:bg-slate-100 flex items-center justify-between transition-all cursor-pointer group"
+                    >
+                      <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 rounded-xl bg-white border border-slate-200 flex items-center justify-center shadow-2xs">
+                          <span className="text-lg">🚙</span>
+                        </div>
+                        <div className="text-left">
+                          <span className="font-black text-slate-900 text-xs block">Waze Navigation</span>
+                          <span className="text-[10px] text-slate-500 font-semibold">Live police & hazard alerts</span>
+                        </div>
+                      </div>
+                      <ExternalLink className="w-4 h-4 text-slate-400 group-hover:text-slate-900" />
+                    </button>
+                  </div>
+
+                  <button
+                    type="button"
+                    onClick={() => setShowMapChooserModal(false)}
+                    className="w-full py-3 rounded-2xl bg-slate-100 text-slate-700 font-extrabold text-xs cursor-pointer hover:bg-slate-200"
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </div>
+            )}
           </div>
         )}
       </div>
     </div>
   );
-}
+};
