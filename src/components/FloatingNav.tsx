@@ -25,36 +25,39 @@ export const FloatingNav: React.FC<FloatingNavProps> = ({
   ];
 
   return (
-    <nav className="bg-white border-t border-slate-200 p-2.5 px-3 pb-[max(env(safe-area-inset-bottom,0px)+0.75rem,1rem)] flex-shrink-0 flex items-center justify-around z-40 shadow-lg text-slate-700 w-full shrink-0">
-      {tabs.map((tab) => {
-        const Icon = tab.icon;
-        const isActive = activeTab === tab.id;
+    <div className="fixed bottom-[max(env(safe-area-inset-bottom,12px),12px)] left-1/2 -translate-x-1/2 z-40 w-[calc(100%-3rem)] max-w-[360px] pointer-events-auto transition-all duration-300">
+      <nav className="glass-floating-dark rounded-full p-2 flex items-center justify-between shadow-2xl border border-slate-800/90 backdrop-blur-2xl bg-[#121212]/95 ring-1 ring-white/10 overflow-hidden">
+        {tabs.map((tab) => {
+          const Icon = tab.icon;
+          const isActive = activeTab === tab.id;
 
-        return (
-          <button
-            key={tab.id}
-            type="button"
-            onClick={() => onTabChange(tab.id)}
-            className={`flex flex-col items-center justify-center gap-1 py-1 px-2 rounded-xl transition-colors cursor-pointer flex-1 ${
-              isActive 
-                ? 'text-slate-950 font-black' 
-                : 'text-slate-400 hover:text-slate-700 font-bold'
-            }`}
-            aria-label={tab.label}
-          >
-            <div className={`relative flex items-center justify-center ${isActive ? 'scale-105' : ''} transition-transform`}>
-              <Icon className={`w-5 h-5 ${isActive ? 'text-slate-950 stroke-[2.5]' : 'text-slate-400 stroke-[2]'}`} />
+          return (
+            <button
+              key={tab.id}
+              type="button"
+              onClick={() => onTabChange(tab.id)}
+              className={`relative flex items-center justify-center gap-1.5 py-2.5 px-3.5 rounded-full transition-all duration-300 cursor-pointer ${
+                isActive
+                  ? 'bg-[#fcd502] text-[#121212] shadow-lg shadow-[#fcd502]/25 font-black flex-1 rounded-full'
+                  : 'text-slate-400 hover:text-white font-bold hover:bg-slate-800/60 rounded-full'
+              }`}
+              aria-label={tab.label}
+            >
+              <Icon className={`w-4.5 h-4.5 transition-all duration-300 ${
+                isActive ? 'scale-110 text-[#121212] fill-[#121212]/20 stroke-[2.5]' : 'text-slate-400 stroke-[2]'
+              }`} />
+              
               {isActive && (
-                <span className="absolute -bottom-1 w-1.5 h-1.5 rounded-full bg-[#fcd502]" />
+                <span className="text-[11px] font-black tracking-tight whitespace-nowrap text-[#121212]">
+                  {tab.label}
+                </span>
               )}
-            </div>
-            <span className={`text-[10px] tracking-tight text-center ${isActive ? 'font-black text-slate-950' : 'font-extrabold text-slate-400'}`}>
-              {tab.label}
-            </span>
-          </button>
-        );
-      })}
-    </nav>
+            </button>
+          );
+        })}
+      </nav>
+    </div>
   );
 };
+
 
