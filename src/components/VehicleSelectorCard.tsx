@@ -23,8 +23,8 @@ export const VehicleSelectorCard: React.FC<VehicleSelectorCardProps> = ({
   return (
     <div className="w-full space-y-2.5">
       <div className="flex items-center justify-between px-1">
-        <h3 className="text-base font-extrabold text-[#0F172A] tracking-tight">Select My Vehicle</h3>
-        <span className="text-[11px] font-bold text-[#a18200]">Your Car • Trained Driver</span>
+        <h3 className="text-base font-extrabold text-white tracking-tight">Select My Vehicle</h3>
+        <span className="text-[11px] font-bold text-[#fcd502]">Your Car • Trained Driver</span>
       </div>
 
       {/* Minimal 4-Pill Vehicle Type Selection Grid */}
@@ -43,16 +43,16 @@ export const VehicleSelectorCard: React.FC<VehicleSelectorCardProps> = ({
               key={vType.id}
               type="button"
               onClick={() => onSelectVehicle(matchingVehicle)}
-              className={`p-3 rounded-2xl transition-all duration-200 text-left cursor-pointer flex flex-col justify-between border relative overflow-hidden ${
+              className={`p-3 rounded-2xl transition-all duration-200 text-left cursor-pointer flex flex-col justify-between border relative overflow-hidden active:scale-95 ${
                 isSelected
-                  ? 'bg-[#121212] text-white border-zinc-800 shadow-lg scale-[1.02]'
-                  : 'bg-white text-slate-800 border-slate-200/80 hover:border-slate-300 hover:bg-slate-50 shadow-sm'
+                  ? 'bg-[#192233] text-white border-[#fcd502] shadow-lg shadow-[#fcd502]/10 scale-[1.02]'
+                  : 'bg-[#131926] text-slate-300 border-white/10 hover:border-white/20 hover:bg-[#192233]'
               }`}
             >
               <div className="flex items-center justify-between w-full mb-1">
                 <div
-                  className={`w-7 h-7 rounded-xl flex items-center justify-center ${
-                    isSelected ? 'bg-[#fcd502] text-[#121212]' : 'bg-slate-100 text-slate-600'
+                  className={`w-7 h-7 rounded-xl flex items-center justify-center transition-colors ${
+                    isSelected ? 'bg-[#fcd502] text-slate-950 font-bold' : 'bg-white/10 text-slate-300'
                   }`}
                 >
                   <IconComponent className="w-3.5 h-3.5" />
@@ -64,7 +64,7 @@ export const VehicleSelectorCard: React.FC<VehicleSelectorCardProps> = ({
               </div>
 
               <div>
-                <span className={`text-xs font-black tracking-tight block ${isSelected ? 'text-white' : 'text-slate-900'}`}>
+                <span className={`text-xs font-bold tracking-tight block ${isSelected ? 'text-white' : 'text-slate-200'}`}>
                   {vType.name}
                 </span>
                 <span className={`text-[9px] font-bold uppercase tracking-wider block mt-0.5 ${isSelected ? 'text-[#fcd502]' : 'text-slate-400'}`}>

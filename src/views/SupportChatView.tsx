@@ -85,32 +85,32 @@ export const SupportChatView: React.FC<SupportChatViewProps> = ({ onBack }) => {
   };
 
   return (
-    <div className="w-full h-full flex flex-col bg-[#FAFAFA] animate-fade-in overflow-hidden">
+    <div className="w-full h-full flex flex-col bg-[#0B0F19] text-white animate-fade-in overflow-hidden">
       {/* Sticky Header Bar */}
-      <div className="bg-white border-b border-slate-200 pt-[max(env(safe-area-inset-top,54px),54px)] pb-3 px-3.5 flex items-center justify-between shadow-xs z-10 flex-shrink-0 gap-2">
+      <div className="bg-[#0B0F19]/95 border-b border-white/10 pt-[max(env(safe-area-inset-top,54px),54px)] pb-3 px-3.5 flex items-center justify-between shadow-xs z-10 flex-shrink-0 gap-2">
         <div className="flex items-center gap-2 min-w-0">
           <button
             type="button"
             onClick={onBack}
-            className="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-700 hover:bg-slate-200 transition-colors cursor-pointer flex-shrink-0"
+            className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center text-slate-300 hover:bg-white/20 transition-colors cursor-pointer flex-shrink-0 active:scale-95"
           >
             <ChevronLeft className="w-5 h-5" />
           </button>
 
           <div className="flex items-center gap-2 min-w-0">
             <div className="relative flex-shrink-0">
-              <div className="w-8 h-8 rounded-xl bg-[#121212] text-[#fcd502] flex items-center justify-center font-black">
+              <div className="w-8 h-8 rounded-xl bg-[#192233] text-[#fcd502] flex items-center justify-center font-black">
                 <Headphones className="w-4 h-4 text-[#fcd502]" />
               </div>
-              <span className="w-2 h-2 rounded-full bg-[#fcd502] border border-white absolute -bottom-0.5 -right-0.5 animate-pulse" />
+              <span className="w-2 h-2 rounded-full bg-[#fcd502] border border-[#0B0F19] absolute -bottom-0.5 -right-0.5 animate-pulse" />
             </div>
 
             <div className="min-w-0">
-              <h3 className="font-extrabold text-xs sm:text-sm text-slate-900 leading-none truncate whitespace-nowrap">
+              <h3 className="font-extrabold text-xs sm:text-sm text-white leading-none truncate whitespace-nowrap">
                 24/7 Support Desk
               </h3>
-              <span className="text-[9px] text-emerald-600 font-bold flex items-center gap-1 leading-none mt-0.5 whitespace-nowrap">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-ping" /> Online • &lt;1m reply
+              <span className="text-[9px] text-emerald-400 font-bold flex items-center gap-1 leading-none mt-0.5 whitespace-nowrap">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping" /> Online • &lt;1m reply
               </span>
             </div>
           </div>
@@ -121,7 +121,7 @@ export const SupportChatView: React.FC<SupportChatViewProps> = ({ onBack }) => {
           {/* Direct Call Button */}
           <a
             href="tel:+18007434646"
-            className="px-2.5 py-1.5 rounded-xl bg-slate-900 text-[#fcd502] hover:bg-black font-extrabold text-[11px] flex items-center gap-1 shadow-xs transition-all cursor-pointer whitespace-nowrap"
+            className="px-2.5 py-1.5 rounded-xl bg-white/10 border border-white/10 text-[#fcd502] hover:bg-white/20 font-extrabold text-[11px] flex items-center gap-1 shadow-xs transition-all cursor-pointer whitespace-nowrap active:scale-95"
             title="Call Support Desk"
           >
             <Phone className="w-3 h-3 text-[#fcd502] fill-[#fcd502]/25 stroke-[2] flex-shrink-0" />
@@ -133,7 +133,7 @@ export const SupportChatView: React.FC<SupportChatViewProps> = ({ onBack }) => {
             href="https://wa.me/15550192834?text=Hello%20RIDINGO%20Support%2C%20I%20need%20assistance"
             target="_blank"
             rel="noopener noreferrer"
-            className="px-2.5 py-1.5 rounded-xl bg-emerald-600 text-white hover:bg-emerald-700 font-extrabold text-[11px] flex items-center gap-1 shadow-xs transition-all cursor-pointer whitespace-nowrap"
+            className="px-2.5 py-1.5 rounded-xl bg-emerald-600 text-white hover:bg-emerald-700 font-extrabold text-[11px] flex items-center gap-1 shadow-xs transition-all cursor-pointer whitespace-nowrap active:scale-95"
             title="Chat on WhatsApp"
           >
             <MessageCircle className="w-3 h-3 fill-current flex-shrink-0" />
@@ -143,10 +143,10 @@ export const SupportChatView: React.FC<SupportChatViewProps> = ({ onBack }) => {
       </div>
 
       {/* Chat Messages Body */}
-      <div className="flex-1 overflow-y-auto p-4 space-y-3.5 scrollbar-none relative">
+      <div className="flex-1 overflow-y-auto p-4 space-y-3.5 scrollbar-none relative bg-[#0B0F19]">
         {/* Encrypted Notice Banner */}
-        <div className="mx-auto w-fit px-3 py-1 rounded-full bg-slate-200/80 text-slate-600 text-[10px] font-bold flex items-center gap-1 border border-slate-300/60 shadow-2xs">
-          <ShieldCheck className="w-3 h-3 text-emerald-600" />
+        <div className="mx-auto w-fit px-3 py-1 rounded-full bg-white/5 text-slate-400 text-[10px] font-bold flex items-center gap-1 border border-white/10 shadow-2xs">
+          <ShieldCheck className="w-3 h-3 text-emerald-400" />
           <span>Encrypted 24/7 Concierge Support Channel</span>
         </div>
 
@@ -158,7 +158,7 @@ export const SupportChatView: React.FC<SupportChatViewProps> = ({ onBack }) => {
               className={`flex items-end gap-2 ${isAgent ? 'justify-start' : 'justify-end'}`}
             >
               {isAgent && (
-                <div className="w-7 h-7 rounded-xl bg-slate-900 text-[#fcd502] flex items-center justify-center font-bold text-xs flex-shrink-0">
+                <div className="w-7 h-7 rounded-xl bg-[#192233] text-[#fcd502] flex items-center justify-center font-bold text-xs flex-shrink-0 border border-white/10">
                   R
                 </div>
               )}
@@ -166,18 +166,18 @@ export const SupportChatView: React.FC<SupportChatViewProps> = ({ onBack }) => {
               <div
                 className={`max-w-[80%] sm:max-w-[75%] p-3.5 rounded-2xl text-xs space-y-1 shadow-sm ${
                   isAgent
-                    ? 'bg-white text-slate-900 rounded-bl-none border border-slate-200/90 font-medium'
-                    : 'bg-slate-900 text-white rounded-br-none font-medium'
+                    ? 'bg-[#131926] text-white rounded-bl-none border border-white/10 font-medium'
+                    : 'bg-[#fcd502] text-slate-950 rounded-br-none font-bold'
                 }`}
               >
                 <p className="leading-relaxed">{msg.text}</p>
                 <div
                   className={`flex items-center gap-1 text-[9px] ${
-                    isAgent ? 'text-slate-400 justify-start' : 'text-slate-300 justify-end'
+                    isAgent ? 'text-slate-400 justify-start' : 'text-slate-800 justify-end'
                   }`}
                 >
                   <span>{msg.time}</span>
-                  {!isAgent && <CheckCheck className="w-3 h-3 text-[#fcd502]" />}
+                  {!isAgent && <CheckCheck className="w-3 h-3 text-slate-950" />}
                 </div>
               </div>
             </div>
@@ -187,10 +187,10 @@ export const SupportChatView: React.FC<SupportChatViewProps> = ({ onBack }) => {
         {/* Typing indicator */}
         {isTyping && (
           <div className="flex items-center gap-2">
-            <div className="w-7 h-7 rounded-xl bg-slate-900 text-[#fcd502] flex items-center justify-center font-bold text-xs">
+            <div className="w-7 h-7 rounded-xl bg-[#192233] text-[#fcd502] flex items-center justify-center font-bold text-xs border border-white/10">
               R
             </div>
-            <div className="bg-white p-3 rounded-2xl rounded-bl-none border border-slate-200 shadow-sm flex items-center gap-1 text-slate-400">
+            <div className="bg-[#131926] p-3 rounded-2xl rounded-bl-none border border-white/10 shadow-sm flex items-center gap-1 text-slate-400">
               <span className="w-1.5 h-1.5 rounded-full bg-slate-400 animate-bounce" style={{ animationDelay: '0ms' }} />
               <span className="w-1.5 h-1.5 rounded-full bg-slate-400 animate-bounce" style={{ animationDelay: '150ms' }} />
               <span className="w-1.5 h-1.5 rounded-full bg-slate-400 animate-bounce" style={{ animationDelay: '300ms' }} />
@@ -202,13 +202,13 @@ export const SupportChatView: React.FC<SupportChatViewProps> = ({ onBack }) => {
       </div>
 
       {/* Suggestion Chips */}
-      <div className="px-3 pt-2 pb-1 bg-white border-t border-slate-100 flex items-center gap-1.5 overflow-x-auto scrollbar-none flex-shrink-0">
+      <div className="px-3 pt-2 pb-1 bg-[#0B0F19] border-t border-white/10 flex items-center gap-1.5 overflow-x-auto scrollbar-none flex-shrink-0">
         {quickTopics.map((topic, i) => (
           <button
             key={i}
             type="button"
             onClick={() => handleSendMessage(topic)}
-            className="px-2.5 py-1 rounded-full bg-slate-100 hover:bg-[#fcd502] hover:text-[#121212] text-slate-700 text-[10px] font-extrabold whitespace-nowrap transition-colors border border-slate-200/80 cursor-pointer flex-shrink-0"
+            className="px-2.5 py-1 rounded-full bg-[#131926] hover:bg-[#192233] hover:text-[#fcd502] text-slate-300 text-[10px] font-extrabold whitespace-nowrap transition-colors border border-white/10 cursor-pointer flex-shrink-0 active:scale-95"
           >
             {topic}
           </button>
@@ -221,12 +221,12 @@ export const SupportChatView: React.FC<SupportChatViewProps> = ({ onBack }) => {
           e.preventDefault();
           handleSendMessage();
         }}
-        className="p-3 px-4 pb-[max(env(safe-area-inset-bottom,0px)+0.85rem,1.25rem)] bg-white border-t border-slate-200 flex items-center gap-2 flex-shrink-0 z-30"
+        className="p-3 px-4 pb-[max(env(safe-area-inset-bottom,0px)+0.85rem,1.25rem)] bg-[#0B0F19] border-t border-white/10 flex items-center gap-2 flex-shrink-0 z-30"
       >
         <button
           type="button"
           onClick={() => alert("Photo / File attachment feature ready.")}
-          className="p-2.5 rounded-xl text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition-colors cursor-pointer"
+          className="p-2.5 rounded-xl text-slate-400 hover:text-white hover:bg-white/10 transition-colors cursor-pointer active:scale-95"
           title="Attach photo or document"
         >
           <Paperclip className="w-4 h-4" />
@@ -237,13 +237,13 @@ export const SupportChatView: React.FC<SupportChatViewProps> = ({ onBack }) => {
           value={inputText}
           onChange={(e) => setInputText(e.target.value)}
           placeholder="Type your question here..."
-          className="flex-1 px-3.5 py-2.5 rounded-2xl bg-slate-100 border border-slate-200 text-xs font-bold text-slate-900 placeholder:text-slate-400 placeholder:font-normal focus:outline-none focus:border-[#fcd502]"
+          className="flex-1 px-3.5 py-2.5 rounded-2xl bg-[#131926] border border-white/10 text-xs font-bold text-white placeholder:text-slate-500 placeholder:font-normal focus:outline-none focus:border-[#fcd502]"
         />
 
         <button
           type="submit"
           disabled={!inputText.trim()}
-          className="p-2.5 rounded-2xl bg-[#121212] hover:bg-black text-[#fcd502] disabled:opacity-40 transition-all cursor-pointer flex-shrink-0 shadow-md"
+          className="p-2.5 rounded-2xl bg-[#fcd502] hover:bg-[#fcd502]/90 text-slate-950 disabled:opacity-40 transition-all cursor-pointer flex-shrink-0 shadow-md active:scale-95"
         >
           <Send className="w-4 h-4" />
         </button>

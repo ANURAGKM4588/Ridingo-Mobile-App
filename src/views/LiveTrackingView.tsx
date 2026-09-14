@@ -246,15 +246,15 @@ export const LiveTrackingView: React.FC<LiveTrackingViewProps> = ({
          ═══════════════════════════════════════════════════════════════ */}
       {trackingStatus === 'idle' && (
         <div className="absolute bottom-0 left-0 right-0 w-full z-20 pointer-events-auto animate-slide-up-bottom">
-          <div className="w-full bg-white rounded-t-[32px] rounded-b-none px-5 pt-4 pb-28 sm:pb-32 shadow-[0_-15px_40px_rgba(0,0,0,0.14)] border-t border-slate-200/90 space-y-3.5 text-slate-900">
-            <div className="w-10 h-1 rounded-full bg-slate-300 mx-auto -mt-1" />
+          <div className="w-full bg-[#131926] rounded-t-[32px] rounded-b-none px-5 pt-4 pb-28 sm:pb-32 shadow-[0_-15px_40px_rgba(0,0,0,0.6)] border-t border-white/10 space-y-3.5 text-white">
+            <div className="w-10 h-1 rounded-full bg-slate-600 mx-auto -mt-1" />
 
             <div className="text-center py-2 space-y-1">
-              <div className="w-12 h-12 rounded-2xl bg-amber-50 border border-amber-200 text-amber-600 flex items-center justify-center mx-auto shadow-xs">
+              <div className="w-12 h-12 rounded-2xl bg-amber-500/15 border border-amber-500/30 text-[#fcd502] flex items-center justify-center mx-auto shadow-xs">
                 <Car className="w-6 h-6 stroke-[2.2]" />
               </div>
-              <h3 className="text-base font-black text-slate-900">No Active Chauffeur Trip</h3>
-              <p className="text-xs text-slate-500 font-medium max-w-xs mx-auto">
+              <h3 className="text-base font-black text-white">No Active Chauffeur Trip</h3>
+              <p className="text-xs text-slate-400 font-medium max-w-xs mx-auto">
                 Request an on-demand executive driver or schedule an airport transfer with live tracking.
               </p>
             </div>
@@ -263,7 +263,7 @@ export const LiveTrackingView: React.FC<LiveTrackingViewProps> = ({
               <button
                 type="button"
                 onClick={onNavigateToBook}
-                className="w-full py-3.5 rounded-2xl bg-[#fcd502] hover:bg-[#fde047] text-[#121212] font-black text-xs shadow-xl shadow-[#fcd502]/25 flex items-center justify-center gap-2 transition-all cursor-pointer"
+                className="w-full py-3.5 rounded-2xl bg-[#fcd502] hover:bg-[#fcd502]/90 text-slate-950 font-black text-xs shadow-xl shadow-[#fcd502]/25 flex items-center justify-center gap-2 transition-all cursor-pointer active:scale-95"
               >
                 <span>Book an Executive Driver</span>
                 <ArrowRight className="w-4 h-4 stroke-[2.5]" />
@@ -281,50 +281,50 @@ export const LiveTrackingView: React.FC<LiveTrackingViewProps> = ({
          ═══════════════════════════════════════════════════════════════ */}
       {trackingStatus === 'pending' && booking && (
         <div className="absolute bottom-0 left-0 right-0 w-full z-20 pointer-events-auto animate-slide-up-bottom">
-          <div className="w-full bg-white rounded-t-[32px] rounded-b-none px-5 pt-4 pb-28 sm:pb-32 shadow-[0_-15px_40px_rgba(0,0,0,0.14)] border-t border-slate-200/90 space-y-3.5 text-slate-900">
-            <div className="w-10 h-1 rounded-full bg-slate-300 mx-auto -mt-1 mb-1" />
+          <div className="w-full bg-[#131926] rounded-t-[32px] rounded-b-none px-5 pt-4 pb-28 sm:pb-32 shadow-[0_-15px_40px_rgba(0,0,0,0.6)] border-t border-white/10 space-y-3.5 text-white">
+            <div className="w-10 h-1 rounded-full bg-slate-600 mx-auto -mt-1 mb-1" />
 
             {/* Pending Status Header */}
-            <div className="flex items-center justify-between border-b border-slate-100 pb-2.5">
+            <div className="flex items-center justify-between border-b border-white/10 pb-2.5">
               <div className="flex items-center gap-2">
-                <div className="w-3 h-3 rounded-full bg-amber-400 animate-ping" />
+                <div className="w-3 h-3 rounded-full bg-[#fcd502] animate-ping" />
                 <div>
-                  <span className="text-[10px] font-black uppercase tracking-wider text-amber-800 block">
+                  <span className="text-[10px] font-black uppercase tracking-wider text-[#fcd502] block">
                     Pending Driver Acceptance
                   </span>
-                  <p className="text-xs font-bold text-slate-600">Dispatching to top 1% chauffeurs</p>
+                  <p className="text-xs font-bold text-slate-400">Dispatching to top 1% chauffeurs</p>
                 </div>
               </div>
-              <span className="px-2.5 py-1 rounded-full bg-amber-100 text-amber-900 text-[10px] font-black uppercase">
+              <span className="px-2.5 py-1 rounded-full bg-[#fcd502]/20 text-[#fcd502] border border-[#fcd502]/30 text-[10px] font-black uppercase">
                 Matching...
               </span>
             </div>
 
             {/* Requested Trip Details */}
-            <div className="rounded-2xl p-3 bg-slate-50 border border-slate-200/80 space-y-2 text-xs">
-              <div className="flex items-center justify-between text-[11px] font-bold text-slate-700 border-b border-slate-200/60 pb-1.5">
-                <span className="flex items-center gap-1.5 text-[#a18200]">
+            <div className="rounded-2xl p-3 bg-[#192233] border border-white/10 space-y-2 text-xs">
+              <div className="flex items-center justify-between text-[11px] font-bold text-slate-300 border-b border-white/10 pb-1.5">
+                <span className="flex items-center gap-1.5 text-[#fcd502]">
                   <Clock className="w-3.5 h-3.5" />
                   <span>Requested Time: {booking.date || 'Today'}, {booking.time || '2:30 PM'}</span>
                 </span>
-                <span className="font-mono text-slate-900 font-extrabold">
+                <span className="font-mono text-white font-extrabold">
                   {formatPrice(booking.priceTotal || 64.50, currentRegion, 2)}
                 </span>
               </div>
 
               <div className="flex items-start gap-2 pt-0.5">
-                <div className="w-3 h-3 rounded-full border-2 border-[#fcd502] bg-white flex-shrink-0 mt-0.5" />
+                <div className="w-3 h-3 rounded-full border-2 border-[#fcd502] bg-[#0B0F19] flex-shrink-0 mt-0.5" />
                 <div className="min-w-0 flex-1">
                   <span className="text-[9px] font-bold text-slate-400 uppercase tracking-wider block">Pickup</span>
-                  <span className="font-bold text-slate-900 block truncate">{booking.pickupLocation}</span>
+                  <span className="font-bold text-white block truncate">{booking.pickupLocation}</span>
                 </div>
               </div>
 
               <div className="flex items-start gap-2">
-                <MapPin className="w-3.5 h-3.5 text-rose-500 flex-shrink-0 mt-0.5" />
+                <MapPin className="w-3.5 h-3.5 text-rose-400 flex-shrink-0 mt-0.5" />
                 <div className="min-w-0 flex-1">
                   <span className="text-[9px] font-bold text-slate-400 uppercase tracking-wider block">Destination</span>
-                  <span className="font-bold text-slate-900 block truncate">{booking.destinationLocation}</span>
+                  <span className="font-bold text-white block truncate">{booking.destinationLocation}</span>
                 </div>
               </div>
             </div>
@@ -335,7 +335,7 @@ export const LiveTrackingView: React.FC<LiveTrackingViewProps> = ({
                 <button
                   type="button"
                   onClick={onCancelRide}
-                  className="py-3 px-3 rounded-xl bg-slate-100 hover:bg-rose-50 text-slate-700 hover:text-rose-700 font-bold text-xs border border-slate-200 transition-colors cursor-pointer"
+                  className="py-3 px-3 rounded-xl bg-white/10 hover:bg-rose-500/20 text-slate-300 hover:text-rose-400 font-bold text-xs border border-white/10 transition-colors cursor-pointer active:scale-95"
                 >
                   Cancel Request
                 </button>
@@ -344,7 +344,7 @@ export const LiveTrackingView: React.FC<LiveTrackingViewProps> = ({
               <button
                 type="button"
                 onClick={() => setTrackingStatus('accepted')}
-                className="py-3 px-3 rounded-xl bg-[#121212] hover:bg-black text-[#fcd502] font-black text-xs shadow-lg flex items-center justify-center gap-1.5 transition-all cursor-pointer"
+                className="py-3 px-3 rounded-xl bg-[#fcd502] hover:bg-[#fcd502]/90 text-slate-950 font-black text-xs shadow-lg flex items-center justify-center gap-1.5 transition-all cursor-pointer active:scale-95"
               >
                 <span>Chauffeur Accepted ➔</span>
               </button>
@@ -362,24 +362,24 @@ export const LiveTrackingView: React.FC<LiveTrackingViewProps> = ({
          ═══════════════════════════════════════════════════════════════ */}
       {trackingStatus === 'accepted' && booking && (
         <div className="absolute bottom-0 left-0 right-0 w-full z-20 pointer-events-auto animate-slide-up-bottom">
-          <div className="w-full bg-white rounded-t-[32px] rounded-b-none px-5 pt-4 pb-28 sm:pb-32 shadow-[0_-15px_40px_rgba(0,0,0,0.14)] border-t border-slate-200/90 space-y-3 text-slate-900">
-            <div className="w-10 h-1 rounded-full bg-slate-300 mx-auto -mt-1 mb-1" />
+          <div className="w-full bg-[#131926] rounded-t-[32px] rounded-b-none px-5 pt-4 pb-28 sm:pb-32 shadow-[0_-15px_40px_rgba(0,0,0,0.6)] border-t border-white/10 space-y-3 text-white">
+            <div className="w-10 h-1 rounded-full bg-slate-600 mx-auto -mt-1 mb-1" />
 
             {/* Accepted Header */}
-            <div className="flex items-center justify-between border-b border-slate-100 pb-2.5">
+            <div className="flex items-center justify-between border-b border-white/10 pb-2.5">
               <div>
-                <span className="text-[10px] font-black uppercase tracking-wider text-emerald-700 block">
+                <span className="text-[10px] font-black uppercase tracking-wider text-emerald-400 block">
                   Chauffeur Assigned & Accepted
                 </span>
-                <p className="text-xs font-bold text-slate-700">Driver is preparing for pickup</p>
+                <p className="text-xs font-bold text-slate-400">Driver is preparing for pickup</p>
               </div>
-              <span className="px-2.5 py-1 rounded-full bg-emerald-100 text-emerald-900 text-[10px] font-black uppercase shadow-2xs">
+              <span className="px-2.5 py-1 rounded-full bg-emerald-500/15 text-emerald-400 border border-emerald-500/30 text-[10px] font-black uppercase shadow-2xs">
                 ✓ Accepted
               </span>
             </div>
 
             {/* Accepted Driver Details Card */}
-            <div className="flex items-center justify-between gap-3 p-2.5 rounded-2xl bg-slate-50 border border-slate-200/80">
+            <div className="flex items-center justify-between gap-3 p-2.5 rounded-2xl bg-[#192233] border border-white/10">
               <div
                 onClick={() => onOpenDriverProfile(driver)}
                 className="flex items-center gap-2.5 cursor-pointer group min-w-0 flex-1"
@@ -388,19 +388,19 @@ export const LiveTrackingView: React.FC<LiveTrackingViewProps> = ({
                   <img
                     src={driver.photo}
                     alt={driver.name}
-                    className="w-12 h-12 rounded-2xl object-cover border border-slate-100 shadow-md group-hover:scale-105 transition-transform"
+                    className="w-12 h-12 rounded-2xl object-cover border border-white/10 shadow-md group-hover:scale-105 transition-transform"
                   />
-                  <span className="absolute -bottom-1 -right-1 w-4 h-4 rounded-full bg-[#fcd502] text-[#121212] flex items-center justify-center text-[8px] font-black shadow-xs">✓</span>
+                  <span className="absolute -bottom-1 -right-1 w-4 h-4 rounded-full bg-[#fcd502] text-slate-950 flex items-center justify-center text-[8px] font-black shadow-xs">✓</span>
                 </div>
                 <div className="min-w-0 flex-1">
-                  <h4 className="font-black text-sm text-slate-900 group-hover:text-[#a18200] transition-colors truncate leading-snug">
+                  <h4 className="font-black text-sm text-white group-hover:text-[#fcd502] transition-colors truncate leading-snug">
                     {driver.name}
                   </h4>
-                  <div className="flex items-center gap-1 text-[11px] text-slate-500 font-bold mt-0.5 whitespace-nowrap truncate">
-                    <span className="flex items-center gap-0.5 text-amber-500 font-black flex-shrink-0">
+                  <div className="flex items-center gap-1 text-[11px] text-slate-400 font-bold mt-0.5 whitespace-nowrap truncate">
+                    <span className="flex items-center gap-0.5 text-amber-400 font-black flex-shrink-0">
                       <Star className="w-3 h-3 fill-current" /> {driver.rating}
                     </span>
-                    <span className="text-slate-300">•</span>
+                    <span className="text-slate-600">•</span>
                     <span className="truncate">{driver.yearsExperience} Yrs Exp</span>
                   </div>
                 </div>
@@ -410,18 +410,18 @@ export const LiveTrackingView: React.FC<LiveTrackingViewProps> = ({
               <div className="flex items-center gap-1.5 flex-shrink-0">
                 <a
                   href={`tel:${driver.phone}`}
-                  className="w-10 h-10 rounded-xl bg-[#121212] hover:bg-black text-[#fcd502] flex items-center justify-center shadow-md transition-all active:scale-95 cursor-pointer"
+                  className="w-10 h-10 rounded-xl bg-[#fcd502] hover:bg-[#fcd502]/90 text-slate-950 flex items-center justify-center shadow-md transition-all active:scale-95 cursor-pointer"
                   title="Call Driver"
                 >
-                  <Phone className="w-4 h-4 text-[#fcd502] fill-[#fcd502]/25 stroke-[2]" />
+                  <Phone className="w-4 h-4 text-slate-950 fill-slate-950/25 stroke-[2]" />
                 </a>
                 <button
                   type="button"
                   onClick={() => alert(`Opening encrypted instant chat with ${driver.name}`)}
-                  className="w-10 h-10 rounded-xl bg-white text-slate-800 hover:bg-slate-100 flex items-center justify-center border border-slate-200 shadow-2xs transition-all active:scale-95 cursor-pointer"
+                  className="w-10 h-10 rounded-xl bg-white/10 text-slate-200 hover:bg-white/20 flex items-center justify-center border border-white/10 shadow-2xs transition-all active:scale-95 cursor-pointer"
                   title="Chat Driver"
                 >
-                  <MessageSquare className="w-4 h-4 text-slate-700 fill-slate-700/20 stroke-[2]" />
+                  <MessageSquare className="w-4 h-4 text-slate-300 stroke-[2]" />
                 </button>
               </div>
             </div>
@@ -434,7 +434,7 @@ export const LiveTrackingView: React.FC<LiveTrackingViewProps> = ({
                 setIsLiveTracking(true);
                 setIsSheetMinimized(true); // Smoothly slide down sheet so user sees full map view!
               }}
-              className="w-full py-3.5 rounded-2xl bg-[#fcd502] hover:bg-[#fde047] text-[#121212] font-black text-xs shadow-xl shadow-[#fcd502]/30 flex items-center justify-center gap-2 transition-all cursor-pointer active:scale-[0.99]"
+              className="w-full py-3.5 rounded-2xl bg-[#fcd502] hover:bg-[#fcd502]/90 text-slate-950 font-black text-xs shadow-xl shadow-[#fcd502]/30 flex items-center justify-center gap-2 transition-all cursor-pointer active:scale-95"
             >
               <Play className="w-4 h-4 fill-current stroke-[2.5]" />
               <span>Start Live GPS Tracking</span>
@@ -452,19 +452,19 @@ export const LiveTrackingView: React.FC<LiveTrackingViewProps> = ({
         <div className={`absolute bottom-0 left-0 right-0 w-full z-20 pointer-events-auto transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ${
           isSheetMinimized ? 'translate-y-[calc(100%-62px)]' : 'translate-y-0'
         }`}>
-          <div className="w-full bg-white rounded-t-[32px] rounded-b-none px-5 pt-2 pb-28 sm:pb-32 shadow-[0_-15px_40px_rgba(0,0,0,0.14)] border-t border-slate-200/90 space-y-3 text-slate-900">
+          <div className="w-full bg-[#131926] rounded-t-[32px] rounded-b-none px-5 pt-2 pb-28 sm:pb-32 shadow-[0_-15px_40px_rgba(0,0,0,0.6)] border-t border-white/10 space-y-3 text-white">
             
             {/* Drag Handle & Smooth Sheet Collapse / Expand Toggle */}
             <button
               type="button"
               onClick={() => setIsSheetMinimized(!isSheetMinimized)}
-              className="w-full flex flex-col items-center justify-center pt-1 pb-1 cursor-pointer group"
+              className="w-full flex flex-col items-center justify-center pt-1 pb-1 cursor-pointer group active:scale-95"
             >
-              <div className="w-10 h-1.2 rounded-full bg-slate-300 group-hover:bg-slate-400 transition-colors mb-1" />
-              <span className="text-[10px] font-black uppercase tracking-wider text-[#a18200] flex items-center gap-1">
+              <div className="w-10 h-1.2 rounded-full bg-slate-600 group-hover:bg-slate-500 transition-colors mb-1" />
+              <span className="text-[10px] font-black uppercase tracking-wider text-[#fcd502] flex items-center gap-1">
                 {isSheetMinimized ? (
                   <>
-                    <ChevronUp className="w-3.5 h-3.5 text-[#a18200] animate-bounce" />
+                    <ChevronUp className="w-3.5 h-3.5 text-[#fcd502] animate-bounce" />
                     <span>Tap to Expand Driver Details</span>
                   </>
                 ) : (
@@ -477,23 +477,23 @@ export const LiveTrackingView: React.FC<LiveTrackingViewProps> = ({
             </button>
 
             {/* ETA & Live Status Row */}
-            <div className="flex items-center justify-between border-b border-slate-100 pb-2.5">
+            <div className="flex items-center justify-between border-b border-white/10 pb-2.5">
               <div>
-                <span className="text-[10px] font-black uppercase tracking-widest text-[#a18200]">
+                <span className="text-[10px] font-black uppercase tracking-widest text-[#fcd502]">
                   Driver En Route
                 </span>
-                <h3 className="text-xl font-black text-slate-900 flex items-center gap-1.5 mt-0.5">
+                <h3 className="text-xl font-black text-white flex items-center gap-1.5 mt-0.5">
                   <Clock className="w-4 h-4 text-[#fcd502] fill-[#fcd502]/25 stroke-[2]" />
                   {etaMins > 0 ? `${etaMins} Mins` : 'Arriving Now'}
                 </h3>
                 {lastSeen && (
-                  <p className="text-[10px] text-emerald-600 font-bold mt-0.5">
+                  <p className="text-[10px] text-emerald-400 font-bold mt-0.5">
                     GPS updated {Math.round((Date.now() - lastSeen.getTime()) / 1000)}s ago
                   </p>
                 )}
               </div>
               <div className="text-right">
-                <span className="px-3 py-1 rounded-full bg-[#121212] text-[#fcd502] text-[10px] font-black uppercase tracking-wider shadow-xs">
+                <span className="px-3 py-1 rounded-full bg-white/10 text-[#fcd502] border border-white/10 text-[10px] font-black uppercase tracking-wider shadow-xs">
                   {booking ? booking.vehicle.name : 'Executive Sedan'}
                 </span>
                 <p className="text-[10px] text-slate-400 font-bold mt-1">Confirmed Chauffeur</p>
@@ -510,19 +510,19 @@ export const LiveTrackingView: React.FC<LiveTrackingViewProps> = ({
                   <img
                     src={driver.photo}
                     alt={driver.name}
-                    className="w-11 h-11 rounded-2xl object-cover border border-slate-100 shadow-md group-hover:scale-105 transition-transform"
+                    className="w-11 h-11 rounded-2xl object-cover border border-white/10 shadow-md group-hover:scale-105 transition-transform"
                   />
-                  <span className="absolute -bottom-1 -right-1 w-4 h-4 rounded-full bg-[#fcd502] text-[#121212] flex items-center justify-center text-[8px] font-black shadow-xs">✓</span>
+                  <span className="absolute -bottom-1 -right-1 w-4 h-4 rounded-full bg-[#fcd502] text-slate-950 flex items-center justify-center text-[8px] font-black shadow-xs">✓</span>
                 </div>
                 <div className="min-w-0 flex-1">
-                  <h4 className="font-black text-sm text-slate-900 group-hover:text-[#a18200] transition-colors truncate leading-snug">
+                  <h4 className="font-black text-sm text-white group-hover:text-[#fcd502] transition-colors truncate leading-snug">
                     {driver.name}
                   </h4>
-                  <div className="flex items-center gap-1 text-[11px] text-slate-500 font-bold mt-0.5 whitespace-nowrap truncate">
-                    <span className="flex items-center gap-0.5 text-amber-500 font-black flex-shrink-0">
+                  <div className="flex items-center gap-1 text-[11px] text-slate-400 font-bold mt-0.5 whitespace-nowrap truncate">
+                    <span className="flex items-center gap-0.5 text-amber-400 font-black flex-shrink-0">
                       <Star className="w-3 h-3 fill-current" /> {driver.rating}
                     </span>
-                    <span className="text-slate-300">•</span>
+                    <span className="text-slate-600">•</span>
                     <span className="truncate">{driver.yearsExperience} Yrs Exp</span>
                   </div>
                 </div>
@@ -532,31 +532,31 @@ export const LiveTrackingView: React.FC<LiveTrackingViewProps> = ({
               <div className="flex items-center gap-1.5 flex-shrink-0">
                 <a
                   href={`tel:${driver.phone}`}
-                  className="w-9 h-9 rounded-xl bg-[#121212] hover:bg-black text-[#fcd502] flex items-center justify-center shadow-md transition-all active:scale-95 cursor-pointer"
+                  className="w-9 h-9 rounded-xl bg-[#fcd502] hover:bg-[#fcd502]/90 text-slate-950 flex items-center justify-center shadow-md transition-all active:scale-95 cursor-pointer"
                   title="Call Driver"
                 >
-                  <Phone className="w-4 h-4 text-[#fcd502] fill-[#fcd502]/25 stroke-[2]" />
+                  <Phone className="w-4 h-4 text-slate-950 stroke-[2]" />
                 </a>
                 <button
                   type="button"
                   onClick={() => alert(`Opening encrypted instant chat with ${driver.name}`)}
-                  className="w-9 h-9 rounded-xl bg-slate-100 text-slate-800 hover:bg-slate-200 flex items-center justify-center border border-slate-200 shadow-2xs transition-all active:scale-95 cursor-pointer"
+                  className="w-9 h-9 rounded-xl bg-white/10 text-slate-200 hover:bg-white/20 flex items-center justify-center border border-white/10 shadow-2xs transition-all active:scale-95 cursor-pointer"
                   title="Chat Driver"
                 >
-                  <MessageSquare className="w-4 h-4 text-slate-700 fill-slate-700/20 stroke-[2]" />
+                  <MessageSquare className="w-4 h-4 text-slate-300 stroke-[2]" />
                 </button>
               </div>
             </div>
 
             {/* Trip Details Toggle */}
-            <div className="pt-2 border-t border-slate-100 flex items-center justify-between text-[11px] font-extrabold text-slate-700">
-              <span className="flex items-center gap-1 text-[#a18200]">
-                <CheckCircle2 className="w-3.5 h-3.5 text-[#fcd502] fill-[#fcd502]/25 stroke-[2]" /> Suit Uniform Attire
+            <div className="pt-2 border-t border-white/10 flex items-center justify-between text-[11px] font-extrabold text-slate-300">
+              <span className="flex items-center gap-1 text-[#fcd502]">
+                <CheckCircle2 className="w-3.5 h-3.5 text-[#fcd502] stroke-[2]" /> Suit Uniform Attire
               </span>
               <button
                 type="button"
                 onClick={() => setShowDetailsSheet(!showDetailsSheet)}
-                className="flex items-center gap-1 text-slate-600 hover:text-slate-900 cursor-pointer"
+                className="flex items-center gap-1 text-slate-400 hover:text-white cursor-pointer active:scale-95"
               >
                 <span>{showDetailsSheet ? 'Hide Details' : 'Trip Details'}</span>
                 <ChevronDown className={`w-3.5 h-3.5 transition-transform ${showDetailsSheet ? 'rotate-180' : ''}`} />
@@ -565,26 +565,26 @@ export const LiveTrackingView: React.FC<LiveTrackingViewProps> = ({
 
             {/* Expandable Route Details */}
             {showDetailsSheet && (
-              <div className="pt-2 space-y-2 text-xs text-slate-600 animate-fade-in border-t border-slate-100">
+              <div className="pt-2 space-y-2 text-xs text-slate-300 animate-fade-in border-t border-white/10">
                 <div className="flex items-start gap-2">
                   <Navigation className="w-3.5 h-3.5 text-[#fcd502] mt-0.5 flex-shrink-0" />
                   <div className="min-w-0">
                     <p className="text-[10px] text-slate-400 font-bold uppercase">Pickup Location</p>
-                    <p className="font-extrabold text-slate-800 truncate">{booking.pickupLocation}</p>
+                    <p className="font-extrabold text-white truncate">{booking.pickupLocation}</p>
                   </div>
                 </div>
                 <div className="flex items-start gap-2">
-                  <MapPin className="w-3.5 h-3.5 text-rose-500 mt-0.5 flex-shrink-0" />
+                  <MapPin className="w-3.5 h-3.5 text-rose-400 mt-0.5 flex-shrink-0" />
                   <div className="min-w-0">
                     <p className="text-[10px] text-slate-400 font-bold uppercase">Destination</p>
-                    <p className="font-extrabold text-slate-800 truncate">{booking.destinationLocation}</p>
+                    <p className="font-extrabold text-white truncate">{booking.destinationLocation}</p>
                   </div>
                 </div>
                 {onCancelRide && (
                   <button
                     type="button"
                     onClick={onCancelRide}
-                    className="w-full py-2.5 mt-1 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-600 font-black text-xs transition-colors cursor-pointer"
+                    className="w-full py-2.5 mt-1 rounded-xl bg-rose-500/20 hover:bg-rose-500/30 text-rose-400 font-black text-xs transition-colors cursor-pointer active:scale-95"
                   >
                     Cancel Ride
                   </button>

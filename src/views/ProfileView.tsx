@@ -57,14 +57,14 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
   const firstName = userName ? userName.trim().split(' ')[0] : 'Alexander';
 
   return (
-    <div className="flex flex-col h-full w-full bg-[#FAFAFA] overflow-hidden">
-      {/* ── Solid White Camera Notch & Dynamic Island Mask (No text/content) ── */}
-      <div className="shrink-0 sticky top-0 z-50 w-full pt-[max(env(safe-area-inset-top),44px)] bg-white pointer-events-none" />
+    <div className="flex flex-col h-full w-full bg-[#0B0F19] text-white overflow-hidden">
+      {/* ── Solid Camera Notch & Dynamic Island Mask ── */}
+      <div className="shrink-0 sticky top-0 z-50 w-full pt-[max(env(safe-area-inset-top),44px)] bg-[#0B0F19] pointer-events-none" />
 
       {/* ── Scrollable Profile Content ── */}
       <div className="flex-1 overflow-y-auto px-4 py-4 pb-36 space-y-4 scrollbar-none animate-fade-in">
         {/* Premium Profile Header Card */}
-        <div className="rounded-[32px] p-5 text-slate-900 bg-gradient-to-b from-white via-white to-slate-50 border border-slate-200/90 shadow-lg relative overflow-hidden animate-drop-up stagger-1">
+        <div className="rounded-[32px] p-5 text-white bg-[#131926] border border-white/10 shadow-lg relative overflow-hidden animate-drop-up stagger-1">
           <div className="absolute top-0 right-0 w-32 h-32 bg-[#fcd502]/10 rounded-full blur-2xl pointer-events-none" />
 
         <div className="flex items-center gap-4 relative z-10">
@@ -72,34 +72,34 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
             <img
               src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80"
               alt={firstName}
-              className="w-18 h-18 sm:w-20 sm:h-20 rounded-2xl object-cover border-2 border-white shadow-md bg-slate-100"
+              className="w-18 h-18 sm:w-20 sm:h-20 rounded-2xl object-cover border-2 border-white/10 shadow-md bg-[#192233]"
             />
           </div>
 
           <div className="min-w-0 flex-1">
             <div className="flex items-center gap-1.5">
-              <h2 className="text-xl sm:text-2xl font-black tracking-tight text-slate-900 truncate">{firstName}</h2>
+              <h2 className="text-xl sm:text-2xl font-black tracking-tight text-white truncate">{firstName}</h2>
             </div>
-            <p className="text-xs text-slate-500 font-medium truncate mt-0.5">{userEmail}</p>
-            <p className="text-[11px] text-slate-400 font-bold mt-0.5">{userPhone}</p>
+            <p className="text-xs text-slate-400 font-medium truncate mt-0.5">{userEmail}</p>
+            <p className="text-[11px] text-slate-500 font-bold mt-0.5">{userPhone}</p>
           </div>
         </div>
 
         {/* Quick User Stats Bar */}
-        <div className="mt-4 pt-3.5 border-t border-slate-100 grid grid-cols-3 gap-2 text-center">
-          <div className="bg-slate-50 p-2 rounded-2xl border border-slate-200/50">
+        <div className="mt-4 pt-3.5 border-t border-white/10 grid grid-cols-3 gap-2 text-center">
+          <div className="bg-[#192233] p-2 rounded-2xl border border-white/10">
             <span className="block text-[10px] font-bold uppercase tracking-wider text-slate-400">Total Rides</span>
-            <span className="text-sm font-black text-slate-900 mt-0.5 block">24</span>
+            <span className="text-sm font-black text-white mt-0.5 block">24</span>
           </div>
-          <div className="bg-slate-50 p-2 rounded-2xl border border-slate-200/50">
+          <div className="bg-[#192233] p-2 rounded-2xl border border-white/10">
             <span className="block text-[10px] font-bold uppercase tracking-wider text-slate-400">Rating</span>
-            <span className="text-sm font-black text-slate-900 mt-0.5 block flex items-center justify-center gap-1">
-              <Star className="w-3 h-3 text-amber-500 fill-amber-500" /> 4.98
+            <span className="text-sm font-black text-white mt-0.5 block flex items-center justify-center gap-1">
+              <Star className="w-3 h-3 text-amber-400 fill-amber-400" /> 4.98
             </span>
           </div>
-          <div className="bg-slate-50 p-2 rounded-2xl border border-slate-200/50">
+          <div className="bg-[#192233] p-2 rounded-2xl border border-white/10">
             <span className="block text-[10px] font-bold uppercase tracking-wider text-slate-400">Member Since</span>
-            <span className="text-sm font-black text-slate-900 mt-0.5 block">2024</span>
+            <span className="text-sm font-black text-white mt-0.5 block">2024</span>
           </div>
         </div>
       </div>
@@ -109,28 +109,28 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
         <div className="flex items-center justify-between px-1">
           <div className="flex items-center gap-2">
             <MapPin className="w-4 h-4 text-[#fcd502]" />
-            <h3 className="text-sm font-black text-[#0F172A] tracking-tight">{t.savedAddresses}</h3>
+            <h3 className="text-sm font-black text-white tracking-tight">{t.savedAddresses}</h3>
           </div>
           <button 
             type="button"
             onClick={() => alert("Add new address modal coming soon")}
-            className="text-[11px] font-extrabold text-[#a18200] hover:underline flex items-center gap-0.5 cursor-pointer"
+            className="text-[11px] font-extrabold text-[#fcd502] hover:underline flex items-center gap-0.5 cursor-pointer active:scale-95"
           >
             <Plus className="w-3 h-3" /> Add Address
           </button>
         </div>
 
-        <div className="bg-white rounded-2xl p-3.5 border border-slate-200 shadow-xs space-y-2.5">
+        <div className="bg-[#131926] rounded-2xl p-3.5 border border-white/10 shadow-xs space-y-2.5">
           {savedLocations.map((loc) => (
-            <div key={loc.id} className="flex items-center justify-between py-1 border-b border-slate-100 last:border-none">
+            <div key={loc.id} className="flex items-center justify-between py-1 border-b border-white/10 last:border-none">
               <div className="flex items-center gap-2.5 min-w-0 flex-1">
                 <span className="text-base flex-shrink-0">{loc.icon}</span>
                 <div className="min-w-0">
-                  <span className="font-extrabold text-xs text-slate-900 block leading-snug">{loc.label}</span>
-                  <span className="text-[11px] text-slate-500 font-medium truncate block">{loc.address}</span>
+                  <span className="font-extrabold text-xs text-white block leading-snug">{loc.label}</span>
+                  <span className="text-[11px] text-slate-400 font-medium truncate block">{loc.address}</span>
                 </div>
               </div>
-              <ChevronRight className="w-4 h-4 text-slate-400 flex-shrink-0 ml-2" />
+              <ChevronRight className="w-4 h-4 text-slate-500 flex-shrink-0 ml-2" />
             </div>
           ))}
         </div>
@@ -140,66 +140,66 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
       <div className="space-y-2 animate-drop-up stagger-3">
         <div className="flex items-center justify-between px-1">
           <div className="flex items-center gap-2">
-            <ShieldAlert className="w-4 h-4 text-rose-600" />
-            <h3 className="text-sm font-black text-[#0F172A] tracking-tight">{t.emergencyContacts}</h3>
+            <ShieldAlert className="w-4 h-4 text-rose-500" />
+            <h3 className="text-sm font-black text-white tracking-tight">{t.emergencyContacts}</h3>
           </div>
         </div>
 
-        <div className="bg-white rounded-2xl p-3.5 border border-slate-200 shadow-xs space-y-2 text-xs">
+        <div className="bg-[#131926] rounded-2xl p-3.5 border border-white/10 shadow-xs space-y-2 text-xs">
           {emergencyContacts.map((c, idx) => (
-            <div key={idx} className="flex items-center justify-between p-2.5 rounded-xl bg-slate-50 border border-slate-200/60">
+            <div key={idx} className="flex items-center justify-between p-2.5 rounded-xl bg-[#192233] border border-white/10">
               <div>
-                <span className="font-bold text-slate-900 block">{c.name}</span>
+                <span className="font-bold text-white block">{c.name}</span>
                 <span className="text-[10px] font-bold text-slate-400">{c.relation}</span>
               </div>
-              <span className="font-mono font-bold text-slate-600 bg-white px-2.5 py-1 rounded-lg border border-slate-200">{c.phone}</span>
+              <span className="font-mono font-bold text-[#fcd502] bg-[#131926] px-2.5 py-1 rounded-lg border border-white/10">{c.phone}</span>
             </div>
           ))}
         </div>
       </div>
 
       {/* Account Settings & Preferences */}
-      <div className="bg-white rounded-2xl p-2 border border-slate-200 shadow-xs space-y-1 text-xs font-bold animate-drop-up stagger-4">
+      <div className="bg-[#131926] rounded-2xl p-2 border border-white/10 shadow-xs space-y-1 text-xs font-bold animate-drop-up stagger-4">
         <button
           type="button"
           onClick={onOpenWallet}
-          className="w-full p-3 rounded-xl hover:bg-slate-50 flex items-center justify-between text-slate-800 transition-colors cursor-pointer"
+          className="w-full p-3 rounded-xl hover:bg-white/5 flex items-center justify-between text-slate-200 transition-colors cursor-pointer active:scale-[0.99]"
         >
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-lg bg-lime-100 text-[#a18200] flex items-center justify-center">
+            <div className="w-8 h-8 rounded-lg bg-[#fcd502]/15 text-[#fcd502] flex items-center justify-center">
               <CreditCard className="w-4 h-4" />
             </div>
             <span className="font-extrabold">{t.paymentMethodsWallet}</span>
           </div>
-          <ChevronRight className="w-4 h-4 text-slate-400" />
+          <ChevronRight className="w-4 h-4 text-slate-500" />
         </button>
 
         <button
           type="button"
           onClick={onOpenSupport}
-          className="w-full p-3 rounded-xl hover:bg-slate-50 flex items-center justify-between text-slate-800 transition-colors cursor-pointer"
+          className="w-full p-3 rounded-xl hover:bg-white/5 flex items-center justify-between text-slate-200 transition-colors cursor-pointer active:scale-[0.99]"
         >
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-lg bg-blue-100 text-blue-600 flex items-center justify-center">
+            <div className="w-8 h-8 rounded-lg bg-blue-500/15 text-blue-400 flex items-center justify-center">
               <Headphones className="w-4 h-4" />
             </div>
             <span className="font-extrabold">{t.customerSupport}</span>
           </div>
-          <ChevronRight className="w-4 h-4 text-slate-400" />
+          <ChevronRight className="w-4 h-4 text-slate-500" />
         </button>
 
         <button
           type="button"
           onClick={onOpenLanguage}
-          className="w-full p-3 rounded-xl hover:bg-slate-50 flex items-center justify-between text-slate-800 transition-colors cursor-pointer"
+          className="w-full p-3 rounded-xl hover:bg-white/5 flex items-center justify-between text-slate-200 transition-colors cursor-pointer active:scale-[0.99]"
         >
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-lg bg-purple-100 text-purple-600 flex items-center justify-center">
+            <div className="w-8 h-8 rounded-lg bg-purple-500/15 text-purple-400 flex items-center justify-center">
               <Globe className="w-4 h-4" />
             </div>
             <span className="font-extrabold">{t.languageRegion}</span>
           </div>
-          <span className="text-[11px] font-extrabold text-[#a18200]">
+          <span className="text-[11px] font-extrabold text-[#fcd502]">
             {currentLanguage === 'ml-in' ? 'മലയാളം' : currentLanguage === 'hi-in' ? 'ഹിन्दी' : currentLanguage === 'es-es' ? 'Español' : currentLanguage === 'fr-fr' ? 'Français' : currentLanguage === 'de-de' ? 'Deutsch' : currentLanguage === 'ar-sa' ? 'العربية' : currentLanguage === 'pt-br' ? 'Português' : 'English'} • {CURRENCIES[currentRegion]?.currencySymbol || '$'} ({CURRENCIES[currentRegion]?.currencyCode || 'USD'})
           </span>
         </button>
@@ -207,10 +207,10 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
         <button
           type="button"
           onClick={() => setShowLogoutConfirm(true)}
-          className="w-full p-3 rounded-xl hover:bg-rose-50 flex items-center justify-between text-rose-600 transition-colors mt-1 cursor-pointer"
+          className="w-full p-3 rounded-xl hover:bg-rose-500/10 flex items-center justify-between text-rose-400 transition-colors mt-1 cursor-pointer active:scale-[0.99]"
         >
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-lg bg-rose-100 text-rose-600 flex items-center justify-center">
+            <div className="w-8 h-8 rounded-lg bg-rose-500/15 text-rose-400 flex items-center justify-center">
               <LogOut className="w-4 h-4" />
             </div>
             <span className="font-black">{t.logout}</span>
@@ -220,14 +220,14 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
 
       {/* Logout Confirmation Popup Modal */}
       {showLogoutConfirm && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-fade-in">
-          <div className="bg-white rounded-3xl p-5 max-w-xs w-full shadow-2xl border border-slate-100 text-center space-y-4 animate-scale-up">
-            <div className="w-12 h-12 rounded-2xl bg-rose-100 text-rose-600 flex items-center justify-center mx-auto">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-xs animate-fade-in">
+          <div className="bg-[#131926] text-white rounded-3xl p-5 max-w-xs w-full shadow-2xl border border-white/10 text-center space-y-4 animate-scale-up">
+            <div className="w-12 h-12 rounded-2xl bg-rose-500/15 text-rose-400 flex items-center justify-center mx-auto">
               <LogOut className="w-6 h-6 stroke-[2.5]" />
             </div>
             <div>
-              <h3 className="text-lg font-black text-slate-900">Log Out of RIDINGO?</h3>
-              <p className="text-xs text-slate-500 font-medium mt-1">
+              <h3 className="text-lg font-black text-white">Log Out of RIDINGO?</h3>
+              <p className="text-xs text-slate-400 font-medium mt-1">
                 Are you sure you want to log out? You will need to sign back in to access your bookings and wallet.
               </p>
             </div>
@@ -235,7 +235,7 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
               <button
                 type="button"
                 onClick={() => setShowLogoutConfirm(false)}
-                className="py-2.5 px-4 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 font-extrabold text-xs cursor-pointer"
+                className="py-2.5 px-4 rounded-xl border border-white/10 bg-[#192233] hover:bg-[#192233]/80 text-slate-300 font-extrabold text-xs cursor-pointer active:scale-95"
               >
                 Cancel
               </button>
@@ -245,7 +245,7 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
                   setShowLogoutConfirm(false);
                   if (onOpenAuth) onOpenAuth('login');
                 }}
-                className="py-2.5 px-4 rounded-xl bg-rose-600 hover:bg-rose-700 text-white font-extrabold text-xs shadow-md cursor-pointer"
+                className="py-2.5 px-4 rounded-xl bg-rose-600 hover:bg-rose-700 text-white font-extrabold text-xs shadow-md cursor-pointer active:scale-95"
               >
                 Log Out
               </button>

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { ChevronLeft, Bell, X } from 'lucide-react';
-import type { TabType, ServiceItem, VehicleOption, Booking, DriverProfile } from './types';
-import { MOCK_SERVICES, MOCK_VEHICLES, MOCK_BOOKINGS, MOCK_NOTIFICATIONS } from './data/mockData';
+import type { TabType, ServiceItem, VehicleOption, Booking, DriverProfile, NotificationItem } from './types';
+import { MOCK_SERVICES, MOCK_VEHICLES } from './data/mockData';
 
 // Layout & Components
 import { HeaderBar } from './components/HeaderBar';
@@ -32,9 +32,9 @@ export function App() {
   const [currentLanguage, setCurrentLanguage] = useState<LanguageCode>('en-us');
   const [currentRegion, setCurrentRegion] = useState<RegionCode>('in');
   const [selectedVehicle, setSelectedVehicle] = useState<VehicleOption>(MOCK_VEHICLES[0]);
-  const [bookings, setBookings] = useState<Booking[]>(MOCK_BOOKINGS);
-  const [activeBooking, setActiveBooking] = useState<Booking | null>(MOCK_BOOKINGS[0]);
-  const [notifications, setNotifications] = useState(MOCK_NOTIFICATIONS);
+  const [bookings, setBookings] = useState<Booking[]>([]);
+  const [activeBooking, setActiveBooking] = useState<Booking | null>(null);
+  const [notifications, setNotifications] = useState<NotificationItem[]>([]);
   const [userProfile, setUserProfile] = useState({
     name: 'Alexander Vance',
     email: 'alexander.vance@executive.com',
@@ -129,9 +129,9 @@ export function App() {
   const unreadCount = notifications.filter((n) => !n.read).length;
 
   return (
-    <div className="min-h-screen h-screen w-full bg-slate-900 md:bg-slate-950 flex items-center justify-center selection:bg-[#fcd502] overflow-hidden p-0 md:p-3">
+    <div className="min-h-screen h-screen w-full bg-[#05080E] text-white flex items-center justify-center selection:bg-[#fcd502] selection:text-black overflow-hidden p-0 md:p-3">
       {/* Sleek Mobile App Container for All Mobile Devices, iPhone Notch, iPads & Desktop */}
-      <div className="w-full max-w-md h-full md:h-[94vh] max-h-screen md:rounded-[44px] bg-white flex flex-col relative shadow-2xl border-x md:border border-slate-200/80 overflow-hidden">
+      <div className="w-full max-w-md h-full md:h-[94vh] max-h-screen md:rounded-[44px] bg-[#0B0F19] text-white flex flex-col relative shadow-[0_25px_70px_rgba(0,0,0,0.95)] border-x md:border border-white/10 overflow-hidden">
         {/* Global Header Bar */}
         {activeTab === 'home' && !isReviewOpen && !isInvoiceOpen && !isConfirmationOpen && !isPaymentSettingsOpen && !isSupportChatOpen && !isLanguageSettingsOpen && (
           <HeaderBar
@@ -294,11 +294,11 @@ export function App() {
             />
 
             {/* Right Slide Panel Container */}
-            <div className="relative w-[340px] max-w-full h-full bg-[#FAFAFA] shadow-2xl flex flex-col z-10 animate-slide-left border-l border-slate-200/80">
+            <div className="relative w-[340px] max-w-full h-full bg-[#0B0F19] shadow-2xl flex flex-col z-10 animate-slide-left border-l border-white/10 text-white">
               {/* Minimal Single-Line Drawer Top Header with Downward Safe Padding */}
-              <div className="px-4 pt-7 pb-3 bg-white border-b border-slate-200 flex items-center justify-between shadow-sm shrink-0">
+              <div className="px-4 pt-7 pb-3 bg-[#0B0F19] border-b border-white/10 flex items-center justify-between shrink-0">
                 <div className="flex items-center gap-2">
-                  <h3 className="font-extrabold text-sm text-slate-900 tracking-tight">Notifications</h3>
+                  <h3 className="font-extrabold text-sm text-white tracking-tight">Notifications</h3>
                   {notifications.filter(n => !n.read).length > 0 && (
                     <span className="px-2 py-0.5 rounded-full bg-[#fcd502] text-[#121212] text-[10px] font-black">
                       {notifications.filter(n => !n.read).length}
@@ -309,7 +309,7 @@ export function App() {
                 <button
                   type="button"
                   onClick={() => setNotifications(notifications.map((n) => ({ ...n, read: true })))}
-                  className="text-[11px] font-extrabold text-[#a18200] hover:underline whitespace-nowrap cursor-pointer"
+                  className="text-[11px] font-extrabold text-[#fcd502] hover:underline whitespace-nowrap cursor-pointer"
                 >
                   Mark all read
                 </button>
@@ -331,10 +331,10 @@ export function App() {
                 <button
                   type="button"
                   onClick={() => setIsNotificationsOpen(false)}
-                  className="w-11 h-11 rounded-full bg-slate-900/10 hover:bg-slate-900/20 backdrop-blur-md border border-slate-300/80 text-slate-800 flex items-center justify-center transition-all active:scale-90 cursor-pointer shadow-lg"
+                  className="w-11 h-11 rounded-full bg-white/10 hover:bg-white/15 backdrop-blur-md border border-white/10 text-slate-200 flex items-center justify-center transition-all active:scale-90 cursor-pointer shadow-lg"
                   aria-label="Close Notifications"
                 >
-                  <X className="w-5 h-5 text-slate-900 stroke-[2.5]" />
+                  <X className="w-5 h-5" />
                 </button>
               </div>
             </div>

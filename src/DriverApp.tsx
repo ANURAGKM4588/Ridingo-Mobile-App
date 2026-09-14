@@ -39,6 +39,7 @@ import { fetchRoute } from './lib/routing';
 import type { Route } from './lib/routing';
 import { LeafletMap } from './components/LeafletMap';
 import { NavigationPanel } from './components/NavigationPanel';
+import { supabase } from './lib/supabase';
 
 export function DriverApp() {
   // Driver Auth State
@@ -54,8 +55,10 @@ export function DriverApp() {
   const [activeTab, setActiveTab] = useState<'rides' | 'earnings' | 'history' | 'profile'>('rides');
   const [selectedCategoryTab, setSelectedCategoryTab] = useState<'Hourly' | 'Airport' | 'Outstation'>('Hourly');
   const [searchQuery, setSearchQuery] = useState<string>('');
-  const [todayEarnings, setTodayEarnings] = useState<number>(248.50);
-  const [completedTripsCount, setCompletedTripsCount] = useState<number>(5);
+  const [todayEarnings, setTodayEarnings] = useState<number>(0.00);
+  const [completedTripsCount, setCompletedTripsCount] = useState<number>(0);
+  const [completedTripsList, setCompletedTripsList] = useState<any[]>([]);
+  const [payoutsList, setPayoutsList] = useState<any[]>([]);
 
   // Driver Profile & Settings State
   const [preferredNav, setPreferredNav] = useState<'google_maps' | 'waze' | 'apple_maps'>('google_maps');
@@ -112,21 +115,17 @@ export function DriverApp() {
 
   // Driver Notifications State
   const [showNotificationsModal, setShowNotificationsModal] = useState<boolean>(false);
-  const [unreadNotificationsCount, setUnreadNotificationsCount] = useState<number>(2);
-  const [notificationsList, setNotificationsList] = useState([
-    { id: '1', title: 'High Demand Surge Bonus ⚡', desc: 'Earn +$15.00 extra per completed trip in Beverly Hills zone until 6:00 PM.', time: '10m ago', unread: true, type: 'offer', icon: Sparkles },
-    { id: '2', title: 'Vehicle Inspection Verified ✓', desc: 'Your 2024 Mercedes-Maybach commercial permit was approved for 2026.', time: '1h ago', unread: true, type: 'driver', icon: ShieldCheck },
-    { id: '3', title: 'Weekly Payout Ready 💰', desc: 'Direct deposit of $1,420.50 initiated to Chase Checking ****4921.', time: '5h ago', unread: false, type: 'booking', icon: CheckCircle2 },
-  ]);
+  const [unreadNotificationsCount, setUnreadNotificationsCount] = useState<number>(0);
+  const [notificationsList, setNotificationsList] = useState<any[]>([]);
 
-  // ── BroadcastChannel: Listen for booking requests from User App ──
+  // ── Listen for booking requests from User App (Local Bridge + Supabase Cloud) ──
   useEffect(() => {
-    const cleanup = bridgeListen((msg) => {
+    // 1. Local BroadcastChannel Bridge listener
+    const cleanupBridge = bridgeListen((msg) => {
       if (msg.sentFrom !== 'user-app') return;
 
       if (msg.type === 'BOOKING_REQUEST') {
         const req = msg.payload as BookingRequestPayload;
-        // Only show if driver is online and not on an active trip
         if (!isOnline) return;
         setPendingRequestId(req.requestId);
         setRequestTimer(30);
@@ -147,9 +146,8 @@ export function DriverApp() {
           airlineName: req.airlineName,
           distance: '1.4 mi away',
           timeRemaining: 30,
-          fromUserApp: true, // flag — this is a real request
+          fromUserApp: true,
         });
-        // Add notification
         setUnreadNotificationsCount(prev => prev + 1);
         setNotificationsList(prev => [{
           id: req.requestId,
@@ -164,7 +162,6 @@ export function DriverApp() {
 
       if (msg.type === 'BOOKING_CANCELLED') {
         const p = msg.payload as { requestId: string };
-        // Dismiss if this is the active incoming request
         setIncomingRequest((prev: any) => {
           if (prev?.bookingNumber === p.requestId || prev?.id === p.requestId) return null;
           return prev;
@@ -172,7 +169,61 @@ export function DriverApp() {
         setPendingRequestId(null);
       }
     });
-    return cleanup;
+
+    // 2. Supabase Cloud Realtime Channel (For cross-device & separate app dispatches)
+    const supabaseChannel = supabase
+      .channel('driver-job-alerts')
+      .on(
+        'postgres_changes',
+        {
+          event: 'INSERT',
+          schema: 'public',
+          table: 'rides',
+          filter: 'status=eq.pending',
+        },
+        (payload) => {
+          if (!isOnline) return;
+          const ride = payload.new as any;
+          console.log('🚨 [DriverApp] New Ride Received via Supabase Realtime:', ride);
+
+          const payout = Math.round((Number(ride.fare) || 50) * 0.80 * 100) / 100;
+          setPendingRequestId(ride.id || ride.booking_number);
+          setRequestTimer(30);
+          setIncomingRequest({
+            id: ride.id || ride.booking_number,
+            bookingNumber: ride.booking_number,
+            customerName: ride.customer_name || 'Executive Guest',
+            customerRating: 4.98,
+            pickup: ride.pickup,
+            destination: ride.destination,
+            serviceType: ride.service_type || 'Hourly Dedicated Chauffeur',
+            duration: ride.duration || '4 Hours',
+            totalFare: Number(ride.fare) || 50,
+            driverPayout: payout,
+            paymentMethod: 'CARD',
+            distance: '1.2 mi away',
+            timeRemaining: 30,
+            fromUserApp: true,
+          });
+
+          setUnreadNotificationsCount(prev => prev + 1);
+          setNotificationsList(prev => [{
+            id: ride.id || ride.booking_number,
+            title: '🚗 New Ride Request (Cloud)!',
+            desc: `${ride.customer_name} needs a ride from ${ride.pickup?.substring(0, 30)}...`,
+            time: 'just now',
+            unread: true,
+            type: 'booking',
+            icon: Radio,
+          }, ...prev]);
+        }
+      )
+      .subscribe();
+
+    return () => {
+      cleanupBridge();
+      supabase.removeChannel(supabaseChannel);
+    };
   }, [isOnline]);
 
   // ── Request timer countdown ──
@@ -210,9 +261,9 @@ export function DriverApp() {
     setIsAuthenticated(true);
   };
 
-  const handleAcceptRequest = () => {
+  const handleAcceptRequest = async () => {
     if (!incomingRequest) return;
-    // If this came from real User App, broadcast acceptance back
+    // 1. If this came from real User App, broadcast acceptance back locally
     if (incomingRequest.fromUserApp) {
       const response: BookingResponsePayload = {
         requestId: incomingRequest.id,
@@ -225,6 +276,25 @@ export function DriverApp() {
       };
       bridgeSend('BOOKING_ACCEPTED', response, 'driver-app');
     }
+
+    // 2. Update status in Supabase Realtime database (for remote/separate User App)
+    try {
+      const matchCondition = incomingRequest.bookingNumber 
+        ? `booking_number.eq.${incomingRequest.bookingNumber}` 
+        : `id.eq.${incomingRequest.id}`;
+      await supabase
+        .from('rides')
+        .update({
+          status: 'accepted',
+          driver_name: driverName,
+          driver_phone: '+1 (555) 382-9102',
+        })
+        .or(matchCondition);
+      console.log('✅ [DriverApp] Updated ride to accepted in Supabase!');
+    } catch (err) {
+      console.warn('[DriverApp Supabase accept note]:', err);
+    }
+
     setActiveTrip(incomingRequest);
     setIncomingRequest(null);
     setPendingRequestId(null);
@@ -277,6 +347,18 @@ export function DriverApp() {
       } as TripEventPayload, 'driver-app');
       setTodayEarnings((prev) => prev + activeTrip.driverPayout);
       setCompletedTripsCount((prev) => prev + 1);
+      setCompletedTripsList((prev) => [{
+        customer: activeTrip.customerName,
+        date: 'Today, ' + new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+        fare: `$${activeTrip.driverPayout.toFixed(2)}`,
+        status: 'Completed',
+        rating: '5.0 ★'
+      }, ...prev]);
+      setPayoutsList((prev) => [{
+        route: `${activeTrip.pickup} ➔ ${activeTrip.destination}`,
+        service: `${activeTrip.duration || '2 Hours'} • ${activeTrip.serviceType}`,
+        amount: `+$${activeTrip.driverPayout.toFixed(2)}`
+      }, ...prev]);
       setCompletedTripData(activeTrip);
       setTripStep('completed');
       setIsPaymentCollected(false);
@@ -1046,22 +1128,25 @@ export function DriverApp() {
 
                   <div className="bg-white rounded-3xl p-4 border border-slate-200 shadow-xs space-y-3">
                     <h4 className="font-extrabold text-xs text-slate-400 uppercase tracking-wider">Recent Ride Payouts</h4>
-                    <div className="space-y-2 text-xs">
-                      <div className="p-3 rounded-2xl bg-slate-50 border border-slate-100 flex items-center justify-between">
-                        <div>
-                          <span className="font-bold text-slate-900 block">Beverly Hills ➔ LAX Airport</span>
-                          <span className="text-[10px] text-slate-500 font-medium">4 Hours • Executive SUV</span>
-                        </div>
-                        <span className="font-bold text-emerald-600 text-sm">+$112.00</span>
+                    {payoutsList.length === 0 ? (
+                      <div className="p-4 rounded-2xl bg-slate-50 border border-slate-100 text-center space-y-1">
+                        <Clock className="w-5 h-5 text-slate-400 mx-auto" />
+                        <span className="text-xs font-bold text-slate-700 block">No Ride Payouts Yet</span>
+                        <span className="text-[10px] text-slate-400 block">Completed rides and earnings will be listed here</span>
                       </div>
-                      <div className="p-3 rounded-2xl bg-slate-50 border border-slate-100 flex items-center justify-between">
-                        <div>
-                          <span className="font-bold text-slate-900 block">Santa Monica ➔ Sunset Blvd</span>
-                          <span className="text-[10px] text-slate-500 font-medium">2 Hours • Maybach Chauffeur</span>
-                        </div>
-                        <span className="font-bold text-emerald-600 text-sm">+$136.50</span>
+                    ) : (
+                      <div className="space-y-2 text-xs">
+                        {payoutsList.map((payout, idx) => (
+                          <div key={idx} className="p-3 rounded-2xl bg-slate-50 border border-slate-100 flex items-center justify-between">
+                            <div className="min-w-0 flex-1 pr-2">
+                              <span className="font-bold text-slate-900 block truncate">{payout.route}</span>
+                              <span className="text-[10px] text-slate-500 font-medium truncate block">{payout.service}</span>
+                            </div>
+                            <span className="font-bold text-emerald-600 text-sm shrink-0">{payout.amount}</span>
+                          </div>
+                        ))}
                       </div>
-                    </div>
+                    )}
                   </div>
                 </div>
               )}
@@ -1069,23 +1154,32 @@ export function DriverApp() {
               {/* TAB 3: TRIP HISTORY */}
               {activeTab === 'history' && (
                 <div className="space-y-3 animate-fade-in text-xs">
-                  <h4 className="font-extrabold text-xs text-slate-400 uppercase tracking-wider px-1">Completed Chauffeur Trips</h4>
-                  {[
-                    { customer: 'Alexander Vance', date: 'Today, 2:30 PM', fare: '$112.00', status: 'Completed', rating: '5.0 ★' },
-                    { customer: 'Lady Eleanor Vance', date: 'Yesterday, 6:15 PM', fare: '$180.00', status: 'Completed', rating: '5.0 ★' },
-                    { customer: 'David Miller', date: '08/03/2026', fare: '$95.00', status: 'Completed', rating: '4.9 ★' },
-                  ].map((item, idx) => (
-                    <div key={idx} className="p-4 rounded-2xl bg-white border border-slate-200/90 shadow-xs flex items-center justify-between">
-                      <div>
-                        <span className="font-bold text-slate-900 block">{item.customer}</span>
-                        <span className="text-[10px] text-slate-500 font-medium">{item.date} • {item.rating}</span>
-                      </div>
-                      <div className="text-right">
-                        <span className="font-black text-slate-900 text-sm block">{item.fare}</span>
-                        <span className="text-[9px] font-bold text-emerald-600 uppercase">{item.status}</span>
-                      </div>
+                  <div className="flex items-center justify-between px-1">
+                    <h4 className="font-extrabold text-xs text-slate-400 uppercase tracking-wider">Completed Chauffeur Trips</h4>
+                    <span className="text-[10px] text-slate-400 font-bold">{completedTripsList.length} Total</span>
+                  </div>
+                  {completedTripsList.length === 0 ? (
+                    <div className="p-6 rounded-2xl bg-white border border-slate-200/90 shadow-xs text-center space-y-2">
+                      <Clock className="w-6 h-6 text-slate-400 mx-auto" />
+                      <h4 className="font-extrabold text-xs text-slate-800">No Completed Trips</h4>
+                      <p className="text-[11px] text-slate-400 max-w-xs mx-auto">
+                        Your completed customer trips and ride history will appear here.
+                      </p>
                     </div>
-                  ))}
+                  ) : (
+                    completedTripsList.map((item, idx) => (
+                      <div key={idx} className="p-4 rounded-2xl bg-white border border-slate-200/90 shadow-xs flex items-center justify-between">
+                        <div>
+                          <span className="font-bold text-slate-900 block">{item.customer}</span>
+                          <span className="text-[10px] text-slate-500 font-medium">{item.date} • {item.rating}</span>
+                        </div>
+                        <div className="text-right">
+                          <span className="font-black text-slate-900 text-sm block">{item.fare}</span>
+                          <span className="text-[9px] font-bold text-emerald-600 uppercase">{item.status}</span>
+                        </div>
+                      </div>
+                    ))
+                  )}
                 </div>
               )}
 

@@ -237,7 +237,7 @@ export const AuthView: React.FC<AuthViewProps> = ({
   };
 
   return (
-    <div className="absolute inset-0 z-50 bg-white flex flex-col justify-between overflow-y-auto animate-fade-in pt-[max(env(safe-area-inset-top),20px)] pb-[max(env(safe-area-inset-bottom),16px)]">
+    <div className="absolute inset-0 z-50 bg-[#0B0F19] text-white flex flex-col justify-between overflow-y-auto animate-fade-in pt-[max(env(safe-area-inset-top),20px)] pb-[max(env(safe-area-inset-bottom),16px)]">
 
       {/* Top Header Bar with Skip Button */}
       <div className="w-full px-6 pt-3 flex items-center justify-between max-w-md mx-auto">
@@ -267,10 +267,10 @@ export const AuthView: React.FC<AuthViewProps> = ({
         {/* Title & Subtitle */}
         {!isOtpStep ? (
           <div className="text-center space-y-1">
-            <h1 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
+            <h1 className="text-2xl sm:text-3xl font-black text-white tracking-tight">
               {authMode === 'login' ? 'Welcome Back 👋' : 'Create Account 🚗'}
             </h1>
-            <p className="text-xs text-slate-500 font-medium max-w-xs mx-auto">
+            <p className="text-xs text-slate-400 font-medium max-w-xs mx-auto">
               {authMode === 'login' 
                 ? 'Sign in to access your luxury chauffeur bookings and wallet'
                 : 'Join RIDINGO for instant luxury chauffeur services worldwide'}
@@ -278,15 +278,15 @@ export const AuthView: React.FC<AuthViewProps> = ({
           </div>
         ) : (
           <div className="text-center space-y-1.5">
-            <div className="w-12 h-12 rounded-2xl bg-[#fcd502]/15 text-[#a18200] flex items-center justify-center mx-auto mb-2">
+            <div className="w-12 h-12 rounded-2xl bg-[#fcd502]/15 text-[#fcd502] flex items-center justify-center mx-auto mb-2 border border-[#fcd502]/20">
               <ShieldCheck className="w-6 h-6 stroke-[2.5]" />
             </div>
-            <h1 className="text-2xl font-black text-slate-900 tracking-tight">
+            <h1 className="text-2xl font-black text-white tracking-tight">
               Verify Email OTP
             </h1>
-            <p className="text-xs text-slate-500 font-medium">
+            <p className="text-xs text-slate-400 font-medium">
               Enter the verification code sent to registered email address{' '}
-              <span className="font-bold text-slate-800">
+              <span className="font-bold text-white">
                 {email || 'user@example.com'}
               </span>
             </p>
@@ -295,14 +295,14 @@ export const AuthView: React.FC<AuthViewProps> = ({
 
         {/* Tab Switcher (Login / Sign Up) */}
         {!isOtpStep && (
-          <div className="bg-slate-100 p-1 rounded-2xl flex items-center gap-1 shadow-inner">
+          <div className="bg-[#131926] p-1 rounded-2xl flex items-center gap-1 border border-white/10 shadow-inner">
             <button
               type="button"
               onClick={() => setAuthMode('login')}
               className={`flex-1 py-2.5 rounded-xl text-xs font-black transition-all cursor-pointer ${
                 authMode === 'login'
-                  ? 'bg-white text-slate-900 shadow-sm'
-                  : 'text-slate-500 hover:text-slate-900'
+                  ? 'bg-[#192233] text-white shadow-sm border border-white/10'
+                  : 'text-slate-400 hover:text-white'
               }`}
             >
               Sign In
@@ -312,8 +312,8 @@ export const AuthView: React.FC<AuthViewProps> = ({
               onClick={() => setAuthMode('signup')}
               className={`flex-1 py-2.5 rounded-xl text-xs font-black transition-all cursor-pointer ${
                 authMode === 'signup'
-                  ? 'bg-white text-slate-900 shadow-sm'
-                  : 'text-slate-500 hover:text-slate-900'
+                  ? 'bg-[#192233] text-white shadow-sm border border-white/10'
+                  : 'text-slate-400 hover:text-white'
               }`}
             >
               Create Account
@@ -329,7 +329,7 @@ export const AuthView: React.FC<AuthViewProps> = ({
             {authMode === 'signup' && (
               <div className="grid grid-cols-2 gap-2.5">
                 <div className="space-y-1">
-                  <label className="text-[11px] font-extrabold uppercase tracking-wider text-slate-600">
+                  <label className="text-[11px] font-extrabold uppercase tracking-wider text-slate-300">
                     First Name <span className="text-rose-500">*</span>
                   </label>
                   <div className="relative">
@@ -342,21 +342,21 @@ export const AuthView: React.FC<AuthViewProps> = ({
                       value={firstName}
                       onChange={(e) => setFirstName(e.target.value)}
                       placeholder="e.g. Alexander"
-                      className="w-full pl-9 pr-3 py-3 rounded-2xl bg-slate-50 border border-slate-200 text-slate-900 font-bold placeholder:text-slate-400 placeholder:font-normal text-xs focus:outline-none focus:ring-2 focus:ring-[#fcd502] transition-all"
+                      className="w-full pl-9 pr-3 py-3 rounded-2xl bg-[#131926] border border-white/10 text-white font-bold placeholder:text-slate-500 placeholder:font-normal text-xs focus:outline-none focus:ring-2 focus:ring-[#fcd502] transition-all"
                     />
                   </div>
                 </div>
 
                 <div className="space-y-1">
-                  <label className="text-[11px] font-extrabold uppercase tracking-wider text-slate-600">
-                    Last Name <span className="text-slate-400 font-normal text-[10px] lowercase">(optional)</span>
+                  <label className="text-[11px] font-extrabold uppercase tracking-wider text-slate-300">
+                    Last Name <span className="text-slate-500 font-normal text-[10px] lowercase">(optional)</span>
                   </label>
                   <input
                     type="text"
                     value={lastName}
                     onChange={(e) => setLastName(e.target.value)}
                     placeholder="e.g. Vance"
-                    className="w-full px-3.5 py-3 rounded-2xl bg-slate-50 border border-slate-200 text-slate-900 font-bold placeholder:text-slate-400 placeholder:font-normal text-xs focus:outline-none focus:ring-2 focus:ring-[#fcd502] transition-all"
+                    className="w-full px-3.5 py-3 rounded-2xl bg-[#131926] border border-white/10 text-white font-bold placeholder:text-slate-500 placeholder:font-normal text-xs focus:outline-none focus:ring-2 focus:ring-[#fcd502] transition-all"
                   />
                 </div>
               </div>
@@ -364,7 +364,7 @@ export const AuthView: React.FC<AuthViewProps> = ({
 
             {/* Compulsory Mobile Number */}
             <div className="space-y-1">
-              <label className="text-[11px] font-extrabold uppercase tracking-wider text-slate-600">
+              <label className="text-[11px] font-extrabold uppercase tracking-wider text-slate-300">
                 Mobile Number <span className="text-rose-500">*</span>
               </label>
               <div className="flex gap-2">
@@ -376,15 +376,15 @@ export const AuthView: React.FC<AuthViewProps> = ({
                       const found = COUNTRY_CODES.find(c => c.code === e.target.value);
                       if (found) setSelectedCountry(found);
                     }}
-                    className="appearance-none h-full pl-3 pr-7 py-3 rounded-2xl bg-slate-50 border border-slate-200 text-slate-900 font-bold text-xs focus:outline-none focus:ring-2 focus:ring-[#fcd502] cursor-pointer"
+                    className="appearance-none h-full pl-3 pr-7 py-3 rounded-2xl bg-[#131926] border border-white/10 text-white font-bold text-xs focus:outline-none focus:ring-2 focus:ring-[#fcd502] cursor-pointer"
                   >
                     {COUNTRY_CODES.map((c) => (
-                      <option key={c.code} value={c.code}>
+                      <option key={c.code} value={c.code} className="bg-[#131926] text-white">
                         {c.flag} {c.code}
                       </option>
                     ))}
                   </select>
-                  <ChevronDown className="w-3.5 h-3.5 text-slate-500 absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+                  <ChevronDown className="w-3.5 h-3.5 text-slate-400 absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none" />
                 </div>
 
                 {/* Phone Input */}
@@ -398,7 +398,7 @@ export const AuthView: React.FC<AuthViewProps> = ({
                     value={phoneNumber}
                     onChange={(e) => setPhoneNumber(e.target.value)}
                     placeholder="555 019 2834"
-                    className="w-full pl-10 pr-4 py-3 rounded-2xl bg-slate-50 border border-slate-200 text-slate-900 font-bold placeholder:text-slate-400 placeholder:font-normal text-xs focus:outline-none focus:ring-2 focus:ring-[#fcd502] transition-all"
+                    className="w-full pl-10 pr-4 py-3 rounded-2xl bg-[#131926] border border-white/10 text-white font-bold placeholder:text-slate-500 placeholder:font-normal text-xs focus:outline-none focus:ring-2 focus:ring-[#fcd502] transition-all"
                   />
                 </div>
               </div>
@@ -406,7 +406,7 @@ export const AuthView: React.FC<AuthViewProps> = ({
 
             {/* Compulsory Email Address */}
             <div className="space-y-1">
-              <label className="text-[11px] font-extrabold uppercase tracking-wider text-slate-600">
+              <label className="text-[11px] font-extrabold uppercase tracking-wider text-slate-300">
                 Email Address <span className="text-rose-500">*</span>
               </label>
               <div className="relative">
@@ -419,7 +419,7 @@ export const AuthView: React.FC<AuthViewProps> = ({
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="alexander@executive.com"
-                  className="w-full pl-10 pr-4 py-3 rounded-2xl bg-slate-50 border border-slate-200 text-slate-900 font-bold placeholder:text-slate-400 placeholder:font-normal text-xs focus:outline-none focus:ring-2 focus:ring-[#fcd502] transition-all"
+                  className="w-full pl-10 pr-4 py-3 rounded-2xl bg-[#131926] border border-white/10 text-white font-bold placeholder:text-slate-500 placeholder:font-normal text-xs focus:outline-none focus:ring-2 focus:ring-[#fcd502] transition-all"
                 />
               </div>
             </div>
@@ -431,12 +431,12 @@ export const AuthView: React.FC<AuthViewProps> = ({
                   type="checkbox"
                   checked={agreeTerms}
                   onChange={(e) => setAgreeTerms(e.target.checked)}
-                  className="mt-0.5 rounded border-slate-300 text-[#fcd502] focus:ring-[#fcd502]"
+                  className="mt-0.5 rounded border-slate-600 bg-[#131926] text-[#fcd502] focus:ring-[#fcd502]"
                 />
-                <span className="text-[11px] text-slate-500 font-medium leading-tight">
+                <span className="text-[11px] text-slate-400 font-medium leading-tight">
                   I agree to RIDINGO's{' '}
-                  <span className="text-slate-900 font-bold underline">Terms of Service</span> and{' '}
-                  <span className="text-slate-900 font-bold underline">Privacy Policy</span>.
+                  <span className="text-[#fcd502] font-bold underline">Terms of Service</span> and{' '}
+                  <span className="text-[#fcd502] font-bold underline">Privacy Policy</span>.
                 </span>
               </label>
             )}
@@ -446,7 +446,7 @@ export const AuthView: React.FC<AuthViewProps> = ({
               <button
                 type="submit"
                 disabled={authMode === 'signup' && !agreeTerms}
-                className="w-full py-3.5 px-6 rounded-2xl bg-[#121212] hover:bg-black text-[#fcd502] font-black text-sm flex items-center justify-center gap-2 shadow-lg active:scale-[0.98] transition-all disabled:opacity-50 cursor-pointer"
+                className="w-full py-3.5 px-6 rounded-2xl bg-[#fcd502] hover:bg-amber-400 text-slate-950 font-black text-sm flex items-center justify-center gap-2 shadow-lg shadow-[#fcd502]/20 active:scale-[0.98] transition-all disabled:opacity-50 cursor-pointer"
               >
                 <span>{authMode === 'login' ? 'Send OTP to Email' : 'Create Account & Send Email OTP'}</span>
                 <ArrowRight className="w-4 h-4 stroke-[2.5]" />
@@ -456,8 +456,8 @@ export const AuthView: React.FC<AuthViewProps> = ({
             {/* Social Login Divider & Buttons */}
             <div className="pt-2 space-y-3">
               <div className="relative flex items-center justify-center">
-                <div className="border-t border-slate-200 w-full" />
-                <span className="bg-white px-3 text-[10px] font-extrabold text-slate-400 uppercase tracking-widest absolute">
+                <div className="border-t border-white/10 w-full" />
+                <span className="bg-[#0B0F19] px-3 text-[10px] font-extrabold text-slate-400 uppercase tracking-widest absolute">
                   or continue with
                 </span>
               </div>
@@ -466,7 +466,7 @@ export const AuthView: React.FC<AuthViewProps> = ({
                 <button
                   type="button"
                   onClick={() => handleSocialLogin('Google')}
-                  className="py-3 px-4 rounded-2xl border border-slate-200 bg-white hover:bg-slate-50 text-slate-800 font-extrabold text-xs flex items-center justify-center gap-2 shadow-xs transition-all active:scale-95 cursor-pointer"
+                  className="py-3 px-4 rounded-2xl border border-white/10 bg-[#131926] hover:bg-[#192233] text-white font-extrabold text-xs flex items-center justify-center gap-2 shadow-xs transition-all active:scale-95 cursor-pointer"
                 >
                   <svg className="w-4 h-4 flex-shrink-0" viewBox="0 0 24 24">
                     <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
@@ -480,9 +480,9 @@ export const AuthView: React.FC<AuthViewProps> = ({
                 <button
                   type="button"
                   onClick={() => handleSocialLogin('Apple')}
-                  className="py-3 px-4 rounded-2xl border border-slate-200 bg-white hover:bg-slate-50 text-slate-800 font-extrabold text-xs flex items-center justify-center gap-2 shadow-xs transition-all active:scale-95 cursor-pointer"
+                  className="py-3 px-4 rounded-2xl border border-white/10 bg-[#131926] hover:bg-[#192233] text-white font-extrabold text-xs flex items-center justify-center gap-2 shadow-xs transition-all active:scale-95 cursor-pointer"
                 >
-                  <svg className="w-4 h-4 fill-current text-slate-900 flex-shrink-0" viewBox="0 0 24 24">
+                  <svg className="w-4 h-4 fill-current text-white flex-shrink-0" viewBox="0 0 24 24">
                     <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 6.37c.62-.75 1.04-1.8 0.93-2.85-.9.04-1.99.6-2.63 1.34-.57.66-.97 1.73-.84 2.76 1.01.08 2.03-.49 2.54-1.25z"/>
                   </svg>
                   <span>Apple ID</span>
@@ -493,20 +493,20 @@ export const AuthView: React.FC<AuthViewProps> = ({
         ) : (
           /* OTP Verification Form */
           <form onSubmit={handleVerifyOtp} className="space-y-5">
-            {/* Clean Gmail Inbox Instructions Banner (No code shown on screen) */}
-            <div className="p-3.5 rounded-2xl bg-slate-50 border border-slate-200/80 text-slate-700 text-xs font-medium text-center space-y-1 shadow-2xs">
-              <div className="flex items-center justify-center gap-1.5 font-bold text-[#a18200]">
+            {/* Clean Gmail Inbox Instructions Banner */}
+            <div className="p-3.5 rounded-2xl bg-[#131926] border border-white/10 text-slate-300 text-xs font-medium text-center space-y-1 shadow-2xs">
+              <div className="flex items-center justify-center gap-1.5 font-bold text-[#fcd502]">
                 <Mail className="w-4 h-4 text-[#fcd502]" />
                 <span>Check Your Email Inbox</span>
               </div>
-              <p className="text-[11px] text-slate-500 leading-normal">
-                We've sent a 6-digit OTP code to <span className="font-extrabold text-slate-900">{email || 'your email'}</span>. Please check your inbox and enter the code below.
+              <p className="text-[11px] text-slate-400 leading-normal">
+                We've sent a 6-digit OTP code to <span className="font-extrabold text-white">{email || 'your email'}</span>. Please check your inbox and enter the code below.
               </p>
             </div>
 
             {/* Error Warning Badge if Wrong OTP */}
             {otpError && (
-              <div className="p-3 rounded-2xl bg-rose-50 border border-rose-200 text-rose-700 text-xs font-bold text-center animate-fade-in shadow-xs">
+              <div className="p-3 rounded-2xl bg-rose-500/15 border border-rose-500/30 text-rose-400 text-xs font-bold text-center animate-fade-in shadow-xs">
                 ⚠️ {otpError}
               </div>
             )}
@@ -525,26 +525,26 @@ export const AuthView: React.FC<AuthViewProps> = ({
                   onChange={(e) => handleOtpChange(idx, e.target.value)}
                   className={`w-11 h-13 sm:w-12 sm:h-14 text-center text-lg sm:text-xl font-black rounded-2xl transition-all shadow-sm focus:outline-none ${
                     otpError
-                      ? 'border-2 border-rose-500 bg-rose-50/60 text-rose-600 focus:border-rose-600 focus:ring-2 focus:ring-rose-200'
-                      : 'border-2 border-slate-200 bg-slate-50 text-slate-900 focus:border-[#fcd502] focus:bg-white'
+                      ? 'border-2 border-rose-500 bg-rose-500/10 text-rose-400 focus:border-rose-500 focus:ring-2 focus:ring-rose-500/20'
+                      : 'border-2 border-white/15 bg-[#131926] text-white focus:border-[#fcd502] focus:bg-[#192233]'
                   }`}
                 />
               ))}
             </div>
 
             {/* Resend & Back options */}
-            <div className="flex items-center justify-between text-xs text-slate-500 font-medium px-2">
+            <div className="flex items-center justify-between text-xs text-slate-400 font-medium px-2">
               <button
                 type="button"
                 onClick={() => setIsOtpStep(false)}
-                className="text-slate-700 font-bold hover:underline cursor-pointer"
+                className="text-slate-300 font-bold hover:underline cursor-pointer"
               >
                 ← Change Email
               </button>
               <button
                 type="button"
                 onClick={handleResendCode}
-                className="text-[#a18200] font-bold hover:underline cursor-pointer"
+                className="text-[#fcd502] font-bold hover:underline cursor-pointer"
               >
                 Resend Code {otpResendTimer > 0 ? `(${otpResendTimer}s)` : ''}
               </button>
@@ -553,7 +553,7 @@ export const AuthView: React.FC<AuthViewProps> = ({
             {/* Verify Button */}
             <button
               type="submit"
-              className="w-full py-3.5 px-6 rounded-2xl bg-[#121212] hover:bg-black text-[#fcd502] font-black text-sm flex items-center justify-center gap-2 shadow-lg active:scale-[0.98] transition-all cursor-pointer"
+              className="w-full py-3.5 px-6 rounded-2xl bg-[#fcd502] hover:bg-amber-400 text-slate-950 font-black text-sm flex items-center justify-center gap-2 shadow-lg shadow-[#fcd502]/20 active:scale-[0.98] transition-all cursor-pointer"
             >
               <CheckCircle2 className="w-4 h-4 stroke-[2.5]" />
               <span>Verify & Continue</span>
@@ -563,7 +563,7 @@ export const AuthView: React.FC<AuthViewProps> = ({
             <button
               type="button"
               onClick={handleSkip}
-              className="w-full py-3 px-6 rounded-2xl bg-[#fcd502] hover:bg-amber-400 text-slate-950 font-extrabold text-xs flex items-center justify-center gap-2 transition-all cursor-pointer border border-amber-300 shadow-sm"
+              className="w-full py-3 px-6 rounded-2xl bg-[#131926] hover:bg-[#192233] text-slate-200 font-extrabold text-xs flex items-center justify-center gap-2 transition-all cursor-pointer border border-white/10 shadow-sm active:scale-95"
             >
               <span>⚡ Skip OTP Verification & Enter App</span>
             </button>
@@ -572,8 +572,8 @@ export const AuthView: React.FC<AuthViewProps> = ({
       </div>
 
       {/* Footer Security Badge */}
-      <div className="p-4 text-center bg-slate-50 border-t border-slate-100">
-        <div className="flex items-center justify-center gap-1.5 text-[11px] text-slate-500 font-bold">
+      <div className="p-4 text-center bg-[#0B0F19] border-t border-white/10">
+        <div className="flex items-center justify-center gap-1.5 text-[11px] text-slate-400 font-bold">
           <ShieldCheck className="w-3.5 h-3.5 text-[#fcd502]" />
           <span>256-Bit Encrypted Secure Authentication</span>
         </div>

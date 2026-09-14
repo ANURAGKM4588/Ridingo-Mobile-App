@@ -41,7 +41,7 @@ export const PromotionsCarousel: React.FC<PromotionsCarouselProps> = ({
       <div className="flex items-center justify-between px-1">
         <div className="flex items-center gap-2">
           <Sparkles className="w-4 h-4 text-[#fcd502]" />
-          <h3 className="text-sm font-black text-[#0F172A] tracking-tight uppercase">
+          <h3 className="text-sm font-black text-white tracking-tight uppercase">
             Special Offers & Deals
           </h3>
         </div>
@@ -51,7 +51,7 @@ export const PromotionsCarousel: React.FC<PromotionsCarouselProps> = ({
           <button
             type="button"
             onClick={handlePrev}
-            className="w-7 h-7 rounded-full bg-white border border-slate-200 text-slate-700 hover:bg-slate-100 flex items-center justify-center shadow-sm transition-colors cursor-pointer"
+            className="w-7 h-7 rounded-full bg-[#131926] border border-white/10 text-slate-300 hover:bg-[#192233] hover:text-white flex items-center justify-center shadow-sm transition-colors cursor-pointer active:scale-95"
             aria-label="Previous Offer"
           >
             <ChevronLeft className="w-4 h-4" />
@@ -59,7 +59,7 @@ export const PromotionsCarousel: React.FC<PromotionsCarouselProps> = ({
           <button
             type="button"
             onClick={handleNext}
-            className="w-7 h-7 rounded-full bg-white border border-slate-200 text-slate-700 hover:bg-slate-100 flex items-center justify-center shadow-sm transition-colors cursor-pointer"
+            className="w-7 h-7 rounded-full bg-[#131926] border border-white/10 text-slate-300 hover:bg-[#192233] hover:text-white flex items-center justify-center shadow-sm transition-colors cursor-pointer active:scale-95"
             aria-label="Next Offer"
           >
             <ChevronRight className="w-4 h-4" />
@@ -111,10 +111,10 @@ export const PromotionsCarousel: React.FC<PromotionsCarouselProps> = ({
           <button
             type="button"
             onClick={() => handleCopyCode(currentPromo.code)}
-            className={`px-3 py-1.5 rounded-xl font-extrabold text-xs flex items-center gap-1.5 transition-all shadow-md cursor-pointer ${
+            className={`px-3 py-1.5 rounded-xl font-extrabold text-xs flex items-center gap-1.5 transition-all shadow-md cursor-pointer active:scale-95 ${
               copiedCode === currentPromo.code
                 ? 'bg-emerald-500 text-white shadow-emerald-500/20'
-                : 'bg-white text-slate-900 hover:bg-slate-100'
+                : 'bg-[#fcd502] text-slate-950 hover:bg-[#fcd502]/90'
             }`}
           >
             {copiedCode === currentPromo.code ? (
@@ -124,7 +124,7 @@ export const PromotionsCarousel: React.FC<PromotionsCarouselProps> = ({
               </>
             ) : (
               <>
-                <Copy className="w-3.5 h-3.5 text-slate-700" />
+                <Copy className="w-3.5 h-3.5 text-slate-950" />
                 <span>Copy Code</span>
               </>
             )}

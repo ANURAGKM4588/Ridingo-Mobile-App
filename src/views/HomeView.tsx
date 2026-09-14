@@ -82,7 +82,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
   const [isSearchFocused, setIsSearchFocused] = useState(false);
   const searchContainerRef = useRef<HTMLDivElement>(null);
 
-  const recentBookingList = (recentBookings && recentBookings.length > 0) ? recentBookings : MOCK_BOOKINGS;
+  const recentBookingList = recentBookings || [];
 
   // In-App Search Index Database
   const searchIndex: InAppSearchItem[] = useMemo(() => [
@@ -354,11 +354,11 @@ export const HomeView: React.FC<HomeViewProps> = ({
   ];
 
   return (
-    <div className="w-full animate-fade-in animate-scale-up transition-all duration-500 pb-4">
+    <div className="w-full animate-fade-in animate-scale-up transition-all duration-500 pb-4 text-white">
 
       {/* Greeting — 2-line clean typography matching reference design */}
-      <div className="-mx-4 px-5 pt-2 pb-3 bg-white animate-drop-up stagger-1">
-        <h1 className="text-[26px] sm:text-[28px] font-medium text-slate-900 leading-[1.15] tracking-tight">
+      <div className="-mx-4 px-5 pt-2 pb-3 bg-transparent animate-drop-up stagger-1">
+        <h1 className="text-[26px] sm:text-[28px] font-medium text-white leading-[1.15] tracking-tight">
           <span className="block">Good</span>
           <span className="block">afternoon, {firstName} 💪</span>
         </h1>
@@ -367,7 +367,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
       {/* ── INTERACTIVE FUNCTIONAL SEARCH BAR WITH LIVE DROPDOWN & FULL PATHS ── */}
       <div 
         ref={searchContainerRef}
-        className="sticky top-0 z-40 bg-white -mx-4 px-4 py-2.5 border-b border-slate-200 shadow-sm animate-drop-up stagger-2"
+        className="sticky top-0 z-40 bg-[#0B0F19]/95 backdrop-blur-md -mx-4 px-4 py-2.5 border-b border-white/10 shadow-sm animate-drop-up stagger-2"
       >
         <div className="relative w-full">
           {/* Search Icon */}
@@ -382,7 +382,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
             onChange={(e) => setSearchQuery(e.target.value)}
             onFocus={() => setIsSearchFocused(true)}
             placeholder={t.searchPlaceholder || "Search services, cars, locations, wallet..."}
-            className="w-full pl-10 pr-9 py-2.5 rounded-2xl bg-slate-100 border border-slate-200 text-slate-900 font-bold placeholder:text-slate-400 placeholder:font-normal focus:outline-none focus:ring-2 focus:ring-[#fcd502] focus:bg-white transition-all text-xs shadow-2xs"
+            className="w-full pl-10 pr-9 py-2.5 rounded-2xl bg-[#131926] border border-white/10 text-white font-bold placeholder:text-slate-500 placeholder:font-normal focus:outline-none focus:ring-2 focus:ring-[#fcd502] focus:bg-[#192233] transition-all text-xs shadow-2xs"
           />
 
           {/* Clear Query Button */}
@@ -393,7 +393,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
                 setSearchQuery('');
                 setIsSearchFocused(false);
               }}
-              className="absolute inset-y-0 right-2.5 flex items-center justify-center w-6 h-6 my-auto rounded-full bg-slate-200 hover:bg-slate-300 text-slate-700 cursor-pointer transition-colors"
+              className="absolute inset-y-0 right-2.5 flex items-center justify-center w-6 h-6 my-auto rounded-full bg-white/10 hover:bg-white/20 text-slate-200 cursor-pointer transition-colors"
               aria-label="Clear search"
             >
               <X className="w-3.5 h-3.5 stroke-[2.5]" />
@@ -404,13 +404,13 @@ export const HomeView: React.FC<HomeViewProps> = ({
               LIVE SEARCH DROPDOWN MENU WITH FULL PATH BREADCRUMBS
              ═══════════════════════════════════════════════════════════════ */}
           {(isSearchFocused || searchQuery.length > 0) && (
-            <div className="absolute top-full left-0 right-0 mt-2 bg-white rounded-3xl shadow-2xl border border-slate-200/90 overflow-hidden z-50 animate-drop-up divide-y divide-slate-100 max-h-[380px] flex flex-col">
+            <div className="absolute top-full left-0 right-0 mt-2 bg-[#131926] rounded-3xl shadow-2xl border border-white/10 overflow-hidden z-50 animate-drop-up divide-y divide-white/5 max-h-[380px] flex flex-col text-white">
               
               {/* Dropdown Header Bar */}
-              <div className="px-4 py-2.5 bg-slate-50 flex items-center justify-between flex-shrink-0">
+              <div className="px-4 py-2.5 bg-[#192233] flex items-center justify-between flex-shrink-0">
                 <div className="flex items-center gap-1.5">
-                  <Compass className="w-3.5 h-3.5 text-[#a18200]" />
-                  <span className="text-[11px] font-black text-slate-900 tracking-tight">
+                  <Compass className="w-3.5 h-3.5 text-[#fcd502]" />
+                  <span className="text-[11px] font-black text-white tracking-tight">
                     {searchQuery ? `Matching Results (${searchResults.length})` : 'Popular In-App Suggestions'}
                   </span>
                 </div>
@@ -418,7 +418,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
                   <button
                     type="button"
                     onClick={() => setSearchQuery('')}
-                    className="text-[10px] font-bold text-slate-400 hover:text-slate-700 cursor-pointer"
+                    className="text-[10px] font-bold text-slate-400 hover:text-white cursor-pointer"
                   >
                     Clear
                   </button>
@@ -436,34 +436,34 @@ export const HomeView: React.FC<HomeViewProps> = ({
                           key={item.id}
                           type="button"
                           onClick={() => handleSelectResult(item)}
-                          className="w-full p-2.5 rounded-2xl hover:bg-slate-100 flex items-start gap-3 text-left transition-colors cursor-pointer group"
+                          className="w-full p-2.5 rounded-2xl hover:bg-white/5 flex items-start gap-3 text-left transition-colors cursor-pointer group"
                         >
-                          <div className="w-8 h-8 rounded-xl bg-slate-900 group-hover:bg-[#fcd502] text-[#fcd502] group-hover:text-[#121212] flex items-center justify-center flex-shrink-0 transition-colors shadow-2xs mt-0.5">
+                          <div className="w-8 h-8 rounded-xl bg-white/10 group-hover:bg-[#fcd502] text-[#fcd502] group-hover:text-[#121212] flex items-center justify-center flex-shrink-0 transition-colors shadow-2xs mt-0.5">
                             <IconComponent className="w-4 h-4 stroke-[2.2]" />
                           </div>
 
                           <div className="min-w-0 flex-1">
                             <div className="flex items-center gap-2">
-                              <span className="font-extrabold text-xs text-slate-900 group-hover:text-black block truncate">
+                              <span className="font-extrabold text-xs text-white group-hover:text-[#fcd502] block truncate">
                                 {item.title}
                               </span>
                               <span className={`px-1.5 py-0.2 rounded-md text-[9px] font-black uppercase tracking-wider flex-shrink-0 ${
-                                item.category === 'Service' ? 'bg-amber-100 text-amber-800' :
-                                item.category === 'Vehicle' ? 'bg-blue-100 text-blue-800' :
-                                item.category === 'Location' ? 'bg-purple-100 text-purple-800' :
-                                item.category === 'Offer' ? 'bg-emerald-100 text-emerald-800' :
-                                'bg-slate-100 text-slate-700'
+                                item.category === 'Service' ? 'bg-amber-500/20 text-amber-300 border border-amber-500/30' :
+                                item.category === 'Vehicle' ? 'bg-blue-500/20 text-blue-300 border border-blue-500/30' :
+                                item.category === 'Location' ? 'bg-purple-500/20 text-purple-300 border border-purple-500/30' :
+                                item.category === 'Offer' ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30' :
+                                'bg-white/10 text-slate-300'
                               }`}>
                                 {item.category}
                               </span>
                             </div>
 
-                            <p className="text-[11px] text-slate-500 font-medium truncate mt-0.5">
+                            <p className="text-[11px] text-slate-400 font-medium truncate mt-0.5">
                               {item.subtitle}
                             </p>
 
                             {/* ── FULL PATH BREADCRUMB IN RESULT ── */}
-                            <div className="mt-1 flex items-center gap-1 text-[10px] font-bold text-[#a18200] bg-[#fcd502]/10 px-2 py-0.5 rounded-md w-fit">
+                            <div className="mt-1 flex items-center gap-1 text-[10px] font-bold text-[#fcd502] bg-[#fcd502]/10 px-2 py-0.5 rounded-md w-fit border border-[#fcd502]/20">
                               <span className="truncate">{item.path}</span>
                               <ArrowRight className="w-2.5 h-2.5 flex-shrink-0 stroke-[2.5]" />
                             </div>
@@ -473,8 +473,8 @@ export const HomeView: React.FC<HomeViewProps> = ({
                     })
                   ) : (
                     <div className="py-8 text-center px-4 space-y-1.5">
-                      <Search className="w-6 h-6 text-slate-300 mx-auto" />
-                      <p className="text-xs font-black text-slate-800">No results found for "{searchQuery}"</p>
+                      <Search className="w-6 h-6 text-slate-500 mx-auto" />
+                      <p className="text-xs font-black text-white">No results found for "{searchQuery}"</p>
                       <p className="text-[11px] text-slate-400 font-medium">Try searching for Airport, Mercedes, Wallet, or Beverly Hills</p>
                     </div>
                   )
@@ -491,7 +491,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
                             key={tag.label}
                             type="button"
                             onClick={() => setSearchQuery(tag.query)}
-                            className="px-2.5 py-1 rounded-xl bg-slate-100 hover:bg-[#fcd502]/20 hover:text-slate-900 text-slate-700 font-bold text-[11px] border border-slate-200/80 transition-colors cursor-pointer"
+                            className="px-2.5 py-1 rounded-xl bg-[#192233] hover:bg-[#fcd502]/20 hover:text-white text-slate-300 font-bold text-[11px] border border-white/5 transition-colors cursor-pointer"
                           >
                             #{tag.label}
                           </button>
@@ -499,7 +499,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
                       </div>
                     </div>
 
-                    <div className="pt-2 border-t border-slate-100">
+                    <div className="pt-2 border-t border-white/5">
                       <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1.5 px-1">
                         Top App Destinations
                       </span>
@@ -510,13 +510,13 @@ export const HomeView: React.FC<HomeViewProps> = ({
                             key={item.id}
                             type="button"
                             onClick={() => handleSelectResult(item)}
-                            className="w-full p-2 rounded-xl hover:bg-slate-100 flex items-center justify-between text-left transition-colors cursor-pointer text-xs"
+                            className="w-full p-2 rounded-xl hover:bg-white/5 flex items-center justify-between text-left transition-colors cursor-pointer text-xs"
                           >
                             <div className="flex items-center gap-2.5 min-w-0">
-                              <IconComponent className="w-3.5 h-3.5 text-slate-500 flex-shrink-0" />
-                              <span className="font-bold text-slate-800 truncate">{item.title}</span>
+                              <IconComponent className="w-3.5 h-3.5 text-slate-400 flex-shrink-0" />
+                              <span className="font-bold text-white truncate">{item.title}</span>
                             </div>
-                            <span className="text-[9px] font-bold text-[#a18200] flex-shrink-0 pl-2">
+                            <span className="text-[9px] font-bold text-[#fcd502] flex-shrink-0 pl-2">
                               {item.category}
                             </span>
                           </button>
@@ -550,8 +550,8 @@ export const HomeView: React.FC<HomeViewProps> = ({
             <div className="flex items-center justify-between px-0">
               <div className="flex items-center gap-1.5">
                 <span className="w-2 h-2 rounded-full bg-[#fcd502] animate-pulse flex-shrink-0" />
-                <h3 className="font-extrabold text-sm text-slate-900">Recent Bookings</h3>
-                <span className="px-2 py-0.5 rounded-full bg-slate-200 text-slate-700 text-[10px] font-black">
+                <h3 className="font-extrabold text-sm text-white">Recent Bookings</h3>
+                <span className="px-2 py-0.5 rounded-full bg-white/10 text-slate-300 text-[10px] font-black border border-white/5">
                   {recentBookingList.length}
                 </span>
               </div>
@@ -559,7 +559,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
               {onViewAllBookings && (
                 <button
                   onClick={onViewAllBookings}
-                  className="text-[11px] font-bold text-[#a18200] hover:underline flex items-center gap-0.5 cursor-pointer"
+                  className="text-[11px] font-bold text-[#fcd502] hover:underline flex items-center gap-0.5 cursor-pointer"
                 >
                   <span>View All</span>
                   <ChevronRight className="w-3.5 h-3.5" />
@@ -572,39 +572,39 @@ export const HomeView: React.FC<HomeViewProps> = ({
               {recentBookingList.map((booking) => (
                 <div
                   key={booking.id}
-                  className="w-[285px] sm:w-[320px] flex-shrink-0 snap-start bg-white rounded-3xl p-4 border border-slate-200/90 shadow-md space-y-2.5 relative overflow-hidden transition-transform hover:-translate-y-0.5"
+                  className="w-[285px] sm:w-[320px] flex-shrink-0 snap-start bg-[#131926] rounded-3xl p-4 border border-white/10 shadow-md space-y-2.5 relative overflow-hidden transition-transform hover:-translate-y-0.5"
                 >
-                  <div className="flex items-center justify-between border-b border-slate-100 pb-2">
+                  <div className="flex items-center justify-between border-b border-white/5 pb-2">
                     <span className="font-mono text-[10px] font-extrabold text-slate-400">
                       #{booking.bookingNumber}
                     </span>
-                    <span className="px-2 py-0.5 rounded-full bg-slate-100 text-slate-800 text-[10px] font-black uppercase">
+                    <span className="px-2 py-0.5 rounded-full bg-white/10 text-slate-300 text-[10px] font-black uppercase border border-white/5">
                       {booking.date}
                     </span>
                   </div>
 
-                  <h4 className="font-black text-xs text-slate-900 truncate">
+                  <h4 className="font-black text-xs text-white truncate">
                     {booking.serviceTitle}
                   </h4>
 
-                  <div className="space-y-1 text-xs text-slate-600 bg-slate-50 p-2.5 rounded-2xl border border-slate-200/60">
+                  <div className="space-y-1 text-xs text-slate-400 bg-[#192233] p-2.5 rounded-2xl border border-white/5">
                     <div className="flex items-start gap-1.5 min-w-0">
                       <MapPin className="w-3.5 h-3.5 text-[#fcd502] fill-[#fcd502]/25 stroke-[2] flex-shrink-0 mt-0.5" />
-                      <span className="font-medium text-slate-800 truncate text-[11px]">{booking.pickupLocation}</span>
+                      <span className="font-medium text-slate-200 truncate text-[11px]">{booking.pickupLocation}</span>
                     </div>
                     <div className="flex items-start gap-1.5 min-w-0">
-                      <MapPin className="w-3.5 h-3.5 text-slate-900 fill-slate-900/20 stroke-[2] flex-shrink-0 mt-0.5" />
-                      <span className="font-medium text-slate-800 truncate text-[11px]">{booking.destinationLocation}</span>
+                      <MapPin className="w-3.5 h-3.5 text-slate-400 fill-slate-400/20 stroke-[2] flex-shrink-0 mt-0.5" />
+                      <span className="font-medium text-slate-200 truncate text-[11px]">{booking.destinationLocation}</span>
                     </div>
                   </div>
 
                   <div className="pt-1 flex items-center justify-between text-xs">
-                    <span className="font-black text-slate-900">${booking.priceTotal.toFixed(2)}</span>
+                    <span className="font-black text-[#fcd502] font-mono text-sm">${booking.priceTotal.toFixed(2)}</span>
 
                     {onRepeatBooking && (
                       <button
                         onClick={() => onRepeatBooking(booking)}
-                        className="px-3 py-1.5 rounded-xl bg-[#121212] hover:bg-black text-[#fcd502] font-extrabold text-[11px] flex items-center gap-1 shadow-sm transition-colors cursor-pointer"
+                        className="px-3 py-1.5 rounded-xl bg-white/10 hover:bg-white/20 text-[#fcd502] font-extrabold text-[11px] flex items-center gap-1 shadow-sm transition-colors cursor-pointer border border-white/5 active:scale-95"
                       >
                         <RotateCcw className="w-3 h-3 stroke-[2.2]" />
                         <span>Repeat</span>
