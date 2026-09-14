@@ -1,8 +1,8 @@
 import type { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'com.ridingo.app',
-  appName: 'RIDINGO',
+  appId: 'com.ridingo.user',
+  appName: 'RIDINGO USER',
   webDir: 'dist',
   server: {
     androidScheme: 'https'

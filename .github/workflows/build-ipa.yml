@@ -1,4 +1,4 @@
-name: Build iOS IPA – Ridingo User App
+name: Build iOS IPA – RIDINGO USER
 
 on:
   push:
@@ -7,7 +7,7 @@ on:
 
 jobs:
   build-ios:
-    name: Build Unsigned IPA (Latest UI)
+    name: Build Unsigned IPA (RIDINGO USER)
     runs-on: macos-latest
 
     steps:
@@ -40,17 +40,16 @@ jobs:
           echo "🧹 Wiping stale iOS web assets..."
           rm -rf ios/App/App/public
           npx cap sync ios --deployment
-          echo "✅ Capacitor sync done. New web assets:"
-          ls -la ios/App/App/public/
+          echo "✅ Capacitor sync done."
 
-      # ── 6. Force Bundle ID & Display Name in Info.plist ───────────
-      - name: Set Bundle ID & Display Name (User App)
+      # ── 6. Force unique Bundle ID & Display Name in Info.plist ─────
+      - name: Set Bundle ID & Display Name → RIDINGO USER
         run: |
           PLIST="ios/App/App/Info.plist"
-          /usr/libexec/PlistBuddy -c "Set :CFBundleIdentifier com.ridingo.app"      "$PLIST"
-          /usr/libexec/PlistBuddy -c "Set :CFBundleDisplayName Ridingo"             "$PLIST"
-          /usr/libexec/PlistBuddy -c "Set :CFBundleName Ridingo"                   "$PLIST"
-          echo "--- ✅ Info.plist verified ---"
+          /usr/libexec/PlistBuddy -c "Set :CFBundleIdentifier com.ridingo.user"     "$PLIST"
+          /usr/libexec/PlistBuddy -c "Set :CFBundleDisplayName RIDINGO USER"        "$PLIST"
+          /usr/libexec/PlistBuddy -c "Set :CFBundleName RIDINGO USER"               "$PLIST"
+          echo "--- ✅ Verified Info.plist ---"
           /usr/libexec/PlistBuddy -c "Print :CFBundleIdentifier"  "$PLIST"
           /usr/libexec/PlistBuddy -c "Print :CFBundleDisplayName" "$PLIST"
 
@@ -65,7 +64,7 @@ jobs:
             -workspace ios/App/App.xcworkspace \
             -scheme App
 
-      # ── 9. Build .app (no signing) ────────────────────────────────
+      # ── 9. Build .app — unique Bundle ID, no signing ──────────────
       - name: Build .app (CODE_SIGNING_ALLOWED=NO)
         run: |
           xcodebuild \
@@ -74,8 +73,8 @@ jobs:
             -configuration Release \
             -sdk iphoneos \
             -derivedDataPath DerivedData \
-            PRODUCT_BUNDLE_IDENTIFIER="com.ridingo.app" \
-            PRODUCT_NAME="Ridingo" \
+            PRODUCT_BUNDLE_IDENTIFIER="com.ridingo.user" \
+            PRODUCT_NAME="RIDINGO USER" \
             CODE_SIGNING_ALLOWED=NO \
             CODE_SIGNING_REQUIRED=NO \
             CODE_SIGN_IDENTITY="" \
@@ -88,13 +87,13 @@ jobs:
           echo "Found .app at: $APP_PATH"
           mkdir -p Payload
           cp -r "$APP_PATH" Payload/
-          zip -r Ridingo-UserApp-unsigned.ipa Payload
-          ls -lh Ridingo-UserApp-unsigned.ipa
+          zip -r RIDINGO-USER-unsigned.ipa Payload
+          ls -lh RIDINGO-USER-unsigned.ipa
 
       # ── 11. Upload IPA as artifact ────────────────────────────────
       - name: Upload IPA artifact
         uses: actions/upload-artifact@v4
         with:
-          name: Ridingo-UserApp-IPA
-          path: Ridingo-UserApp-unsigned.ipa
+          name: RIDINGO-USER-IPA
+          path: RIDINGO-USER-unsigned.ipa
           retention-days: 30
