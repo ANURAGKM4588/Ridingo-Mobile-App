@@ -249,6 +249,8 @@ export const InvoicePaymentScreen: React.FC<InvoicePaymentScreenProps> = ({
             languages: ['English', 'Hindi', 'Malayalam'],
             carHandledTypes: ['Mercedes S-Class', 'BMW 7 Series'],
             verifiedBadge: true,
+            backgroundChecked: true,
+            uniformAvailable: true,
             bio: 'Elite chauffeur trained in luxury executive protocol.',
             certifications: ['Defensive Driving Elite', 'VIP Chauffeur Certified']
           };
@@ -291,6 +293,8 @@ export const InvoicePaymentScreen: React.FC<InvoicePaymentScreenProps> = ({
                 languages: ['English', 'Hindi', 'Malayalam'],
                 carHandledTypes: ['Mercedes S-Class', 'BMW 7 Series'],
                 verifiedBadge: true,
+                backgroundChecked: true,
+                uniformAvailable: true,
                 bio: 'Elite chauffeur trained in luxury executive protocol.',
                 certifications: ['Defensive Driving Elite', 'VIP Chauffeur Certified']
               };
